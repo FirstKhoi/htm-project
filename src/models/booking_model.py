@@ -1,5 +1,7 @@
 """Booking model — CRUD operations + overlap detection for bookings table."""
+
 from datetime import date, datetime
+
 from database.db_manager import get_db
 
 
@@ -10,25 +12,26 @@ class BookingModel:
     def _generate_booking_code() -> str:
         """Generate a unique booking code: BK-YYYYMMDD-XXXX."""
         db = get_db()
-        today = datetime.now().strftime('%Y%m%d')
-        prefix = f'BK-{today}-'
+        today = datetime.now().strftime("%Y%m%d")
+        prefix = f"BK-{today}-"
 
         # Find the last booking code for today
         last = db.fetch_one(
             "SELECT booking_code FROM bookings WHERE booking_code LIKE ? ORDER BY id DESC LIMIT 1",
-            (f'{prefix}%',)
+            (f"{prefix}%",),
         )
         if last:
-            last_num = int(last['booking_code'].split('-')[-1])
+            last_num = int(last["booking_code"].split("-")[-1])
             new_num = last_num + 1
         else:
             new_num = 1
 
-        return f'{prefix}{new_num:04d}'
+        return f"{prefix}{new_num:04d}"
 
     @staticmethod
-    def check_overlap(room_id: int, check_in: str, check_out: str,
-                      exclude_booking_id: int = None) -> bool:
+    def check_overlap(
+        room_id: int, check_in: str, check_out: str, exclude_booking_id: int = None
+    ) -> bool:
         """
         Check if a room has overlapping bookings for the given dates.
 
@@ -54,9 +57,15 @@ class BookingModel:
         return db.count(query, tuple(params)) > 0
 
     @staticmethod
-    def create(customer_id: int, room_id: int, check_in_date: str,
-               check_out_date: str, num_guests: int, total_amount: float,
-               notes: str = None) -> int:
+    def create(
+        customer_id: int,
+        room_id: int,
+        check_in_date: str,
+        check_out_date: str,
+        num_guests: int,
+        total_amount: float,
+        notes: str = None,
+    ) -> int:
         """Create a new booking and return its ID."""
         db = get_db()
         booking_code = BookingModel._generate_booking_code()
@@ -66,8 +75,16 @@ class BookingModel:
                                      check_in_date, check_out_date, num_guests,
                                      total_amount, notes)
                VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
-            (booking_code, customer_id, room_id, check_in_date,
-             check_out_date, num_guests, total_amount, notes)
+            (
+                booking_code,
+                customer_id,
+                room_id,
+                check_in_date,
+                check_out_date,
+                num_guests,
+                total_amount,
+                notes,
+            ),
         )
 
     @staticmethod
@@ -82,7 +99,7 @@ class BookingModel:
                JOIN customers c ON b.customer_id = c.id
                JOIN rooms r ON b.room_id = r.id
                WHERE b.id = ?""",
-            (booking_id,)
+            (booking_id,),
         )
 
     @staticmethod
@@ -106,7 +123,7 @@ class BookingModel:
 
         if search:
             query += " AND (c.full_name LIKE ? OR r.room_number LIKE ? OR b.booking_code LIKE ?)"
-            pattern = f'%{search}%'
+            pattern = f"%{search}%"
             params.extend([pattern, pattern, pattern])
 
         query += " ORDER BY b.created_at DESC"
@@ -123,7 +140,7 @@ class BookingModel:
                JOIN customers c ON b.customer_id = c.id
                JOIN rooms r ON b.room_id = r.id
                ORDER BY b.created_at DESC LIMIT ?""",
-            (limit,)
+            (limit,),
         )
 
     @staticmethod
@@ -133,7 +150,7 @@ class BookingModel:
         db.execute(
             """UPDATE bookings SET status = ?, updated_at = CURRENT_TIMESTAMP
                WHERE id = ?""",
-            (new_status, booking_id)
+            (new_status, booking_id),
         )
 
     @staticmethod
@@ -154,7 +171,7 @@ class BookingModel:
                JOIN rooms r ON b.room_id = r.id
                WHERE b.check_in_date = ? AND b.status = 'confirmed'
                ORDER BY b.created_at""",
-            (today,)
+            (today,),
         )
 
     @staticmethod

@@ -1,4 +1,5 @@
 """Payment model — CRUD operations for the payments table."""
+
 from database.db_manager import get_db
 
 
@@ -6,16 +7,19 @@ class PaymentModel:
     """Handles all database operations for payments."""
 
     @staticmethod
-    def create(booking_id: int, amount: float,
-               payment_method: str = 'cash',
-               transaction_ref: str = None) -> int:
+    def create(
+        booking_id: int,
+        amount: float,
+        payment_method: str = "cash",
+        transaction_ref: str = None,
+    ) -> int:
         """Create a new payment record."""
         db = get_db()
         return db.insert(
             """INSERT INTO payments (booking_id, amount, payment_method,
                                      status, transaction_ref)
                VALUES (?, ?, ?, 'completed', ?)""",
-            (booking_id, amount, payment_method, transaction_ref)
+            (booking_id, amount, payment_method, transaction_ref),
         )
 
     @staticmethod
@@ -26,7 +30,7 @@ class PaymentModel:
             """INSERT INTO payments (booking_id, amount, payment_method,
                                      status, transaction_ref)
                VALUES (?, ?, 'transfer', 'refunded', ?)""",
-            (booking_id, amount, f'REFUND-{booking_id}')
+            (booking_id, amount, f"REFUND-{booking_id}"),
         )
 
     @staticmethod
@@ -35,7 +39,7 @@ class PaymentModel:
         db = get_db()
         return db.fetch_all(
             "SELECT * FROM payments WHERE booking_id = ? ORDER BY created_at DESC",
-            (booking_id,)
+            (booking_id,),
         )
 
     @staticmethod
@@ -50,7 +54,7 @@ class PaymentModel:
                JOIN customers c ON b.customer_id = c.id
                JOIN rooms r ON b.room_id = r.id
                ORDER BY p.created_at DESC LIMIT ?""",
-            (limit,)
+            (limit,),
         )
 
     @staticmethod
@@ -62,7 +66,7 @@ class PaymentModel:
                 """SELECT COALESCE(SUM(amount), 0) FROM payments
                    WHERE status = 'completed'
                      AND payment_date BETWEEN ? AND ?""",
-                (start_date, end_date)
+                (start_date, end_date),
             )
         return db.count(
             "SELECT COALESCE(SUM(amount), 0) FROM payments WHERE status = 'completed'"
@@ -79,8 +83,9 @@ class PaymentModel:
         )
 
     @staticmethod
-    def get_revenue_by_room_type(start_date: str = None,
-                                  end_date: str = None) -> list[dict]:
+    def get_revenue_by_room_type(
+        start_date: str = None, end_date: str = None
+    ) -> list[dict]:
         """Get revenue breakdown by room type."""
         db = get_db()
         query = """
