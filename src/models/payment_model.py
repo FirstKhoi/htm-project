@@ -7,22 +7,6 @@ class PaymentModel:
     """Handles all database operations for payments."""
 
     @staticmethod
-    def create(
-        booking_id: int,
-        amount: float,
-        payment_method: str = "cash",
-        transaction_ref: str = None,
-    ) -> int:
-        """Create a new payment record."""
-        db = get_db()
-        return db.insert(
-            """INSERT INTO payments (booking_id, amount, payment_method,
-                                     status, transaction_ref)
-               VALUES (?, ?, ?, 'completed', ?)""",
-            (booking_id, amount, payment_method, transaction_ref),
-        )
-
-    @staticmethod
     def create_refund(booking_id: int, amount: float) -> int:
         """Create a refund payment record."""
         db = get_db()
@@ -43,34 +27,48 @@ class PaymentModel:
         )
 
     @staticmethod
-    def get_recent(limit: int = 10) -> list[dict]:
-        """Get recent payment activities."""
+    def get_recent(
+        limit: int = 10, start_date: str = None, end_date: str = None
+    ) -> list[dict]:
+        """Get recent payment activities, optionally filtered by date range."""
         db = get_db()
-        return db.fetch_all(
-            """SELECT p.*, b.booking_code, c.full_name as customer_name,
-                      r.room_number
-               FROM payments p
-               JOIN bookings b ON p.booking_id = b.id
-               JOIN customers c ON b.customer_id = c.id
-               JOIN rooms r ON b.room_id = r.id
-               ORDER BY p.created_at DESC LIMIT ?""",
-            (limit,),
-        )
+        query = """
+            SELECT p.*, b.booking_code, c.full_name as customer_name,
+                   r.room_number
+            FROM payments p
+            JOIN bookings b ON p.booking_id = b.id
+            JOIN customers c ON b.customer_id = c.id
+            JOIN rooms r ON b.room_id = r.id
+            WHERE 1=1
+        """
+        params = []
+
+        if start_date:
+            query += " AND DATE(p.payment_date) >= DATE(?)"
+            params.append(start_date)
+        if end_date:
+            query += " AND DATE(p.payment_date) <= DATE(?)"
+            params.append(end_date)
+
+        query += " ORDER BY p.created_at DESC LIMIT ?"
+        params.append(limit)
+        return db.fetch_all(query, tuple(params))
 
     @staticmethod
     def get_total_revenue(start_date: str = None, end_date: str = None) -> float:
         """Get total revenue, optionally filtered by date range."""
         db = get_db()
-        if start_date and end_date:
-            return db.count(
-                """SELECT COALESCE(SUM(amount), 0) FROM payments
-                   WHERE status = 'completed'
-                     AND payment_date BETWEEN ? AND ?""",
-                (start_date, end_date),
-            )
-        return db.count(
-            "SELECT COALESCE(SUM(amount), 0) FROM payments WHERE status = 'completed'"
-        )
+        query = "SELECT COALESCE(SUM(amount), 0) FROM payments WHERE status = 'completed'"
+        params = []
+
+        if start_date:
+            query += " AND DATE(payment_date) >= DATE(?)"
+            params.append(start_date)
+        if end_date:
+            query += " AND DATE(payment_date) <= DATE(?)"
+            params.append(end_date)
+
+        return db.count(query, tuple(params))
 
     @staticmethod
     def get_today_revenue() -> float:
@@ -97,9 +95,12 @@ class PaymentModel:
         """
         params = []
 
-        if start_date and end_date:
-            query += " AND p.payment_date BETWEEN ? AND ?"
-            params.extend([start_date, end_date])
+        if start_date:
+            query += " AND DATE(p.payment_date) >= DATE(?)"
+            params.append(start_date)
+        if end_date:
+            query += " AND DATE(p.payment_date) <= DATE(?)"
+            params.append(end_date)
 
         query += " GROUP BY r.room_type ORDER BY revenue DESC"
         return db.fetch_all(query, tuple(params))
