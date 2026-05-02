@@ -7,6 +7,7 @@ from database.db_manager import get_db
 
 reports_bp = Blueprint('reports', __name__, url_prefix='/reports')
 
+
 @reports_bp.route('/')
 @admin_required
 def index():
