@@ -5,6 +5,7 @@ from models.room_model import RoomModel
 
 rooms_bp = Blueprint('rooms', __name__, url_prefix='/rooms')
 
+
 @rooms_bp.route('/')
 @login_required
 def index():
