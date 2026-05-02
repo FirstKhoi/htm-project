@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+{% block title %}Group03 Hotel - Admin Dashboard{% endblock %}
+{% block page_title %}Dashboard Overview{% endblock %}
+
+{% block content %}
+{# ===== WELCOME SECTION ===== #}
+<div class="mb-10">
+    <p class="font-headline text-on-surface-variant text-sm uppercase tracking-[0.2em] mb-2">Operational Overview</p>
+    <h2 class="font-headline font-extrabold text-4xl text-tertiary-container tracking-tight">Welcome back, {{ 'Admin' }}.</h2>
+    <p class="text-on-surface-variant mt-2 max-w-xl">
+        The house is at {{ ((room_summary.occupied / room_summary.total * 100) if room_summary.total > 0 else 0)|round|int }}% capacity today.
+        You have {{ pending_count }} new booking request{{ 's' if pending_count != 1 else '' }} awaiting action.
+    </p>
+</div>
+
+{# ===== STATS CARDS ===== #}
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+    {# Available Rooms #}
+    <div class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/10 transition-transform hover:scale-[1.02] duration-300">
+        <div class="flex justify-between items-start mb-6">
+            <span class="material-symbols-outlined text-on-primary-container bg-primary-fixed/30 p-3 rounded-full">bed</span>
+            <span class="text-xs font-label font-semibold text-secondary px-2 py-1 bg-secondary-container/20 rounded">Today</span>
+        </div>
+        <h3 class="font-headline text-on-surface-variant text-sm font-medium uppercase tracking-wider mb-1">Available Rooms</h3>
+        <div class="flex items-baseline gap-2">
+            <span class="font-headline text-4xl font-extrabold text-tertiary-container">{{ room_summary.available }}</span>
+            <span class="text-on-surface-variant text-xs">/ {{ room_summary.total }} Rooms</span>
+        </div>
+    </div>
+
+    {# Pending Bookings #}
+    <div class="bg-tertiary-container p-8 rounded-xl transition-transform hover:scale-[1.02] duration-300 relative overflow-hidden group">
+        <div class="relative z-10">
+            <div class="flex justify-between items-start mb-6">
+                <span class="material-symbols-outlined text-[#f1d27b] bg-white/10 p-3 rounded-full">pending_actions</span>
+                <span class="text-xs font-label font-semibold text-[#f1d27b]/80 px-2 py-1 bg-white/10 rounded">
+                    {% if pending_count > 0 %}Urgent{% else %}All Clear{% endif %}
+                </span>
+            </div>
+            <h3 class="font-headline text-white/70 text-sm font-medium uppercase tracking-wider mb-1">Pending Booking Requests</h3>
+            <div class="flex items-baseline gap-2">
+                <span class="font-headline text-4xl font-extrabold text-[#f1d27b]">{{ pending_count }}</span>
+                <span class="text-white/50 text-xs">Awaiting action</span>
+            </div>
+        </div>
+        <div class="absolute -right-4 -bottom-4 opacity-10 group-hover:opacity-20 transition-opacity">
+            <span class="material-symbols-outlined text-[120px]" style="font-variation-settings: 'wght' 100;">hourglass_empty</span>
+        </div>
+    </div>
+
+    {# Today's Revenue #}
+    <div class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/10 transition-transform hover:scale-[1.02] duration-300">
+        <div class="flex justify-between items-start mb-6">
+            <span class="material-symbols-outlined text-on-secondary-container bg-secondary-container/20 p-3 rounded-full">payments</span>
+            <div class="flex items-center text-on-primary-container text-xs font-bold">
+                <span class="material-symbols-outlined text-xs">trending_up</span>
+            </div>
+        </div>
+        <h3 class="font-headline text-on-surface-variant text-sm font-medium uppercase tracking-wider mb-1">Today's Revenue</h3>
+        <div class="flex items-baseline gap-1">
+            <span class="font-headline text-3xl font-extrabold text-tertiary-container">{{ today_revenue|currency }}</span>
+        </div>
+    </div>
+</div>
+
+{# ===== RECENT BOOKINGS TABLE ===== #}
+<section class="bg-surface-container-lowest rounded-xl border border-outline-variant/10 overflow-hidden mb-12 shadow-[0_20px_40px_rgba(0,33,71,0.04)]">
+    <div class="p-6 border-b border-outline-variant/10 flex justify-between items-center">
+        <div>
+            <h3 class="font-headline font-bold text-xl text-tertiary-container">Latest Bookings</h3>
+            <p class="text-on-surface-variant text-xs mt-1">Real-time update of arriving guests and suite requests.</p>
+        </div>
+        <a href="{{ url_for('bookings.index') }}" class="text-tertiary font-headline text-sm font-bold flex items-center gap-1 hover:opacity-70 transition-opacity">
+            <span>View All</span>
+            <span class="material-symbols-outlined text-sm">arrow_forward</span>
+        </a>
+    </div>
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-surface-container-low/50">
+                    <th class="px-6 py-4 font-headline text-[11px] uppercase tracking-widest text-on-surface-variant font-bold">Customer Name</th>
+                    <th class="px-6 py-4 font-headline text-[11px] uppercase tracking-widest text-on-surface-variant font-bold">Room ID</th>
+                    <th class="px-6 py-4 font-headline text-[11px] uppercase tracking-widest text-on-surface-variant font-bold">Booking Date</th>
+                    <th class="px-6 py-4 font-headline text-[11px] uppercase tracking-widest text-on-surface-variant font-bold">Status</th>
+                    <th class="px-6 py-4 font-headline text-[11px] uppercase tracking-widest text-on-surface-variant font-bold text-right">Action</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-outline-variant/5">
+                {% for booking in recent_bookings %}
+                <tr class="hover:bg-surface-container-low/30 transition-colors">
+                    <td class="px-6 py-5">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-tertiary-container flex items-center justify-center text-[#f1d27b] text-[10px] font-bold">
+                                {{ booking.customer_name[:2]|upper }}
+                            </div>
+                            <div>
+                                <p class="font-headline font-bold text-sm text-tertiary-container">{{ booking.customer_name }}</p>
+                                <p class="text-[10px] text-on-surface-variant font-label tracking-wide">{{ booking.customer_tier or 'Guest' }}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-5">
+                        <span class="font-headline text-sm font-bold text-tertiary-container">{{ booking.room_number }}</span>
+                        <p class="text-[10px] text-on-surface-variant font-label">{{ booking.room_name }}</p>
+                    </td>
+                    <td class="px-6 py-5 font-label text-sm text-on-surface">{{ booking.check_in_date }}</td>
+                    <td class="px-6 py-5">
+                        {% set status_colors = {
+                            'pending': 'bg-secondary-container/30 text-on-secondary-container',
+                            'confirmed': 'bg-surface-container-high text-on-surface',
+                            'checked_in': 'bg-primary-fixed-dim/20 text-on-primary-container',
+                            'checked_out': 'bg-surface-container text-on-surface-variant',
+                            'cancelled': 'bg-error-container text-on-error-container'
+                        } %}
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider {{ status_colors.get(booking.status, '') }}">
+                            {{ booking.status|replace('_', ' ')|title }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-5 text-right">
+                        {% if booking.status == 'pending' %}
+                        <form method="POST" action="{{ url_for('bookings.approve', booking_id=booking.id) }}" class="inline">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                            <button class="bg-primary-fixed hover:bg-primary-fixed-dim text-on-primary-fixed px-5 py-1.5 rounded-full font-headline text-xs font-bold tracking-tight transition-all active:scale-95 shadow-sm">
+                                Approve
+                            </button>
+                        </form>
+                        {% elif booking.status == 'confirmed' %}
+                        <form method="POST" action="{{ url_for('bookings.checkin', booking_id=booking.id) }}" class="inline">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                            <button class="bg-tertiary-container text-white px-5 py-1.5 rounded-full font-headline text-xs font-bold tracking-tight transition-all active:scale-95">
+                                Check-in
+                            </button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="px-6 py-12 text-center text-on-surface-variant">
+                        <span class="material-symbols-outlined text-4xl mb-2 block opacity-30">calendar_month</span>
+                        No booking yet.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+{# ===== CHARTS & SIDE PANELS ===== #}
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+    {# Occupancy Chart Placeholder #}
+    <div class="lg:col-span-8 bg-surface-container-low/40 rounded-xl p-8 border border-outline-variant/10">
+        <div class="flex justify-between items-start mb-8">
+            <h3 class="font-headline font-bold text-lg text-tertiary-container">House Occupancy Summary</h3>
+        </div>
+        <div class="grid grid-cols-4 gap-4">
+            {% set statuses = [
+                ('Available', room_summary.available, 'bg-green-500'),
+                ('Occupied', room_summary.occupied, 'bg-tertiary-container'),
+                ('Cleaning', room_summary.cleaning, 'bg-outline'),
+                ('Maintenance', room_summary.maintenance, 'bg-error'),
+            ] %}
+            {% for label, count, color in statuses %}
+            <div class="text-center">
+                <div class="w-full bg-surface-container h-32 rounded-lg relative overflow-hidden flex items-end">
+                    <div class="{{ color }} w-full rounded-t transition-all duration-500"
+                         style="height: {{ (count / room_summary.total * 100) if room_summary.total > 0 else 0 }}%"></div>
+                </div>
+                <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mt-2">{{ label }}</p>
+                <p class="font-headline font-bold text-lg text-tertiary-container">{{ count }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {# Today's Check-ins #}
+    <div class="lg:col-span-4 flex flex-col gap-6">
+        <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/10 shadow-sm flex-1">
+            <h4 class="font-headline font-bold text-sm text-tertiary-container mb-4">Today's Check-ins</h4>
+            {% if today_checkins %}
+                {% for checkin in today_checkins %}
+                <div class="bg-surface-container-low p-3 rounded-lg mb-2 flex items-center gap-3">
+                    <div class="w-2 h-2 rounded-full bg-[#f1d27b]"></div>
+                    <div>
+                        <p class="text-sm font-headline font-bold">{{ checkin.customer_name }}</p>
+                        <p class="text-[10px] text-on-surface-variant">{{ checkin.room_number }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="bg-surface-container-low p-4 rounded-lg italic text-sm text-on-surface-variant border-l-2 border-[#f1d27b]">
+                    No check-ins scheduled for today.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
