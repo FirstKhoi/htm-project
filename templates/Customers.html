@@ -1,0 +1,276 @@
+{% extends "base.html" %}
+
+{% block title %}Group03 Hotel - Customer Management{% endblock %}
+{% block page_title %}Customer Registry{% endblock %}
+
+{% block content %}
+{# ===== STATS + ADD BUTTON ===== #}
+<section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+    <div class="bg-surface-container-lowest p-6 rounded-xl border border-black/[0.03] shadow-sm">
+        <p class="text-[10px] font-bold font-headline uppercase tracking-[0.2em] text-on-surface-variant mb-2">Total Patrons</p>
+        <h3 class="text-3xl font-headline font-light text-tertiary-container">{{ stats.total|number }}</h3>
+        <div class="mt-4 flex items-center text-xs text-green-600">
+            <span class="material-symbols-outlined text-sm mr-1">trending_up</span>
+            <span>{{ stats.active }} Active</span>
+        </div>
+    </div>
+    <div class="bg-surface-container-lowest p-6 rounded-xl border border-black/[0.03] shadow-sm">
+        <p class="text-[10px] font-bold font-headline uppercase tracking-[0.2em] text-on-surface-variant mb-2">Platinum Members</p>
+        <h3 class="text-3xl font-headline font-light text-tertiary-container">{{ stats.platinum }}</h3>
+        <div class="mt-4 flex items-center text-xs text-on-primary-container">
+            <span class="material-symbols-outlined text-sm mr-1" style="font-variation-settings: 'FILL' 1;">star</span>
+            <span>Top Tier</span>
+        </div>
+    </div>
+    <div class="bg-surface-container-lowest p-6 rounded-xl border border-black/[0.03] shadow-sm">
+        <p class="text-[10px] font-bold font-headline uppercase tracking-[0.2em] text-on-surface-variant mb-2">Gold Members</p>
+        <h3 class="text-3xl font-headline font-light text-tertiary-container">{{ stats.gold }}</h3>
+        <div class="mt-4 flex items-center text-xs text-on-surface-variant">
+            <span>Loyalty Program</span>
+        </div>
+    </div>
+    <div class="flex flex-col justify-center items-end">
+        <button onclick="document.getElementById('addCustomerModal').classList.add('active')"
+                class="bg-primary-container text-primary-fixed px-6 py-4 rounded-xl flex items-center space-x-3 hover:bg-primary transition-all duration-300 group shadow-lg shadow-primary-container/20">
+            <span class="material-symbols-outlined">person_add</span>
+            <span class="font-headline uppercase tracking-widest text-xs font-bold">New Customer</span>
+        </button>
+    </div>
+</section>
+
+{# ===== SEARCH + CONTROLS ===== #}
+<section class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+    <div class="relative w-full md:w-96">
+        <span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant">search</span>
+        <form method="GET" action="{{ url_for('customers.index') }}">
+            <input class="w-full pl-12 pr-4 py-4 bg-surface-container-low border-none rounded-xl text-sm focus:ring-2 focus:ring-primary-fixed text-on-surface"
+                   name="search" placeholder="Search by name, email or phone..." type="text" value="{{ search or '' }}"/>
+        </form>
+    </div>
+    <div class="flex items-center space-x-3">
+        <a href="{{ url_for('customers.export') }}"
+           class="px-5 py-3 rounded-xl bg-surface-container-low text-tertiary font-headline text-xs font-bold uppercase tracking-widest flex items-center space-x-2 border border-transparent hover:border-outline-variant/30 transition-all">
+            <span class="material-symbols-outlined text-sm">file_download</span>
+            <span>Export CSV</span>
+        </a>
+    </div>
+</section>
+
+{# ===== CUSTOMER TABLE ===== #}
+<section class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_20px_40px_rgba(0,33,71,0.02)] mb-10">
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="border-b border-black/[0.03]">
+                    <th class="px-8 py-6 text-[10px] font-bold font-headline uppercase tracking-[0.2em] text-on-surface-variant">Patron Details</th>
+                    <th class="px-8 py-6 text-[10px] font-bold font-headline uppercase tracking-[0.2em] text-on-surface-variant">Engagement</th>
+                    <th class="px-8 py-6 text-[10px] font-bold font-headline uppercase tracking-[0.2em] text-on-surface-variant">Tier</th>
+                    <th class="px-8 py-6 text-[10px] font-bold font-headline uppercase tracking-[0.2em] text-on-surface-variant">Total Spent</th>
+                    <th class="px-8 py-6 text-[10px] font-bold font-headline uppercase tracking-[0.2em] text-on-surface-variant">Status</th>
+                    <th class="px-8 py-6"></th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-black/[0.02]">
+                {% for customer in customers %}
+                <tr class="hover:bg-surface-container-low/50 transition-colors group">
+                    <td class="px-8 py-6">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 rounded-full bg-tertiary-container flex items-center justify-center text-[#f1d27b] font-bold text-sm flex-shrink-0">
+                                {{ customer.full_name[:2]|upper }}
+                            </div>
+                            <div>
+                                <p class="font-headline font-bold text-tertiary-container">{{ customer.full_name }}</p>
+                                <p class="text-xs text-on-surface-variant">{{ customer.email }}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-8 py-6">
+                        <p class="text-sm font-medium text-on-surface">{{ customer.total_bookings }} Bookings</p>
+                        <p class="text-[10px] text-on-surface-variant uppercase tracking-tighter">{{ customer.nationality or 'N/A' }}</p>
+                    </td>
+                    <td class="px-8 py-6">
+                        {% set tier_styles = {
+                            'Platinum': 'bg-primary-fixed text-on-primary-fixed',
+                            'Gold': 'bg-secondary-container text-on-secondary-container',
+                            'Silver': 'bg-surface-container-high text-on-surface-variant',
+                            'Standard': 'bg-surface-container text-on-surface-variant'
+                        } %}
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold font-headline uppercase tracking-wider {{ tier_styles.get(customer.tier, '') }}">
+                            {{ customer.tier }}
+                        </span>
+                    </td>
+                    <td class="px-8 py-6">
+                        <p class="text-sm font-headline font-bold text-tertiary-container">{{ customer.total_spent|currency }}</p>
+                    </td>
+                    <td class="px-8 py-6">
+                        {% set status_colors = {
+                            'active': ('text-green-600', 'bg-green-600'),
+                            'dormant': ('text-on-surface-variant', 'bg-outline'),
+                            'blacklisted': ('text-error', 'bg-error')
+                        } %}
+                        {% set text_color, dot_color = status_colors.get(customer.status, ('text-on-surface-variant', 'bg-outline')) %}
+                        <div class="flex items-center space-x-2 text-xs {{ text_color }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ dot_color }} {% if customer.status == 'active' %}animate-pulse{% endif %}"></span>
+                            <span>{{ customer.status|title }}</span>
+                        </div>
+                    </td>
+                    <td class="px-8 py-6 text-right">
+                        <div class="flex items-center justify-end space-x-2">
+                            <button onclick="openEditCustomer({{ customer.id }}, '{{ customer.full_name }}', '{{ customer.email }}', '{{ customer.phone or '' }}', '{{ customer.id_card or '' }}', '{{ customer.nationality or 'Vietnam' }}', '{{ customer.status }}')"
+                                    class="material-symbols-outlined text-on-surface-variant hover:text-tertiary-container transition-colors text-sm" title="Edit">edit</button>
+                            <form method="POST" action="{{ url_for('customers.delete', customer_id=customer.id) }}"
+                                  onsubmit="return confirm('Are you sure you want to delete customer {{ customer.full_name }}?')">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                <button class="material-symbols-outlined text-on-surface-variant hover:text-error transition-colors text-sm" title="Delete">delete</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="px-8 py-16 text-center text-on-surface-variant">
+                        <span class="material-symbols-outlined text-4xl mb-2 block opacity-30">group</span>
+                        No customers found.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {# Pagination #}
+    {% if pagination.total_pages > 1 %}
+    <div class="px-8 py-6 bg-surface-container-low/30 flex items-center justify-between">
+        <p class="text-xs text-on-surface-variant">
+            Showing {{ (pagination.page - 1) * pagination.per_page + 1 }} to {{ [pagination.page * pagination.per_page, pagination.total]|min }} of {{ pagination.total|number }} entries
+        </p>
+        <div class="flex items-center space-x-2">
+            {% if pagination.has_prev %}
+            <a href="?page={{ pagination.prev_num }}&search={{ search }}" class="p-2 rounded-lg hover:bg-surface-container text-on-surface-variant transition-colors">
+                <span class="material-symbols-outlined text-lg">chevron_left</span>
+            </a>
+            {% endif %}
+
+            {% for p in range(1, pagination.total_pages + 1) %}
+                {% if p == pagination.page %}
+                <span class="w-8 h-8 rounded-lg bg-tertiary-container text-primary-fixed text-xs font-bold font-headline flex items-center justify-center">{{ p }}</span>
+                {% elif p <= 3 or p == pagination.total_pages or (p >= pagination.page - 1 and p <= pagination.page + 1) %}
+                <a href="?page={{ p }}&search={{ search }}" class="w-8 h-8 rounded-lg hover:bg-surface-container text-on-surface text-xs font-bold font-headline flex items-center justify-center transition-colors">{{ p }}</a>
+                {% elif p == 4 or p == pagination.total_pages - 1 %}
+                <span class="text-on-surface-variant px-1">...</span>
+                {% endif %}
+            {% endfor %}
+
+            {% if pagination.has_next %}
+            <a href="?page={{ pagination.next_num }}&search={{ search }}" class="p-2 rounded-lg hover:bg-surface-container text-on-surface-variant transition-colors">
+                <span class="material-symbols-outlined text-lg">chevron_right</span>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</section>
+
+{# ===== ADD CUSTOMER MODAL ===== #}
+<div class="modal-overlay" id="addCustomerModal">
+    <div class="modal-content">
+        <div class="flex justify-between items-center mb-8">
+            <h3 class="font-headline text-2xl font-bold text-tertiary-container">New Customer</h3>
+            <button onclick="document.getElementById('addCustomerModal').classList.remove('active')"
+                    class="material-symbols-outlined text-on-surface-variant hover:text-on-surface">close</button>
+        </div>
+        <form method="POST" action="{{ url_for('customers.add') }}" class="space-y-6">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <div class="space-y-2">
+                <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Full Name *</label>
+                <input type="text" name="full_name" required class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed text-sm" placeholder="Nguyen Van A"/>
+            </div>
+            <div class="space-y-2">
+                <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Email *</label>
+                <input type="email" name="email" required class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed text-sm" placeholder="email@example.com"/>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Phone</label>
+                    <input type="tel" name="phone" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed text-sm" placeholder="+84 xxx xxx xxx"/>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">ID Card</label>
+                    <input type="text" name="id_card" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed text-sm" placeholder="National ID / Passport"/>
+                </div>
+            </div>
+            <div class="space-y-2">
+                <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Nationality</label>
+                <input type="text" name="nationality" value="Vietnam" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed text-sm"/>
+            </div>
+            <button type="submit" class="w-full py-4 editorial-gradient text-white font-headline font-bold rounded-xl text-sm uppercase tracking-widest shadow-xl hover:opacity-90 transition-opacity">
+                Add Customer
+            </button>
+        </form>
+    </div>
+</div>
+
+{# ===== EDIT CUSTOMER MODAL ===== #}
+<div class="modal-overlay" id="editCustomerModal">
+    <div class="modal-content">
+        <div class="flex justify-between items-center mb-8">
+            <h3 class="font-headline text-2xl font-bold text-tertiary-container">Edit Customer</h3>
+            <button onclick="document.getElementById('editCustomerModal').classList.remove('active')"
+                    class="material-symbols-outlined text-on-surface-variant hover:text-on-surface">close</button>
+        </div>
+        <form method="POST" id="editCustomerForm" class="space-y-6">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <div class="space-y-2">
+                <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Full Name *</label>
+                <input type="text" name="full_name" id="edit-cust-name" required class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed text-sm"/>
+            </div>
+            <div class="space-y-2">
+                <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Email *</label>
+                <input type="email" name="email" id="edit-cust-email" required class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed text-sm"/>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Phone</label>
+                    <input type="tel" name="phone" id="edit-cust-phone" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed text-sm"/>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">ID Card</label>
+                    <input type="text" name="id_card" id="edit-cust-idcard" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed text-sm"/>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Nationality</label>
+                    <input type="text" name="nationality" id="edit-cust-nationality" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed text-sm"/>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Status</label>
+                    <select name="status" id="edit-cust-status" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed text-sm">
+                        <option value="active">Active</option>
+                        <option value="dormant">Dormant</option>
+                        <option value="blacklisted">Blacklisted</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="w-full py-4 editorial-gradient text-white font-headline font-bold rounded-xl text-sm uppercase tracking-widest shadow-xl hover:opacity-90 transition-opacity">
+                Save Changes
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    function openEditCustomer(id, name, email, phone, idCard, nationality, status) {
+        document.getElementById('editCustomerForm').action = '/customers/update/' + id;
+        document.getElementById('edit-cust-name').value = name;
+        document.getElementById('edit-cust-email').value = email;
+        document.getElementById('edit-cust-phone').value = phone;
+        document.getElementById('edit-cust-idcard').value = idCard;
+        document.getElementById('edit-cust-nationality').value = nationality;
+        document.getElementById('edit-cust-status').value = status;
+        document.getElementById('editCustomerModal').classList.add('active');
+    }
+</script>
+{% endblock %}
