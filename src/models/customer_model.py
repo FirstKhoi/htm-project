@@ -46,12 +46,6 @@ class CustomerModel:
         )
 
     @staticmethod
-    def find_by_user_id(user_id: int) -> dict | None:
-        """Find customer linked to a user account."""
-        db = get_db()
-        return db.fetch_one("SELECT * FROM customers WHERE user_id = ?", (user_id,))
-
-    @staticmethod
     def get_paginated(
         page: int = 1, per_page: int = 10, search: str = None
     ) -> tuple[list[dict], int]:
@@ -109,6 +103,10 @@ class CustomerModel:
         if not updates:
             return
 
+        # Keep customer email canonical to prevent case-based duplicates.
+        if "email" in updates and updates["email"]:
+            updates["email"] = updates["email"].lower().strip()
+
         updates["updated_at"] = "CURRENT_TIMESTAMP"
         set_parts = []
         values = []
@@ -150,25 +148,6 @@ class CustomerModel:
         elif total_spent >= 5000 and total_bookings >= 3:
             return "Silver"
         return "Standard"
-
-    @staticmethod
-    def update_after_checkout(customer_id: int, amount: float) -> None:
-        """Update customer stats after a booking checkout."""
-        db = get_db()
-        customer = CustomerModel.find_by_id(customer_id)
-        if not customer:
-            return
-
-        new_spent = customer["total_spent"] + amount
-        new_bookings = customer["total_bookings"] + 1
-        new_tier = CustomerModel.calculate_tier(new_spent, new_bookings)
-
-        CustomerModel.update(
-            customer_id,
-            total_spent=new_spent,
-            total_bookings=new_bookings,
-            tier=new_tier,
-        )
 
     @staticmethod
     def get_stats() -> dict:
