@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block title %}Group03 Hotel - Reports{% endblock %}
+{% block page_title %}Revenue Insights{% endblock %}
+
+{% block content %}
+{# ===== DATE RANGE FILTER ===== #}
+<div class="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <div>
+        <h2 class="font-headline text-3xl font-extrabold text-tertiary-container tracking-tight">Revenue Insights</h2>
+        <p class="text-on-surface-variant text-sm mt-1">
+            {% if start_date and end_date %}
+                Showing data from <strong>{{ start_date }}</strong> to <strong>{{ end_date }}</strong>
+            {% else %}
+                Showing all-time data
+            {% endif %}
+        </p>
+    </div>
+    <form method="GET" action="{{ url_for('reports.index') }}" class="flex items-center gap-3 flex-wrap">
+        <div class="flex items-center gap-2">
+            <label class="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">From</label>
+            <input type="date" name="start" value="{{ start_date or '' }}"
+                   class="px-3 py-2 bg-surface-container-low border-none rounded-lg text-sm focus:ring-2 focus:ring-primary-fixed"/>
+        </div>
+        <div class="flex items-center gap-2">
+            <label class="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">To</label>
+            <input type="date" name="end" value="{{ end_date or '' }}"
+                   class="px-3 py-2 bg-surface-container-low border-none rounded-lg text-sm focus:ring-2 focus:ring-primary-fixed"/>
+        </div>
+        <button type="submit" class="px-4 py-2 editorial-gradient text-white font-headline text-xs font-bold rounded-lg hover:opacity-90 transition-opacity flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">filter_alt</span>
+            Filter
+        </button>
+        {% if start_date or end_date %}
+        <a href="{{ url_for('reports.index') }}" class="px-4 py-2 bg-surface-container-low text-on-surface-variant font-headline text-xs font-bold rounded-lg hover:bg-surface-container transition-colors flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">clear</span>
+            Clear
+        </a>
+        {% endif %}
+    </form>
+</div>
+
+{# ===== METRIC CARDS ===== #}
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+    <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/15 flex flex-col justify-between group hover:border-[#f1d27b]/40 transition-colors">
+        <div class="flex justify-between items-start mb-4">
+            <span class="material-symbols-outlined p-2 bg-[#002147]/5 text-tertiary-container rounded-lg">payments</span>
+        </div>
+        <div>
+            <p class="text-on-surface-variant text-xs uppercase tracking-widest font-semibold mb-1">Total Revenue</p>
+            <p class="text-3xl font-headline font-black text-on-surface tracking-tight">{{ total_revenue|currency }}</p>
+        </div>
+    </div>
+    <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/15 flex flex-col justify-between group hover:border-[#f1d27b]/40 transition-colors">
+        <div class="flex justify-between items-start mb-4">
+            <span class="material-symbols-outlined p-2 bg-[#002147]/5 text-tertiary-container rounded-lg">bed</span>
+            <span class="text-xs font-bold text-on-secondary-container bg-secondary-container/30 px-2 py-1 rounded">Target 90%</span>
+        </div>
+        <div>
+            <p class="text-on-surface-variant text-xs uppercase tracking-widest font-semibold mb-1">Occupancy Rate</p>
+            <p class="text-3xl font-headline font-black text-on-surface tracking-tight">{{ occupancy_rate }}%</p>
+        </div>
+    </div>
+    <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/15 flex flex-col justify-between group hover:border-[#f1d27b]/40 transition-colors">
+        <div class="flex justify-between items-start mb-4">
+            <span class="material-symbols-outlined p-2 bg-[#002147]/5 text-tertiary-container rounded-lg">trending_up</span>
+        </div>
+        <div>
+            <p class="text-on-surface-variant text-xs uppercase tracking-widest font-semibold mb-1">Avg. Daily Rate</p>
+            <p class="text-3xl font-headline font-black text-on-surface tracking-tight">{{ adr|currency }}</p>
+        </div>
+    </div>
+    <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/15 flex flex-col justify-between group hover:border-[#f1d27b]/40 transition-colors">
+        <div class="flex justify-between items-start mb-4">
+            <span class="material-symbols-outlined p-2 bg-[#002147]/5 text-tertiary-container rounded-lg">star</span>
+        </div>
+        <div>
+            <p class="text-on-surface-variant text-xs uppercase tracking-widest font-semibold mb-1">RevPAR</p>
+            <p class="text-3xl font-headline font-black text-on-surface tracking-tight">{{ revpar|currency }}</p>
+        </div>
+    </div>
+</div>
+
+{# ===== CHARTS ROW ===== #}
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
+    {# Revenue by Top Rooms #}
+    <div class="lg:col-span-2 bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/15">
+        <div class="flex justify-between items-end mb-8">
+            <div>
+                <h3 class="text-xl font-headline font-bold mb-1">Top Yield Listings</h3>
+                <p class="text-on-surface-variant text-sm">Rooms generating the most revenue</p>
+            </div>
+        </div>
+        <div class="space-y-4">
+            {% for room in top_rooms %}
+            <div class="flex items-center space-x-4 bg-surface-container-low/50 p-4 rounded-xl group hover:shadow-lg transition-all border border-transparent hover:border-[#f1d27b]/20">
+                <div class="w-12 h-12 rounded-lg bg-tertiary-container flex items-center justify-center text-[#f1d27b] text-xs font-bold flex-shrink-0">
+                    {{ loop.index }}
+                </div>
+                <div class="flex-1">
+                    <h4 class="font-headline font-bold text-sm">{{ room.room_name }}</h4>
+                    <p class="text-[10px] text-on-surface-variant uppercase tracking-wider">{{ room.room_number }} • {{ room.room_type }}</p>
+                </div>
+                <div class="text-right">
+                    <p class="font-headline font-bold text-sm text-tertiary-container">{{ room.total_revenue|currency }}</p>
+                    <p class="text-[10px] text-green-600 font-bold">{{ room.booking_count }} bookings</p>
+                </div>
+            </div>
+            {% else %}
+            <div class="text-center py-8 text-on-surface-variant">
+                <p>No revenue data yet</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {# Revenue by Type #}
+    <div class="bg-tertiary-container p-8 rounded-xl text-white flex flex-col justify-between">
+        <div>
+            <h3 class="text-xl font-headline font-bold mb-2">Portfolio Mix</h3>
+            <p class="text-white/60 text-sm mb-8">Revenue distribution by category</p>
+            <div class="space-y-6">
+                {% set bar_colors = ['bg-[#f1d27b]', 'bg-secondary-fixed-dim', 'bg-primary-fixed-dim', 'bg-tertiary-fixed-dim'] %}
+                {% for item in revenue_by_type %}
+                <div>
+                    <div class="flex justify-between text-xs mb-2">
+                        <span class="uppercase tracking-widest font-semibold">{{ item.room_type }}</span>
+                        <span class="text-[#f1d27b]">{{ item.percentage }}%</span>
+                    </div>
+                    <div class="w-full bg-white/10 h-1 rounded-full overflow-hidden">
+                        <div class="{{ bar_colors[loop.index0 % 4] }} h-full" style="width: {{ item.percentage }}%"></div>
+                    </div>
+                </div>
+                {% else %}
+                <p class="text-white/40 text-sm italic">No data available</p>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="mt-8 pt-8 border-t border-white/10">
+            <p class="text-white/40 text-xs text-center italic">
+                Total Revenue: {{ total_revenue|currency }}
+            </p>
+        </div>
+    </div>
+</div>
+
+{# ===== RECENT PAYMENTS ===== #}
+<div class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/15">
+    <div class="flex justify-between items-center mb-6">
+        <h3 class="text-lg font-headline font-bold">Recent Billing Activity</h3>
+    </div>
+    <div class="relative">
+        <div class="absolute left-4 top-0 bottom-0 w-[1px] bg-outline-variant/20"></div>
+        <div class="space-y-8 relative">
+            {% for payment in recent_payments %}
+            <div class="flex items-start space-x-6">
+                <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 z-10 border-4 border-surface-container-lowest
+                    {% if payment.status == 'completed' %}bg-primary-fixed{% elif payment.status == 'refunded' %}bg-outline-variant/30{% else %}bg-tertiary-container{% endif %}">
+                    <span class="material-symbols-outlined text-xs {% if payment.status == 'completed' %}text-on-primary-fixed{% elif payment.status == 'refunded' %}text-on-surface-variant{% else %}text-white{% endif %}"
+                          style="font-variation-settings: 'FILL' 1;">
+                        {% if payment.status == 'completed' %}check_circle{% elif payment.status == 'refunded' %}undo{% else %}receipt_long{% endif %}
+                    </span>
+                </div>
+                <div class="flex-1">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-sm font-semibold">
+                                {% if payment.status == 'completed' %}Payment Received
+                                {% elif payment.status == 'refunded' %}Refund Processed
+                                {% else %}Payment Pending{% endif %}
+                            </p>
+                            <p class="text-xs text-on-surface-variant">{{ payment.booking_code }} — {{ payment.customer_name }} ({{ payment.room_number }})</p>
+                        </div>
+                        <span class="font-headline font-bold text-sm {% if payment.status == 'refunded' %}text-error{% else %}text-tertiary-container{% endif %}">
+                            {% if payment.status == 'refunded' %}-{% endif %}{{ payment.amount|currency }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="text-center py-8 text-on-surface-variant ml-12">
+                <p>No payment records yet</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
