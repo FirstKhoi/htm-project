@@ -9,7 +9,6 @@ from models.payment_model import PaymentModel
 
 bookings_bp = Blueprint('bookings', __name__, url_prefix='/bookings')
 
-
 @bookings_bp.route('/')
 @admin_required
 def index():

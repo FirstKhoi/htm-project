@@ -6,7 +6,6 @@ from models.customer_model import CustomerModel
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 
-
 def _validate_email(email: str) -> bool:
     """Check if email format is valid."""
     pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
