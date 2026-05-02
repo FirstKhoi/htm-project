@@ -7,6 +7,7 @@ from models.customer_model import CustomerModel
 
 customers_bp = Blueprint('customers', __name__, url_prefix='/customers')
 
+
 @customers_bp.route('/')
 @admin_required
 def index():
