@@ -4,6 +4,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, sessio
 from models.user_model import UserModel
 from models.customer_model import CustomerModel
 
+
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 def _validate_email(email: str) -> bool:
