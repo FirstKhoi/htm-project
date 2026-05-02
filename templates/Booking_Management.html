@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block title %}Group03 Hotel - Booking Management{% endblock %}
+{% block page_title %}Booking Management{% endblock %}
+
+{% block header_actions %}
+<div class="hidden sm:flex items-center bg-surface-container-low px-4 py-2 rounded-full border border-outline-variant/10">
+    <span class="material-symbols-outlined text-outline text-sm">search</span>
+    <form method="GET" action="{{ url_for('bookings.index') }}" class="inline">
+        <input class="bg-transparent border-none focus:ring-0 text-sm w-48 font-label" name="search" placeholder="Search guests..." type="text" value="{{ search or '' }}"/>
+    </form>
+</div>
+{% endblock %}
+
+{% block content %}
+{# ===== HEADER ===== #}
+<div class="mb-12 flex justify-between items-end">
+    <div class="max-w-2xl">
+        <h2 class="font-headline text-5xl font-extrabold text-on-surface tracking-tighter mb-4 leading-none">Reservations</h2>
+        <p class="text-on-surface-variant font-body text-lg leading-relaxed">
+            Curate and manage the arrival of your distinguished guests. Oversee pending requests and orchestrate check-in flows.
+        </p>
+    </div>
+    <div class="flex space-x-4">
+        <button onclick="document.getElementById('newBookingModal').classList.add('active')"
+                class="px-8 py-3 bg-primary-fixed text-on-primary-fixed font-headline font-bold rounded-xl editorial-gradient text-white flex items-center space-x-2 shadow-xl">
+            <span class="material-symbols-outlined text-[18px]">add</span>
+            <span>New Booking</span>
+        </button>
+    </div>
+</div>
+
+{# ===== STATS CARDS ===== #}
+<div class="grid grid-cols-12 gap-8 mb-12">
+    <div class="col-span-12 lg:col-span-4 bg-surface-container-low p-8 rounded-xl">
+        <p class="text-on-surface-variant text-xs font-headline font-bold uppercase tracking-widest mb-2">Total Bookings</p>
+        <p class="font-headline text-4xl font-light text-on-surface">{{ bookings|length }}</p>
+    </div>
+    <div class="col-span-12 lg:col-span-4 bg-tertiary-container p-8 rounded-xl text-white">
+        <p class="text-white/60 text-xs font-headline font-bold uppercase tracking-widest mb-2">Pending Approval</p>
+        <p class="font-headline text-4xl font-light">{{ bookings|selectattr('status', 'equalto', 'pending')|list|length }}</p>
+    </div>
+    <div class="col-span-12 lg:col-span-4 bg-surface-container-low p-8 rounded-xl">
+        <p class="text-on-surface-variant text-xs font-headline font-bold uppercase tracking-widest mb-2">Checked In</p>
+        <p class="font-headline text-4xl font-light text-on-surface">{{ bookings|selectattr('status', 'equalto', 'checked_in')|list|length }}</p>
+    </div>
+</div>
+
+{# ===== STATUS FILTER TABS ===== #}
+<div class="flex items-center gap-2 mb-6">
+    {% set filters = [('', 'All'), ('pending', 'Pending'), ('confirmed', 'Confirmed'), ('checked_in', 'In-House'), ('checked_out', 'Completed'), ('cancelled', 'Cancelled')] %}
+    {% for value, label in filters %}
+    <a href="{{ url_for('bookings.index', status=value if value else None, search=search) }}"
+       class="px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all
+              {% if current_status == value or (not current_status and not value) %}
+                  bg-tertiary-container text-[#f1d27b]
+              {% else %}
+                  bg-surface-container-low text-on-surface-variant hover:bg-surface-container
+              {% endif %}">
+        {{ label }}
+    </a>
+    {% endfor %}
+</div>
+
+{# ===== BOOKING LIST ===== #}
+<div class="space-y-4">
+    {% for booking in bookings %}
+    <div class="bg-surface-container-lowest p-8 rounded-xl transition-all hover:shadow-[0_20px_40px_rgba(0,33,71,0.04)] border border-transparent hover:border-outline-variant/15
+                {% if booking.status == 'cancelled' %}opacity-60 grayscale-[0.3]{% endif %}">
+        <div class="flex items-center justify-between flex-wrap gap-4">
+            <div class="flex items-center space-x-6">
+                <div class="w-16 h-16 rounded-xl bg-tertiary-container flex items-center justify-center text-[#f1d27b] font-bold text-lg">
+                    {{ booking.customer_name[:2]|upper }}
+                </div>
+                <div>
+                    <h4 class="font-headline text-lg font-extrabold text-on-surface leading-none mb-1">{{ booking.customer_name }}</h4>
+                    <p class="text-on-surface-variant text-sm font-medium">{{ booking.room_name }} • {{ booking.num_guests }} Guest{{ 's' if booking.num_guests > 1 else '' }}</p>
+                </div>
+            </div>
+            <div class="flex flex-col items-center">
+                <p class="text-xs font-headline font-bold uppercase tracking-widest text-on-surface-variant mb-1">Stay Duration</p>
+                <p class="text-sm font-body font-semibold">{{ booking.check_in_date }} — {{ booking.check_out_date }}</p>
+            </div>
+            <div>
+                {% set status_styles = {
+                    'pending': 'bg-secondary-container text-on-secondary-container',
+                    'confirmed': 'bg-surface-container-high text-on-surface',
+                    'checked_in': 'bg-primary-fixed-dim/20 text-on-primary-container',
+                    'checked_out': 'bg-surface-container text-on-surface-variant',
+                    'cancelled': 'bg-error-container text-on-error-container'
+                } %}
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-headline font-bold uppercase tracking-widest {{ status_styles.get(booking.status, '') }}">
+                    {{ booking.status|replace('_', ' ')|title }}
+                </span>
+            </div>
+            <div class="flex items-center space-x-3">
+                {% if booking.status == 'pending' %}
+                <form method="POST" action="{{ url_for('bookings.approve', booking_id=booking.id) }}" class="inline">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <button class="px-6 py-2 editorial-gradient text-white font-headline text-xs font-bold rounded-lg hover:opacity-90 transition-opacity">Approve</button>
+                </form>
+                <form method="POST" action="{{ url_for('bookings.cancel', booking_id=booking.id) }}" class="inline">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <button class="px-6 py-2 border border-outline-variant text-on-surface font-headline text-xs font-bold rounded-lg hover:bg-surface-container transition-colors">Decline</button>
+                </form>
+                {% elif booking.status == 'confirmed' %}
+                <form method="POST" action="{{ url_for('bookings.checkin', booking_id=booking.id) }}" class="inline">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <button class="px-6 py-2 bg-tertiary-container text-white font-headline text-xs font-bold rounded-lg hover:opacity-90 transition-opacity flex items-center space-x-2">
+                        <span class="material-symbols-outlined text-[16px]">login</span>
+                        <span>Check-in</span>
+                    </button>
+                </form>
+                {% elif booking.status == 'checked_in' %}
+                <form method="POST" action="{{ url_for('bookings.checkout', booking_id=booking.id) }}" class="inline">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <input type="hidden" name="payment_method" value="cash"/>
+                    <button class="px-6 py-2 border border-tertiary-container text-tertiary-container font-headline text-xs font-bold rounded-lg hover:bg-tertiary-container/5 transition-colors flex items-center space-x-2">
+                        <span class="material-symbols-outlined text-[16px]">logout</span>
+                        <span>Check-out</span>
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        <div class="mt-4 flex items-center gap-4 text-xs text-on-surface-variant">
+            <span class="font-mono">{{ booking.booking_code }}</span>
+            <span>•</span>
+            <span>{{ booking.total_amount|currency }}</span>
+        </div>
+    </div>
+    {% else %}
+    <div class="bg-surface-container-lowest p-16 rounded-xl text-center">
+        <span class="material-symbols-outlined text-5xl text-outline-variant/30 mb-4 block">calendar_month</span>
+        <h3 class="font-headline text-xl font-bold text-on-surface-variant mb-2">No bookings found</h3>
+        <p class="text-on-surface-variant text-sm">Create a new booking to get started.</p>
+    </div>
+    {% endfor %}
+</div>
+
+{# ===== NEW BOOKING MODAL ===== #}
+<div class="modal-overlay" id="newBookingModal">
+    <div class="modal-content">
+        <div class="flex justify-between items-center mb-8">
+            <h3 class="font-headline text-2xl font-bold text-tertiary-container">New Booking</h3>
+            <button onclick="document.getElementById('newBookingModal').classList.remove('active')"
+                    class="material-symbols-outlined text-on-surface-variant hover:text-on-surface transition-colors">close</button>
+        </div>
+        <form method="POST" action="{{ url_for('bookings.add') }}" class="space-y-6">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <div class="space-y-2">
+                <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Customer</label>
+                <select name="customer_id" required class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed text-sm">
+                    <option value="">-- Select Customer --</option>
+                    {% for customer in customers %}
+                    <option value="{{ customer.id }}">{{ customer.full_name }} ({{ customer.email }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="space-y-2">
+                <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Room</label>
+                <select name="room_id" required class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed text-sm">
+                    <option value="">-- Select Room --</option>
+                    {% for room in rooms %}
+                    <option value="{{ room.id }}">{{ room.room_number }} - {{ room.room_name }} ({{ room.room_type }}, ${{ room.price_per_night }}/night)</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Check-in</label>
+                    <input type="date" name="check_in_date" required class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed text-sm"/>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Check-out</label>
+                    <input type="date" name="check_out_date" required class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed text-sm"/>
+                </div>
+            </div>
+            <div class="space-y-2">
+                <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Number of Guests</label>
+                <input type="number" name="num_guests" value="1" min="1" max="10" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed text-sm"/>
+            </div>
+            <div class="space-y-2">
+                <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Notes</label>
+                <textarea name="notes" rows="3" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed text-sm" placeholder="Special requests..."></textarea>
+            </div>
+            <button type="submit" class="w-full py-4 editorial-gradient text-white font-headline font-bold rounded-xl text-sm uppercase tracking-widest shadow-xl hover:opacity-90 transition-opacity">
+                Create Booking
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
