@@ -7,6 +7,7 @@ from models.payment_model import PaymentModel
 
 dashboard_bp = Blueprint('dashboard', __name__)
 
+
 def login_required(f):
     """Decorator: require user to be logged in (any role)."""
     @wraps(f)
