@@ -1,3 +1,4 @@
+"""App factory — Flask application setup, blueprints, CSRF, and template helpers."""
 import hmac
 import os
 import secrets
@@ -5,62 +6,50 @@ import socket
 import sys
 import threading
 
-# Ensure src is on path before local imports
 src_dir = os.path.dirname(os.path.abspath(__file__))
 if src_dir not in sys.path:
     sys.path.insert(0, src_dir)
 
 from flask import Flask, abort, request, session
-
 from config import config_map
 from database.db_manager import init_app as init_db
 
 
 def find_free_port() -> int:
-    """Find a free port on localhost."""
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind(("", 0))
         return s.getsockname()[1]
 
 
 def create_app(config_name: str = "default") -> Flask:
-    """Application factory: create and configure the Flask app."""
+    """Create and configure the Flask application."""
     app = Flask(__name__, template_folder="templates")
-
-    # Load config
     app.config.from_object(config_map.get(config_name, config_map["default"]))
-
-    # Init database
     init_db(app.config["DATABASE_PATH"])
 
-    csrf_session_key = "_csrf_token"
+    csrf_key = "_csrf_token"
 
     def get_csrf_token() -> str:
-        """Get or create the session CSRF token."""
-        token = session.get(csrf_session_key)
+        token = session.get(csrf_key)
         if not token:
             token = secrets.token_urlsafe(32)
-            session[csrf_session_key] = token
+            session[csrf_key] = token
         return token
 
     @app.before_request
     def validate_csrf():
-        """Protect all POST routes with a session-bound CSRF token."""
+        """Block POST requests with missing/invalid CSRF token."""
         if request.method != "POST":
             return
-
-        session_token = session.get(csrf_session_key, "")
-        form_token = request.form.get("csrf_token", "")
-
-        if not session_token or not form_token:
+        s_token = session.get(csrf_key, "")
+        f_token = request.form.get("csrf_token", "")
+        if not s_token or not f_token:
             abort(403, description="Missing CSRF token.")
-
-        if not hmac.compare_digest(str(session_token), str(form_token)):
+        if not hmac.compare_digest(str(s_token), str(f_token)):
             abort(403, description="Invalid CSRF token.")
 
     @app.errorhandler(403)
     def forbidden(_error):
-        """Return a clear forbidden message for invalid CSRF submissions."""
         return "Forbidden (403): Missing or invalid CSRF token.", 403
 
     # Register blueprints
@@ -71,14 +60,10 @@ def create_app(config_name: str = "default") -> Flask:
     from controllers.report_controller import reports_bp
     from controllers.room_controller import rooms_bp
 
-    app.register_blueprint(auth_bp)
-    app.register_blueprint(dashboard_bp)
-    app.register_blueprint(rooms_bp)
-    app.register_blueprint(customers_bp)
-    app.register_blueprint(bookings_bp)
-    app.register_blueprint(reports_bp)
+    for bp in [auth_bp, dashboard_bp, rooms_bp, customers_bp, bookings_bp, reports_bp]:
+        app.register_blueprint(bp)
 
-    # Template context — make session available everywhere
+    # Template globals
     @app.context_processor
     def inject_globals():
         return {
@@ -95,7 +80,6 @@ def create_app(config_name: str = "default") -> Flask:
     # Jinja2 filters
     @app.template_filter("currency")
     def currency_filter(value):
-        """Format number as currency."""
         try:
             return f"${float(value):,.2f}"
         except (ValueError, TypeError):
@@ -103,7 +87,6 @@ def create_app(config_name: str = "default") -> Flask:
 
     @app.template_filter("number")
     def number_filter(value):
-        """Format number with commas."""
         try:
             return f"{int(value):,}"
         except (ValueError, TypeError):
@@ -113,22 +96,17 @@ def create_app(config_name: str = "default") -> Flask:
 
 
 def start_flask(app: Flask, port: int):
-    """Start Flask server in a background thread (no reloader in thread)."""
     app.run(host="127.0.0.1", port=port, debug=False, use_reloader=False)
 
 
 if __name__ == "__main__":
     import webview
 
-    # Create Flask app
     app = create_app("development")
 
-    # Seed database with demo data on first run
     from seed_data import seed_database
-
     seed_database()
 
-    # Find a free port
     port = find_free_port()
     url = f"http://127.0.0.1:{port}/auth/login"
 
@@ -139,27 +117,13 @@ if __name__ == "__main__":
     print("  Staff:   staff@group03hotel.com / staff123")
     print("=" * 46)
 
-    # Start Flask server in a background thread
-    flask_thread = threading.Thread(
-        target=start_flask,
-        args=(app, port),
-        daemon=True,  # Thread dies when main program exits
-    )
+    flask_thread = threading.Thread(target=start_flask, args=(app, port), daemon=True)
     flask_thread.start()
 
-    # Open native desktop window with pywebview
     window = webview.create_window(
         title="Group03 Hotel Management System",
-        url=url,
-        width=1400,
-        height=900,
-        min_size=(1024, 700),
-        resizable=True,
-        text_select=True,
+        url=url, width=1400, height=900,
+        min_size=(1024, 700), resizable=True, text_select=True,
     )
-
-    # Start the GUI event loop (blocks until window is closed)
     webview.start(debug=False)
-
-
     print("\n👋 Application closed. Goodbye!")

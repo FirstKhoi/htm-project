@@ -1,21 +1,18 @@
-"""Seed data — Populate database with initial admin/staff users and rooms only.
-Customers register themselves. Reports start at zero."""
+"""Seed data — initial admin/staff users and rooms."""
 from werkzeug.security import generate_password_hash
 from database.db_manager import get_db
 
 
 def seed_database():
-    """Insert initial data: admin/staff users + rooms. No customers/bookings/payments."""
+    """Insert demo users + rooms on first run."""
     db = get_db()
 
-    # Check if already seeded
     if db.count("SELECT COUNT(*) FROM users") > 0:
         print("Database already has data. Skipping seed.")
         return
 
     print("Seeding database with initial data...")
 
-    # ========== USERS (admin & staff only) ==========
     admin_hash = generate_password_hash('admin123', method='pbkdf2:sha256')
     staff_hash = generate_password_hash('staff123', method='pbkdf2:sha256')
     answer_hash = generate_password_hash('hanoi', method='pbkdf2:sha256')
@@ -26,13 +23,13 @@ def seed_database():
            VALUES (?, ?, ?, ?, ?, ?)""",
         [
             ('admin@group03hotel.com', admin_hash, 'Concierge Admin', 'admin',
-             'Thành phố yêu thích?', answer_hash),
+             'What is your favorite city?', answer_hash),
             ('staff@group03hotel.com', staff_hash, 'Nguyen Van A', 'staff',
-             'Tên thú cưng?', generate_password_hash('mimi', method='pbkdf2:sha256')),
+             'What is your pet\'s name?',
+             generate_password_hash('mimi', method='pbkdf2:sha256')),
         ]
     )
 
-    # ========== ROOMS ==========
     db.execute_many(
         """INSERT INTO rooms (room_number, room_name, room_type, price_per_night,
                               max_guests, status, description, floor, wing)
@@ -56,10 +53,6 @@ def seed_database():
              'Contemporary VIP suite with lounge area', '5th Floor', 'Main Tower'),
         ]
     )
-
-    # No customers, bookings, or payments seeded.
-    # Customers will register themselves via the app.
-    # Reports start at $0.
 
     print("Database seeded successfully!")
     print("  - Admin:  admin@group03hotel.com / admin123")

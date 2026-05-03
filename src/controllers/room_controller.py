@@ -1,4 +1,4 @@
-"""Room controller — Room management routes."""
+"""Room controller — room CRUD and status management."""
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from controllers.dashboard_controller import admin_required, login_required
 from models.room_model import RoomModel
@@ -9,18 +9,13 @@ rooms_bp = Blueprint('rooms', __name__, url_prefix='/rooms')
 @rooms_bp.route('/')
 @login_required
 def index():
-    """List all rooms with status summary."""
+    """List rooms with status summary."""
     status_filter = request.args.get('status')
     type_filter = request.args.get('type')
-
-    rooms = RoomModel.get_all(status=status_filter, room_type=type_filter)
-    summary = RoomModel.get_status_summary()
-
     return render_template('Rooms_Booking.html',
-                           rooms=rooms,
-                           summary=summary,
-                           current_status=status_filter,
-                           current_type=type_filter)
+                           rooms=RoomModel.get_all(status=status_filter, room_type=type_filter),
+                           summary=RoomModel.get_status_summary(),
+                           current_status=status_filter, current_type=type_filter)
 
 
 @rooms_bp.route('/add', methods=['POST'])
@@ -37,30 +32,25 @@ def add():
     wing = request.form.get('wing', '').strip()
     image_url = request.form.get('image_url', '').strip()
 
-    # Validation
     errors = []
     if not room_number:
         errors.append('Room number is required.')
     elif RoomModel.find_by_number(room_number):
         errors.append(f'Room number "{room_number}" already exists.')
-
     if not room_name:
         errors.append('Room name is required.')
-
     if room_type not in ('VIP', 'Deluxe', 'Standard', 'Single'):
         errors.append('Invalid room type.')
 
     try:
         price = float(price)
-        if price <= 0:
-            raise ValueError
+        if price <= 0: raise ValueError
     except ValueError:
         errors.append('Room price must be a positive number.')
 
     try:
         max_guests = int(max_guests)
-        if max_guests < 1 or max_guests > 10:
-            raise ValueError
+        if max_guests < 1 or max_guests > 10: raise ValueError
     except ValueError:
         errors.append('Maximum guests must be between 1 and 10.')
 
@@ -70,16 +60,10 @@ def add():
         return redirect(url_for('rooms.index'))
 
     RoomModel.create(
-        room_number=room_number,
-        room_name=room_name,
-        room_type=room_type,
-        price_per_night=price,
-        max_guests=max_guests,
-        description=description or None,
-        image_url=image_url or None,
-        floor=floor or None,
-        wing=wing or None,
-    )
+        room_number=room_number, room_name=room_name, room_type=room_type,
+        price_per_night=price, max_guests=max_guests,
+        description=description or None, image_url=image_url or None,
+        floor=floor or None, wing=wing or None)
 
     flash(f'Room {room_number} added successfully!', 'success')
     return redirect(url_for('rooms.index'))
@@ -108,10 +92,10 @@ def update(room_id):
             flash('Invalid room price.', 'error')
             return redirect(url_for('rooms.index'))
 
-    max_guests = request.form.get('max_guests')
-    if max_guests:
+    guests = request.form.get('max_guests')
+    if guests:
         try:
-            updates['max_guests'] = int(max_guests)
+            updates['max_guests'] = int(guests)
         except ValueError:
             flash('Invalid guest count.', 'error')
             return redirect(url_for('rooms.index'))
@@ -119,7 +103,6 @@ def update(room_id):
     if updates:
         RoomModel.update(room_id, **updates)
         flash('Room updated successfully.', 'success')
-
     return redirect(url_for('rooms.index'))
 
 
@@ -136,7 +119,6 @@ def delete(room_id):
         flash('Unable to delete this room because it has active bookings.', 'error')
     else:
         flash(f'Room {room["room_number"]} deleted successfully.', 'success')
-
     return redirect(url_for('rooms.index'))
 
 
@@ -148,7 +130,6 @@ def update_status(room_id):
     if new_status not in ('available', 'occupied', 'cleaning', 'maintenance'):
         flash('Invalid status.', 'error')
         return redirect(url_for('rooms.index'))
-
     RoomModel.update_status(room_id, new_status)
     flash('Room status updated successfully.', 'success')
     return redirect(url_for('rooms.index'))

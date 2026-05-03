@@ -1,4 +1,4 @@
-"""Dashboard controller — Admin dashboard with aggregated data."""
+"""Dashboard controller — admin overview with aggregated data."""
 from functools import wraps
 from flask import Blueprint, render_template, session, redirect, url_for, flash
 from models.room_model import RoomModel
@@ -9,7 +9,7 @@ dashboard_bp = Blueprint('dashboard', __name__)
 
 
 def login_required(f):
-    """Decorator: require user to be logged in (any role)."""
+    """Require any logged-in user."""
     @wraps(f)
     def decorated(*args, **kwargs):
         if 'user_id' not in session:
@@ -20,7 +20,7 @@ def login_required(f):
 
 
 def admin_required(f):
-    """Decorator: require admin or staff role."""
+    """Require admin or staff role."""
     @wraps(f)
     def decorated(*args, **kwargs):
         if 'user_id' not in session:
@@ -37,25 +37,11 @@ def admin_required(f):
 @dashboard_bp.route('/dashboard')
 @admin_required
 def index():
-    """Render the admin dashboard with aggregated data."""
-    # Room summary
+    """Render admin dashboard with stats."""
     room_summary = RoomModel.get_status_summary()
-
-    # Pending bookings count
-    pending_count = BookingModel.get_pending_count()
-
-    # Today's revenue
-    today_revenue = PaymentModel.get_today_revenue()
-
-    # Recent bookings
-    recent_bookings = BookingModel.get_recent(limit=5)
-
-    # Today's expected check-ins
-    today_checkins = BookingModel.get_today_checkins()
-
     return render_template('Admin_Dashboard.html',
                            room_summary=room_summary,
-                           pending_count=pending_count,
-                           today_revenue=today_revenue,
-                           recent_bookings=recent_bookings,
-                           today_checkins=today_checkins)
+                           pending_count=BookingModel.get_pending_count(),
+                           today_revenue=PaymentModel.get_today_revenue(),
+                           recent_bookings=BookingModel.get_recent(limit=5),
+                           today_checkins=BookingModel.get_today_checkins())
