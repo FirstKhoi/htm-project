@@ -1,8 +1,3 @@
--- =====================================================
--- Hotel Management System - Database Schema
--- Group 03 - Software Engineering Project
--- =====================================================
-
 -- Bảng USERS: Quản lý tài khoản đăng nhập
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
