@@ -1,0 +1,88 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam usecase {
+  BackgroundColor #F8FAFC
+  BorderColor #334155
+}
+
+actor "Hotel Staff" as StaffRole
+actor Admin
+actor Staff
+actor Customer
+
+Admin --|> StaffRole
+Staff --|> StaffRole
+
+rectangle "Hotel Management System (HMS)" {
+  usecase "Login" as UC_Login
+  usecase "Logout" as UC_Logout
+  usecase "Register Account" as UC_Register
+  usecase "Recover Password" as UC_Forgot
+
+  usecase "View Dashboard" as UC_Dashboard
+  usecase "Manage Rooms" as UC_ManageRooms
+  usecase "Manage Bookings" as UC_ManageBookings
+  usecase "Manage Customers" as UC_ManageCustomers
+  usecase "View Reports" as UC_Reports
+  usecase "Browse Rooms" as UC_BrowseRooms
+  usecase "Request Booking" as UC_RequestBooking
+
+  usecase "Add / Update / Delete Room" as UC_RoomCrud
+  usecase "Update Room Status" as UC_RoomStatus
+
+  usecase "Create Booking" as UC_CreateBooking
+  usecase "Approve Booking" as UC_ApproveBooking
+  usecase "Check-In Guest" as UC_Checkin
+  usecase "Check-Out Guest" as UC_Checkout
+  usecase "Cancel Booking" as UC_CancelBooking
+
+  usecase "Search / Paginate Customers" as UC_SearchCustomers
+  usecase "Add / Update / Delete Customer" as UC_CustomerCrud
+  usecase "Export Customers CSV" as UC_ExportCsv
+
+  usecase "Filter Reports by Date" as UC_FilterReports
+}
+
+StaffRole --> UC_Login
+StaffRole --> UC_Logout
+StaffRole --> UC_Forgot
+StaffRole --> UC_Dashboard
+StaffRole --> UC_ManageRooms
+StaffRole --> UC_ManageBookings
+StaffRole --> UC_ManageCustomers
+StaffRole --> UC_Reports
+
+Customer --> UC_Register
+Customer --> UC_Login
+Customer --> UC_Logout
+Customer --> UC_Forgot
+Customer --> UC_BrowseRooms
+Customer --> UC_RequestBooking
+
+UC_ManageRooms .> UC_RoomCrud : <<include>>
+UC_ManageRooms .> UC_RoomStatus : <<include>>
+
+UC_ManageBookings .> UC_CreateBooking : <<include>>
+UC_ManageBookings .> UC_ApproveBooking : <<include>>
+UC_ManageBookings .> UC_Checkin : <<include>>
+UC_ManageBookings .> UC_Checkout : <<include>>
+UC_ManageBookings .> UC_CancelBooking : <<include>>
+
+UC_ManageCustomers .> UC_SearchCustomers : <<include>>
+UC_ManageCustomers .> UC_CustomerCrud : <<include>>
+UC_ManageCustomers .> UC_ExportCsv : <<include>>
+
+UC_Reports .> UC_FilterReports : <<include>>
+
+note right of UC_BrowseRooms
+  Current implementation requires login
+  before entering the rooms portal.
+end note
+
+note right of UC_RequestBooking
+  Booking requests are submitted
+  by logged-in customers only.
+end note
+
+@enduml
