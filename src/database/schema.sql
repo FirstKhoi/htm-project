@@ -1,4 +1,4 @@
--- Bảng USERS: Quản lý tài khoản đăng nhập
+-- USERS table: Login account management
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     email TEXT UNIQUE NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS users (
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- Bảng ROOMS: Quản lý phòng khách sạn
+-- ROOMS table: Hotel room management
 CREATE TABLE IF NOT EXISTS rooms (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     room_number TEXT UNIQUE NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS rooms (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- Bảng CUSTOMERS: Quản lý khách hàng
+-- CUSTOMERS table: Customer management
 CREATE TABLE IF NOT EXISTS customers (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS customers (
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- Bảng BOOKINGS: Quản lý đặt phòng
+-- BOOKINGS table: Booking management
 CREATE TABLE IF NOT EXISTS bookings (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     booking_code TEXT UNIQUE NOT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS bookings (
     CHECK(check_out_date > check_in_date)
 );
 
--- Bảng PAYMENTS: Quản lý thanh toán
+-- PAYMENTS table: Payment management
 CREATE TABLE IF NOT EXISTS payments (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     booking_id INTEGER NOT NULL REFERENCES bookings(id) ON DELETE CASCADE,
