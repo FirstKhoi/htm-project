@@ -1,449 +1,279 @@
+{% extends 'base.html' %}
 
-<!DOCTYPE html>
+{% block title %}Rooms — Group03 Hotel{% endblock %}
+{% block page_title %}Rooms & Suites{% endblock %}
 
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Room Management | The Digital Atelier</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-                    "on-primary-fixed-variant": "#574500",
-                    "secondary-fixed-dim": "#aec7f6",
-                    "secondary": "#465f88",
-                    "background": "#f9f9f9",
-                    "surface-dim": "#dadada",
-                    "on-tertiary-fixed": "#001b3d",
-                    "on-error": "#ffffff",
-                    "surface": "#f9f9f9",
-                    "on-primary-fixed": "#241a00",
-                    "tertiary": "#000a1e",
-                    "surface-container": "#eeeeee",
-                    "surface-variant": "#e2e2e2",
-                    "on-surface-variant": "#44474e",
-                    "on-secondary-fixed": "#001b3d",
-                    "on-tertiary-container": "#708ab5",
-                    "tertiary-fixed": "#d6e3ff",
-                    "primary-fixed-dim": "#e9c349",
-                    "inverse-on-surface": "#f1f1f1",
-                    "on-secondary-fixed-variant": "#2d476f",
-                    "surface-container-high": "#e8e8e8",
-                    "outline-variant": "#c4c6cf",
-                    "surface-tint": "#735c00",
-                    "surface-container-highest": "#e2e2e2",
-                    "on-tertiary-fixed-variant": "#2d476f",
-                    "outline": "#74777f",
-                    "on-surface": "#1a1c1c",
-                    "tertiary-container": "#002147",
-                    "tertiary-fixed-dim": "#aec7f6",
-                    "error": "#ba1a1a",
-                    "on-secondary-container": "#3f5881",
-                    "primary-container": "#2b2000",
-                    "inverse-primary": "#e9c349",
-                    "secondary-fixed": "#d6e3ff",
-                    "on-error-container": "#93000a",
-                    "on-tertiary": "#ffffff",
-                    "surface-bright": "#f9f9f9",
-                    "on-primary-container": "#a68502",
-                    "inverse-surface": "#2f3131",
-                    "surface-container-low": "#f3f3f3",
-                    "on-primary": "#ffffff",
-                    "surface-container-lowest": "#ffffff",
-                    "on-secondary": "#ffffff",
-                    "primary-fixed": "#ffe088",
-                    "primary": "#0f0a00",
-                    "on-background": "#1a1c1c",
-                    "secondary-container": "#b6d0ff",
-                    "error-container": "#ffdad6"
-            },
-            "borderRadius": {
-                    "DEFAULT": "0.125rem",
-                    "lg": "0.25rem",
-                    "xl": "0.5rem",
-                    "full": "0.75rem"
-            },
-            "fontFamily": {
-                    "headline": ["Manrope"],
-                    "body": ["Inter"],
-                    "label": ["Inter"]
-            }
-          },
-        },
-      }
-    </script>
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .editorial-shadow {
-            box-shadow: 0 20px 40px rgba(0, 33, 71, 0.04);
-        }
-        .gold-gradient {
-            background: linear-gradient(45deg, #0f0a00, #2b2000);
-        }
-        .gold-text-gradient {
-            background: linear-gradient(45deg, #ffe088, #e9c349);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-    </style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
-  </head>
-<body class="bg-background font-body text-on-surface antialiased">
-<!-- NavigationDrawer Shell -->
-<aside class="fixed left-0 top-0 h-full flex flex-col z-50 h-screen w-72 border-r border-white/10 bg-[#002147]/70 backdrop-blur-xl transition-all duration-300 ease-in-out shadow-[0_20px_40px_rgba(0,33,71,0.04)]">
-<!-- Drawer Header -->
-<div class="p-8 flex flex-col items-start">
-<div class="mb-8">
-<span class="text-[#f1d27b] font-manrope font-bold text-lg tracking-tighter">The Digital Atelier</span>
-</div>
-<div class="flex flex-col items-start">
-<img alt="Manager Portrait" class="w-12 h-12 rounded-full object-cover mb-4 ring-2 ring-[#f1d27b]/30" data-alt="Close-up portrait of a professional concierge manager in a dark suit against a soft luxury hotel background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOa60KllXo-1qWykTGdEiONV7dmEeFWhdCsCi2Y69vLq9KWV_bxIQENslXwVgHEDaRe8bbJnkhf3ZzEVVbwLmvsy7vIEahnIs8hp_tMJkTlXjk5tLOaV19e9q6Ylz0ujsqQZNwt7P4GrMmEA1DeWZXeWsMR0iwkro_Eyu7w1v9VbEgM13jeZOOmvCRIuvcrAQk6oCs32O5zhbkg49S8TVzxBzAP8oRicmx4ASaokEWUGqrS6ZfF0ubjhDff0MyDZ33wsDgAkvmqA"/>
-<h3 class="font-manrope font-bold text-[#f1d27b] text-sm tracking-widest uppercase">Editorial Concierge</h3>
-<p class="text-white/60 text-xs mt-1">Admin Portal</p>
-<span class="bg-white/10 text-white/40 text-[10px] px-2 py-0.5 rounded mt-2 uppercase tracking-widest">Premium Access</span>
-</div>
-</div>
-<!-- Navigation Items -->
-<nav class="flex-1 mt-4">
-<a class="flex items-center space-x-4 px-6 py-4 text-white/60 hover:bg-white/5 hover:text-[#f1d27b] transition-colors" href="#">
-<span class="material-symbols-outlined">dashboard</span>
-<span class="font-manrope uppercase tracking-widest text-xs font-bold">Dashboard</span>
-</a>
-<a class="flex items-center space-x-4 px-6 py-4 text-white/60 hover:bg-white/5 hover:text-[#f1d27b] transition-colors" href="#">
-<span class="material-symbols-outlined">calendar_month</span>
-<span class="font-manrope uppercase tracking-widest text-xs font-bold">Bookings</span>
-</a>
-<a class="flex items-center space-x-4 px-6 py-4 text-white/60 hover:bg-white/5 hover:text-[#f1d27b] transition-colors" href="#">
-<span class="material-symbols-outlined">group</span>
-<span class="font-manrope uppercase tracking-widest text-xs font-bold">Customers</span>
-</a>
-<a class="flex items-center space-x-4 px-6 py-4 bg-white/10 text-[#f1d27b] border-r-2 border-[#f1d27b]" href="#">
-<span class="material-symbols-outlined">bed</span>
-<span class="font-manrope uppercase tracking-widest text-xs font-bold">Rooms</span>
-</a>
-<a class="flex items-center space-x-4 px-6 py-4 text-white/60 hover:bg-white/5 hover:text-[#f1d27b] transition-colors" href="#">
-<span class="material-symbols-outlined">analytics</span>
-<span class="font-manrope uppercase tracking-widest text-xs font-bold">Reports</span>
-</a>
-</nav>
-<!-- Logout -->
-<div class="mt-auto border-t border-white/10">
-<a class="flex items-center space-x-4 px-6 py-6 text-white/40 hover:text-white transition-colors" href="#">
-<span class="material-symbols-outlined">logout</span>
-<span class="font-manrope uppercase tracking-widest text-xs font-bold">Logout</span>
-</a>
-</div>
-</aside>
-<!-- Main Content Canvas -->
-<main class="ml-72 min-h-screen">
-<!-- TopAppBar -->
-<header class="flex justify-between items-center w-full px-8 h-20 sticky top-0 z-40 bg-[#f9f9f9]/80 backdrop-blur-md border-b border-black/[0.05]">
-<div class="flex items-center space-x-4">
-<span class="material-symbols-outlined text-tertiary-container cursor-pointer scale-95 active:scale-100 transition-transform">menu_open</span>
-<h1 class="font-manrope text-2xl font-light tracking-tight text-on-surface">The Digital Atelier</h1>
-</div>
-<div class="flex items-center space-x-6">
-<div class="hidden md:flex items-center space-x-6 mr-4">
-<span class="text-tertiary-container font-medium text-sm">Rooms Inventory</span>
-<span class="text-on-surface-variant/50 text-sm">Updated 2m ago</span>
-</div>
-<img alt="Admin User" class="w-10 h-10 rounded-full border border-outline-variant/30" data-alt="Professional headshot of a mature executive male with clean lighting and minimal background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCW9EDTpb-n_j-Kw04rw7UBD6A8DWJGj5pKb09oViJY6dgKLelkWDVAH9z022NcrmTEETJueOUHgJPIzW5fXX2jwofv8RmmyU6PEvY6qokzKdGJSGtDcLu1H23u21xwK_QkxqHoh_0rxgVuIViy77ghhjH4YWTTzhv9tuCOojMLCHSqjKLffaFZDv9AaZ26nXapBwAGwciJmi9F7W8z0sIHReAe_3HNUIrKypJDznjLad2jyUKiJmSX4O5H4kfJATF0k3JKdN1vIA"/>
-</div>
-</header>
-<!-- Content Body -->
-<div class="p-10 max-w-7xl mx-auto">
-<!-- Header Editorial Section -->
-<section class="mb-12 flex justify-between items-end">
-<div class="space-y-2">
-<p class="font-manrope uppercase tracking-[0.3em] text-[10px] font-bold text-on-tertiary-container">Portfolio Management</p>
-<h2 class="font-manrope text-5xl font-black text-tertiary-container tracking-tighter">Rooms &amp; Suites</h2>
-</div>
-<div class="flex space-x-4">
-<button class="px-6 py-3 border border-outline-variant/20 rounded-xl font-manrope text-xs font-bold uppercase tracking-widest text-tertiary-container hover:bg-surface-container-low transition-all">
-                        Filter Portfolio
-                    </button>
-<button class="px-8 py-3 bg-primary text-primary-fixed rounded-xl font-manrope text-xs font-bold uppercase tracking-widest shadow-xl flex items-center space-x-2 hover:bg-primary-container transition-all">
-<span class="material-symbols-outlined text-sm">add</span>
-<span>Register Unit</span>
+{% block header_actions %}
+{% if current_user.role in ('admin', 'staff') %}
+<button onclick="document.getElementById('addRoomModal').classList.add('active')" class="px-6 py-2 bg-primary text-primary-fixed rounded-xl font-headline text-xs font-bold uppercase tracking-widest shadow-lg flex items-center gap-2 hover:bg-primary-container transition-all">
+    <span class="material-symbols-outlined text-sm">add</span>
+    <span>Add Room</span>
 </button>
-</div>
-</section>
-<!-- Room Status Summary Bento -->
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{# ===== ROOM STATUS SUMMARY ===== #}
 <section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-<div class="bg-surface-container-lowest p-8 rounded-xl editorial-shadow border border-outline-variant/10">
-<p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant/60 mb-2">Available</p>
-<p class="text-4xl font-manrope font-black text-tertiary-container">24</p>
-<div class="w-full bg-surface-container h-1 mt-4 rounded-full overflow-hidden">
-<div class="bg-primary-fixed-dim h-full w-[70%]"></div>
-</div>
-</div>
-<div class="bg-surface-container-lowest p-8 rounded-xl editorial-shadow border border-outline-variant/10">
-<p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant/60 mb-2">Occupied</p>
-<p class="text-4xl font-manrope font-black text-tertiary-container">42</p>
-<div class="w-full bg-surface-container h-1 mt-4 rounded-full overflow-hidden">
-<div class="bg-secondary-container h-full w-[85%]"></div>
-</div>
-</div>
-<div class="bg-surface-container-lowest p-8 rounded-xl editorial-shadow border border-outline-variant/10">
-<p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant/60 mb-2">Cleaning</p>
-<p class="text-4xl font-manrope font-black text-tertiary-container">08</p>
-<div class="w-full bg-surface-container h-1 mt-4 rounded-full overflow-hidden">
-<div class="bg-surface-dim h-full w-[20%]"></div>
-</div>
-</div>
-<div class="bg-tertiary-container p-8 rounded-xl editorial-shadow">
-<p class="text-xs font-bold uppercase tracking-widest text-[#f1d27b]/60 mb-2">Maintenance</p>
-<p class="text-4xl font-manrope font-black text-[#f1d27b]">02</p>
-<p class="text-[10px] text-white/40 mt-4 leading-relaxed italic">Urgent attention required for Suite 402 HVAC</p>
-</div>
+    <div class="bg-surface-container-lowest p-8 rounded-xl shadow-[0_20px_40px_rgba(0,33,71,0.04)] border border-outline-variant/10">
+        <p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant/60 mb-2">Available</p>
+        <p class="text-4xl font-headline font-black text-tertiary-container">{{ summary.available }}</p>
+        <div class="w-full bg-surface-container h-1 mt-4 rounded-full overflow-hidden">
+            <div class="bg-primary-fixed-dim h-full" style="width: {{ (summary.available / (summary.total or 1) * 100)|int }}%"></div>
+        </div>
+    </div>
+    <div class="bg-surface-container-lowest p-8 rounded-xl shadow-[0_20px_40px_rgba(0,33,71,0.04)] border border-outline-variant/10">
+        <p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant/60 mb-2">Occupied</p>
+        <p class="text-4xl font-headline font-black text-tertiary-container">{{ summary.occupied }}</p>
+        <div class="w-full bg-surface-container h-1 mt-4 rounded-full overflow-hidden">
+            <div class="bg-secondary-container h-full" style="width: {{ (summary.occupied / (summary.total or 1) * 100)|int }}%"></div>
+        </div>
+    </div>
+    <div class="bg-surface-container-lowest p-8 rounded-xl shadow-[0_20px_40px_rgba(0,33,71,0.04)] border border-outline-variant/10">
+        <p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant/60 mb-2">Cleaning</p>
+        <p class="text-4xl font-headline font-black text-tertiary-container">{{ summary.cleaning }}</p>
+        <div class="w-full bg-surface-container h-1 mt-4 rounded-full overflow-hidden">
+            <div class="bg-surface-dim h-full" style="width: {{ (summary.cleaning / (summary.total or 1) * 100)|int }}%"></div>
+        </div>
+    </div>
+    <div class="bg-tertiary-container p-8 rounded-xl shadow-[0_20px_40px_rgba(0,33,71,0.04)]">
+        <p class="text-xs font-bold uppercase tracking-widest text-[#f1d27b]/60 mb-2">Maintenance</p>
+        <p class="text-4xl font-headline font-black text-[#f1d27b]">{{ summary.maintenance }}</p>
+        <p class="text-[10px] text-white/40 mt-4 leading-relaxed italic">
+            {% if summary.maintenance > 0 %}Attention required{% else %}All systems normal{% endif %}
+        </p>
+    </div>
 </section>
-<!-- Rooms Grid -->
+
+{# ===== ROOMS GRID ===== #}
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-<!-- Room Card 1: VIP -->
-<div class="group relative bg-surface-container-lowest rounded-xl overflow-hidden editorial-shadow transition-transform duration-500 hover:-translate-y-2">
-<div class="h-64 overflow-hidden relative">
-<img alt="VIP Presidential Suite" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Luxury hotel presidential suite with gold accents, floor-to-ceiling windows, and deep navy velvet furniture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4l8tOGa33fVT2Gg_bWSybTV_N4sWkxmx7kz9aJmiODj2fGtCFaHxtKaQEu3dOGrxC53-6mm5yipCoOQbME6uoyADT8bTOvyu6fKt5naaA1GAaD_UTn8EFWfdNuCvXIrNas8Gv4MH8lTm6ajM-yDZcOmrksaNdwsEHXSAdiYw8v6I8YT5x1hrZ4MBdMrF-zbkrEzqoqH7CuH57WObuoPR6uig-TMj0QBuPzkbhwSyxrds_qHKGBOkZImDDKsWKM_bfGPC7KtsP-g"/>
-<div class="absolute top-4 right-4">
-<span class="px-3 py-1 bg-primary text-primary-fixed text-[10px] font-bold uppercase tracking-widest rounded-full shadow-lg">VIP Exclusive</span>
+    {% for room in rooms %}
+    <div class="group relative bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_20px_40px_rgba(0,33,71,0.04)] transition-transform duration-500 hover:-translate-y-2 border border-outline-variant/10">
+        {# Room Image #}
+        <div class="h-48 overflow-hidden relative bg-gradient-to-br from-tertiary-container/20 to-secondary-container/10">
+            {% if room.image_url %}
+            <img alt="{{ room.room_name }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="{{ room.image_url }}"/>
+            {% else %}
+            <div class="w-full h-full flex items-center justify-center">
+                <span class="material-symbols-outlined text-6xl text-outline-variant/30">bed</span>
+            </div>
+            {% endif %}
+            <div class="absolute top-4 right-4">
+                {% if room.room_type == 'VIP' %}
+                <span class="px-3 py-1 bg-primary text-primary-fixed text-[10px] font-bold uppercase tracking-widest rounded-full shadow-lg">VIP Exclusive</span>
+                {% elif room.room_type == 'Deluxe' %}
+                <span class="px-3 py-1 bg-surface-container-low/90 backdrop-blur text-tertiary-container text-[10px] font-bold uppercase tracking-widest rounded-full">Deluxe</span>
+                {% elif room.room_type == 'Single' %}
+                <span class="px-3 py-1 bg-surface-container-low/90 backdrop-blur text-tertiary-container text-[10px] font-bold uppercase tracking-widest rounded-full">Single</span>
+                {% else %}
+                <span class="px-3 py-1 bg-surface-container-low/90 backdrop-blur text-tertiary-container text-[10px] font-bold uppercase tracking-widest rounded-full">Standard</span>
+                {% endif %}
+            </div>
+        </div>
+
+        {# Room Details #}
+        <div class="p-6">
+            <div class="flex justify-between items-start mb-3">
+                <div>
+                    <h4 class="font-headline text-xl font-bold text-tertiary-container">{{ room.room_name }}</h4>
+                    <p class="text-on-surface-variant/60 text-xs font-medium mt-1">{{ room.room_number }} • {{ room.floor or 'N/A' }}{% if room.wing %} • {{ room.wing }}{% endif %}</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-lg font-headline font-bold text-tertiary-container">{{ room.price_per_night|currency }}</p>
+                    <p class="text-[10px] text-on-surface-variant/40 font-bold uppercase tracking-tighter">Per Night</p>
+                </div>
+            </div>
+
+            {% if room.description %}
+            <p class="text-xs text-on-surface-variant mb-3">{{ room.description }}</p>
+            {% endif %}
+
+            <div class="flex items-center gap-3 mb-4">
+                {% if room.status == 'available' %}
+                <span class="flex items-center gap-1 px-2 py-0.5 bg-green-100 text-green-800 rounded text-[10px] font-bold uppercase tracking-wider">
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-600"></span>Available
+                </span>
+                {% elif room.status == 'occupied' %}
+                <span class="flex items-center gap-1 px-2 py-0.5 bg-secondary-container text-on-secondary-container rounded text-[10px] font-bold uppercase tracking-wider">
+                    <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>Occupied
+                </span>
+                {% elif room.status == 'cleaning' %}
+                <span class="flex items-center gap-1 px-2 py-0.5 bg-surface-container text-on-surface-variant rounded text-[10px] font-bold uppercase tracking-wider">
+                    <span class="w-1.5 h-1.5 rounded-full bg-outline"></span>Cleaning
+                </span>
+                {% elif room.status == 'maintenance' %}
+                <span class="flex items-center gap-1 px-2 py-0.5 bg-error-container text-on-error-container rounded text-[10px] font-bold uppercase tracking-wider">
+                    <span class="w-1.5 h-1.5 rounded-full bg-error"></span>Maintenance
+                </span>
+                {% endif %}
+                <span class="text-on-surface-variant/30 text-xs">•</span>
+                <span class="text-on-surface-variant/60 text-xs">Max {{ room.max_guests }} guest{{ 's' if room.max_guests != 1 }}</span>
+            </div>
+
+            <div class="pt-4 border-t border-outline-variant/10 flex justify-between items-center">
+                {% if current_user.role in ('admin', 'staff') %}
+                {# Admin: Status update buttons #}
+                <div class="flex gap-2">
+                    {% for st in ['available', 'occupied', 'cleaning', 'maintenance'] %}
+                    {% if st != room.status %}
+                    <form method="POST" action="{{ url_for('rooms.update_status', room_id=room.id) }}" class="inline">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        <input type="hidden" name="status" value="{{ st }}"/>
+                        <button type="submit" title="Set {{ st }}" class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant/40 hover:text-primary transition-colors">{{ st[:4] }}</button>
+                    </form>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <form method="POST" action="{{ url_for('rooms.delete', room_id=room.id) }}" class="inline" onsubmit="return confirm('Delete {{ room.room_number }}?')">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <button type="submit" class="text-xs text-error/60 hover:text-error transition-colors">
+                        <span class="material-symbols-outlined text-sm">delete</span>
+                    </button>
+                </form>
+                {% else %}
+                {# Customer: Book button #}
+                {% if room.status == 'available' %}
+                <button onclick="openBookingModal({{ room.id }}, '{{ room.room_number }}', '{{ room.room_name }}', {{ room.price_per_night }}, {{ room.max_guests }})" class="w-full py-3 bg-primary text-primary-fixed rounded-lg font-headline text-xs font-bold uppercase tracking-widest hover:bg-primary-container transition-all">
+                    Book This Room
+                </button>
+                {% else %}
+                <span class="w-full py-3 text-center text-on-surface-variant/40 text-xs font-bold uppercase tracking-widest">Unavailable</span>
+                {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    {% if current_user.role in ('admin', 'staff') %}
+    {# Add Room Placeholder Card #}
+    <div onclick="document.getElementById('addRoomModal').classList.add('active')" class="border-2 border-dashed border-outline-variant/30 rounded-xl flex flex-col items-center justify-center p-12 bg-surface-container-low/30 hover:bg-surface-container-low/50 transition-colors cursor-pointer group min-h-[300px]">
+        <div class="w-16 h-16 rounded-full bg-surface-container-lowest flex items-center justify-center shadow-[0_20px_40px_rgba(0,33,71,0.04)] mb-6 group-hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-primary text-3xl">add_business</span>
+        </div>
+        <h4 class="font-headline text-xl font-bold text-tertiary-container">Register New Unit</h4>
+        <p class="text-center text-on-surface-variant/60 text-sm mt-2 px-8">Expand the portfolio with a new room.</p>
+    </div>
+    {% endif %}
 </div>
+
+{# ===== ADD ROOM MODAL (Admin Only) ===== #}
+{% if current_user.role in ('admin', 'staff') %}
+<div class="modal-overlay" id="addRoomModal">
+    <div class="modal-content">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="font-headline font-bold text-xl text-tertiary-container">Register New Room</h3>
+            <button onclick="document.getElementById('addRoomModal').classList.remove('active')" class="text-on-surface-variant hover:text-error transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <form method="POST" action="{{ url_for('rooms.add') }}" class="space-y-4">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant block mb-1">Room Number *</label>
+                    <input type="text" name="room_number" required placeholder="e.g. Suite 901" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed outline-none text-sm"/>
+                </div>
+                <div>
+                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant block mb-1">Room Name *</label>
+                    <input type="text" name="room_name" required placeholder="e.g. The Royal Suite" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed outline-none text-sm"/>
+                </div>
+            </div>
+            <div class="grid grid-cols-3 gap-4">
+                <div>
+                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant block mb-1">Type *</label>
+                    <select name="room_type" required class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed outline-none text-sm">
+                        <option value="Standard">Standard</option>
+                        <option value="Single">Single</option>
+                        <option value="Deluxe">Deluxe</option>
+                        <option value="VIP">VIP</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant block mb-1">Price/Night *</label>
+                    <input type="number" name="price_per_night" required min="1" step="0.01" placeholder="350.00" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed outline-none text-sm"/>
+                </div>
+                <div>
+                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant block mb-1">Max Guests</label>
+                    <input type="number" name="max_guests" value="2" min="1" max="10" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed outline-none text-sm"/>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant block mb-1">Floor</label>
+                    <input type="text" name="floor" placeholder="e.g. 3rd Floor" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed outline-none text-sm"/>
+                </div>
+                <div>
+                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant block mb-1">Wing</label>
+                    <input type="text" name="wing" placeholder="e.g. Garden Wing" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed outline-none text-sm"/>
+                </div>
+            </div>
+            <div>
+                <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant block mb-1">Description</label>
+                <textarea name="description" rows="2" placeholder="Room description..." class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed outline-none text-sm"></textarea>
+            </div>
+            <div>
+                <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant block mb-1">Image URL</label>
+                <input type="url" name="image_url" placeholder="https://..." class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed outline-none text-sm"/>
+            </div>
+            <button type="submit" class="w-full py-4 bg-primary text-primary-fixed rounded-xl font-headline font-bold text-sm uppercase tracking-widest hover:bg-primary-container transition-all shadow-lg">
+                Register Room
+            </button>
+        </form>
+    </div>
 </div>
-<div class="p-8">
-<div class="flex justify-between items-start mb-4">
-<div>
-<h4 class="font-manrope text-2xl font-bold text-tertiary-container">The Royal Atelier</h4>
-<p class="text-on-surface-variant/60 text-xs font-medium mt-1">Room 801 • Penthouse Level</p>
+{% endif %}
+
+{# ===== CUSTOMER BOOKING MODAL ===== #}
+{% if current_user.role == 'customer' %}
+<div class="modal-overlay" id="bookingModal">
+    <div class="modal-content">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="font-headline font-bold text-xl text-tertiary-container">Book Room</h3>
+            <button onclick="document.getElementById('bookingModal').classList.remove('active')" class="text-on-surface-variant hover:text-error transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div id="bookingRoomInfo" class="p-4 bg-surface-container-low rounded-xl mb-4"></div>
+        <form method="POST" action="{{ url_for('bookings.customer_book') }}" class="space-y-4">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <input type="hidden" name="room_id" id="bookingRoomId"/>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant block mb-1">Check-in Date *</label>
+                    <input type="date" name="check_in_date" required class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed outline-none text-sm"/>
+                </div>
+                <div>
+                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant block mb-1">Check-out Date *</label>
+                    <input type="date" name="check_out_date" required class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed outline-none text-sm"/>
+                </div>
+            </div>
+            <div>
+                <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant block mb-1">Number of Guests</label>
+                <input type="number" name="num_guests" id="bookingMaxGuests" value="1" min="1" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed outline-none text-sm"/>
+            </div>
+            <div>
+                <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant block mb-1">Notes</label>
+                <textarea name="notes" rows="2" placeholder="Special requests..." class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed outline-none text-sm"></textarea>
+            </div>
+            <button type="submit" class="w-full py-4 bg-primary text-primary-fixed rounded-xl font-headline font-bold text-sm uppercase tracking-widest hover:bg-primary-container transition-all shadow-lg">
+                Submit Booking Request
+            </button>
+        </form>
+    </div>
 </div>
-<div class="text-right">
-<p class="text-lg font-manrope font-bold text-tertiary-container">$2,450</p>
-<p class="text-[10px] text-on-surface-variant/40 font-bold uppercase tracking-tighter">Per Night</p>
-</div>
-</div>
-<div class="flex items-center space-x-3 mb-6">
-<span class="flex items-center space-x-1 px-2 py-0.5 bg-secondary-container text-on-secondary-container rounded text-[10px] font-bold uppercase tracking-wider">
-<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
-<span>Occupied</span>
-</span>
-<span class="text-on-surface-variant/30 text-xs">•</span>
-<span class="text-on-surface-variant/60 text-xs">Checkout Tomorrow</span>
-</div>
-<div class="pt-6 border-t border-outline-variant/10 flex justify-between items-center">
-<div class="flex -space-x-2">
-<img class="w-6 h-6 rounded-full border-2 border-white object-cover" data-alt="Guest avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEDwL1sxN-RBWWg9X46n0cv1_23uGCqDaZKOJXjSmgyCe7o0YXfRovRti3IUH-pbToh_GN1bR296MiJSypfZLX1oZmTrC2GU7lN8NGoBLnVI1VSyMacpaDhNZLVIfVr4Pw4tMiNJteDcSJRhYVH9cVn9mA8njLwZfsyzCQNuXaj67xfFcYZX2DbDDxcTRGQ-a8j5SshjD5YQai10N2tyTC-jiubYi2OTnyS28XxkgWHTLmBhvY5Cjv6PymO61SC5PjHw_xZRohHA"/>
-<div class="w-6 h-6 rounded-full border-2 border-white bg-surface-container flex items-center justify-center text-[8px] font-bold">+2</div>
-</div>
-<button class="text-xs font-bold uppercase tracking-widest text-primary hover:text-primary-container transition-colors">Manage Unit</button>
-</div>
-</div>
-</div>
-<!-- Room Card 2: Double -->
-<div class="group relative bg-surface-container-lowest rounded-xl overflow-hidden editorial-shadow transition-transform duration-500 hover:-translate-y-2">
-<div class="h-64 overflow-hidden relative">
-<img alt="Luxury Double Room" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Sophisticated double hotel room with crisp white linens, navy headboard, and soft ambient warm lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkfHEB71Q85BDhSwvh_sVUxGfHjql40XbOjz2TDD8xMOzFqjSyzQUlr0wjxUoHoYFqnVfWMS61MP9O-HWjBfaFlZNafogLdbvIWHJIhq3z0DqFh4wYLwDwBSstajMO9ka3a6OdG57RwQOxa_YAYR_na0nY301rzQBwpctw-SI9N4OjUkJzCc92e8qmknfMHenoKZYTa2DvKTB66yG1sHiRuhXWv9gfe36T4oN77HYgKtBieC9dZ4Nv_nBPG8kzwPWyqI_uo_jPuw"/>
-<div class="absolute top-4 right-4">
-<span class="px-3 py-1 bg-surface-container-low/90 backdrop-blur text-tertiary-container text-[10px] font-bold uppercase tracking-widest rounded-full">Classic Double</span>
-</div>
-</div>
-<div class="p-8">
-<div class="flex justify-between items-start mb-4">
-<div>
-<h4 class="font-manrope text-2xl font-bold text-tertiary-container">Superior Courtyard</h4>
-<p class="text-on-surface-variant/60 text-xs font-medium mt-1">Room 304 • Garden Wing</p>
-</div>
-<div class="text-right">
-<p class="text-lg font-manrope font-bold text-tertiary-container">$850</p>
-<p class="text-[10px] text-on-surface-variant/40 font-bold uppercase tracking-tighter">Per Night</p>
-</div>
-</div>
-<div class="flex items-center space-x-3 mb-6">
-<span class="flex items-center space-x-1 px-2 py-0.5 bg-green-100 text-green-800 rounded text-[10px] font-bold uppercase tracking-wider">
-<span class="w-1.5 h-1.5 rounded-full bg-green-600"></span>
-<span>Available</span>
-</span>
-<span class="text-on-surface-variant/30 text-xs">•</span>
-<span class="text-on-surface-variant/60 text-xs">Ready for Arrival</span>
-</div>
-<div class="pt-6 border-t border-outline-variant/10 flex justify-between items-center">
-<span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant/40">Last Cleaned: 1h ago</span>
-<button class="text-xs font-bold uppercase tracking-widest text-primary hover:text-primary-container transition-colors">Manage Unit</button>
-</div>
-</div>
-</div>
-<!-- Room Card 3: Single -->
-<div class="group relative bg-surface-container-lowest rounded-xl overflow-hidden editorial-shadow transition-transform duration-500 hover:-translate-y-2">
-<div class="h-64 overflow-hidden relative">
-<img alt="Luxury Single Room" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Minimalist luxury single bedroom for a solo traveler with designer lighting and dark wood textures" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLekw5P06rKfQOItfalxOYXcoLkfQJXtKUNjCBtzSW3hNOOT0NNwQJ3HsMQR42163iE_yZ-wBSr1rPDTGn6E3Pf_MOlUg2cEpFWbf25sFcV-uFTTg_uswDQdlTDXMe1LuTt6txGq2-ePRVNMLvWzHv5RSCk9KBXgTtOkDWWlLbH8Q0y0GMEpykbHBjJl-GTvRZNSWn3ope5FgkMw--pvuvbKKh2om9JnZGAYHOCDryuYg-waJNTqcbKjCGOfEhINN4nchbZtfzOw"/>
-<div class="absolute top-4 right-4">
-<span class="px-3 py-1 bg-surface-container-low/90 backdrop-blur text-tertiary-container text-[10px] font-bold uppercase tracking-widest rounded-full">Executive Single</span>
-</div>
-</div>
-<div class="p-8">
-<div class="flex justify-between items-start mb-4">
-<div>
-<h4 class="font-manrope text-2xl font-bold text-tertiary-container">Solitaire Studio</h4>
-<p class="text-on-surface-variant/60 text-xs font-medium mt-1">Room 212 • Business Floor</p>
-</div>
-<div class="text-right">
-<p class="text-lg font-manrope font-bold text-tertiary-container">$450</p>
-<p class="text-[10px] text-on-surface-variant/40 font-bold uppercase tracking-tighter">Per Night</p>
-</div>
-</div>
-<div class="flex items-center space-x-3 mb-6">
-<span class="flex items-center space-x-1 px-2 py-0.5 bg-error-container text-on-error-container rounded text-[10px] font-bold uppercase tracking-wider">
-<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
-<span>Maintenance</span>
-</span>
-<span class="text-on-surface-variant/30 text-xs">•</span>
-<span class="text-on-surface-variant/60 text-xs">HVAC Inspection</span>
-</div>
-<div class="pt-6 border-t border-outline-variant/10 flex justify-between items-center">
-<span class="text-[10px] font-bold uppercase tracking-widest text-error/60">Estimated: 4h delay</span>
-<button class="text-xs font-bold uppercase tracking-widest text-primary hover:text-primary-container transition-colors">Manage Unit</button>
-</div>
-</div>
-</div>
-<!-- Room Card 4: VIP 2 -->
-<div class="group relative bg-surface-container-lowest rounded-xl overflow-hidden editorial-shadow transition-transform duration-500 hover:-translate-y-2">
-<div class="h-64 overflow-hidden relative">
-<img alt="The Grand Atelier" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Opulent hotel suite with marble floors, gold details, and a view of a nighttime cityscape through arched windows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNR8PIT-2-H1q6j3rx_Oz42Tu1hyh3kRq-wRkVF6Ku5sg5STt6hMd9RT9NI0SGaIrkLWmoWMLhKyfVlgDBmC5w5fKduOLTjvwfUM3PcOX6Sq-V8irYPmzQ3-55fyfaX1aFxTAJ45QIPTHHbhNvzY6YbTMnmohYet03MT_9dTkTj_bTB_81O9a2y6Nld0UaU5gZx-TuK06b8HN1NwiL14obyMbK2g7ibNgNaDSAKaaqPuWa453EX41P9s9v_0ynu6jZTYPyHetDNw"/>
-<div class="absolute top-4 right-4">
-<span class="px-3 py-1 bg-primary text-primary-fixed text-[10px] font-bold uppercase tracking-widest rounded-full shadow-lg">VIP Signature</span>
-</div>
-</div>
-<div class="p-8">
-<div class="flex justify-between items-start mb-4">
-<div>
-<h4 class="font-manrope text-2xl font-bold text-tertiary-container">The Grand Atelier</h4>
-<p class="text-on-surface-variant/60 text-xs font-medium mt-1">Room 802 • Penthouse Level</p>
-</div>
-<div class="text-right">
-<p class="text-lg font-manrope font-bold text-tertiary-container">$3,100</p>
-<p class="text-[10px] text-on-surface-variant/40 font-bold uppercase tracking-tighter">Per Night</p>
-</div>
-</div>
-<div class="flex items-center space-x-3 mb-6">
-<span class="flex items-center space-x-1 px-2 py-0.5 bg-surface-container text-on-surface-variant rounded text-[10px] font-bold uppercase tracking-wider">
-<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
-<span>Cleaning</span>
-</span>
-<span class="text-on-surface-variant/30 text-xs">•</span>
-<span class="text-on-surface-variant/60 text-xs">Sanitization in progress</span>
-</div>
-<div class="pt-6 border-t border-outline-variant/10 flex justify-between items-center">
-<span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant/40">Estimated: 35 mins</span>
-<button class="text-xs font-bold uppercase tracking-widest text-primary hover:text-primary-container transition-colors">Manage Unit</button>
-</div>
-</div>
-</div>
-<!-- Room Card 5: Double 2 -->
-<div class="group relative bg-surface-container-lowest rounded-xl overflow-hidden editorial-shadow transition-transform duration-500 hover:-translate-y-2">
-<div class="h-64 overflow-hidden relative">
-<img alt="Loft Suite" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Modern high-ceiling industrial loft hotel room with navy accents and large factory windows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDb1lUNMcBojNGRvVCoPVhJE_gP0E4zXlJsRRm-HIpzlU5yXAE_LxAp13eOkXaS1kQ5zpGWFIq6taeOQqXYSqILirgnSLcRmGx_ecEkj-EU4rrJw5mVljz7rSRtS5NUF_6c8VcchcnhN1gBlb1N_tuCgu6vNnzNIwb3SmT-565qGkU6nnHVsYok8YdPeCkpgR_3m5e7BkH_wmsb8NjiWF-tTn2e97ZtYCKcSS0wpgCJvA-epAn9n_J1k92K7k_1gilimirJ1CwesQ"/>
-<div class="absolute top-4 right-4">
-<span class="px-3 py-1 bg-surface-container-low/90 backdrop-blur text-tertiary-container text-[10px] font-bold uppercase tracking-widest rounded-full">Loft Double</span>
-</div>
-</div>
-<div class="p-8">
-<div class="flex justify-between items-start mb-4">
-<div>
-<h4 class="font-manrope text-2xl font-bold text-tertiary-container">Industrial Loft 402</h4>
-<p class="text-on-surface-variant/60 text-xs font-medium mt-1">Room 402 • Skyline Wing</p>
-</div>
-<div class="text-right">
-<p class="text-lg font-manrope font-bold text-tertiary-container">$720</p>
-<p class="text-[10px] text-on-surface-variant/40 font-bold uppercase tracking-tighter">Per Night</p>
-</div>
-</div>
-<div class="flex items-center space-x-3 mb-6">
-<span class="flex items-center space-x-1 px-2 py-0.5 bg-green-100 text-green-800 rounded text-[10px] font-bold uppercase tracking-wider">
-<span class="w-1.5 h-1.5 rounded-full bg-green-600"></span>
-<span>Available</span>
-</span>
-<span class="text-on-surface-variant/30 text-xs">•</span>
-<span class="text-on-surface-variant/60 text-xs">Ready for Arrival</span>
-</div>
-<div class="pt-6 border-t border-outline-variant/10 flex justify-between items-center">
-<span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant/40">Last Cleaned: 4h ago</span>
-<button class="text-xs font-bold uppercase tracking-widest text-primary hover:text-primary-container transition-colors">Manage Unit</button>
-</div>
-</div>
-</div>
-<!-- Empty State/Add Unit Placeholder -->
-<div class="border-2 border-dashed border-outline-variant/30 rounded-xl flex flex-col items-center justify-center p-12 bg-surface-container-low/30 hover:bg-surface-container-low/50 transition-colors cursor-pointer group">
-<div class="w-16 h-16 rounded-full bg-surface-container-lowest flex items-center justify-center editorial-shadow mb-6 group-hover:scale-110 transition-transform">
-<span class="material-symbols-outlined text-primary text-3xl">add_business</span>
-</div>
-<h4 class="font-manrope text-xl font-bold text-tertiary-container">Register New Unit</h4>
-<p class="text-center text-on-surface-variant/60 text-sm mt-2 px-8">Expand the Atelier portfolio with a new premium destination.</p>
-</div>
-</div>
-<!-- Detailed Management List (Secondary View) -->
-<section class="mt-20">
-<div class="flex justify-between items-center mb-8 border-b border-outline-variant/10 pb-4">
-<h3 class="font-manrope text-2xl font-bold text-tertiary-container">Room Maintenance Log</h3>
-<button class="text-xs font-bold uppercase tracking-widest text-secondary hover:opacity-70 transition-opacity">View All Schedules</button>
-</div>
-<div class="bg-surface-container-lowest rounded-xl editorial-shadow overflow-hidden">
-<table class="w-full text-left border-collapse">
-<thead>
-<tr class="bg-surface-container-low border-b border-outline-variant/10">
-<th class="px-8 py-4 font-manrope text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Unit ID</th>
-<th class="px-8 py-4 font-manrope text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Service Type</th>
-<th class="px-8 py-4 font-manrope text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Personnel</th>
-<th class="px-8 py-4 font-manrope text-[10px] font-black uppercase tracking-widest text-on-surface-variant">Status</th>
-<th class="px-8 py-4 font-manrope text-[10px] font-black uppercase tracking-widest text-on-surface-variant text-right">Action</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-outline-variant/5">
-<tr>
-<td class="px-8 py-6 font-manrope font-bold text-tertiary-container">RM-801</td>
-<td class="px-8 py-6">
-<p class="text-sm font-medium">Turndown Service</p>
-<p class="text-[10px] text-on-surface-variant/50">Scheduled 18:00 Today</p>
-</td>
-<td class="px-8 py-6 flex items-center space-x-3">
-<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center font-bold text-[10px]">EC</div>
-<span class="text-xs font-medium">Elena C.</span>
-</td>
-<td class="px-8 py-6">
-<span class="px-2 py-0.5 bg-primary-fixed text-on-primary-fixed text-[10px] font-bold uppercase rounded">Pending</span>
-</td>
-<td class="px-8 py-6 text-right">
-<button class="material-symbols-outlined text-on-surface-variant/40 hover:text-primary transition-colors">more_horiz</button>
-</td>
-</tr>
-<tr>
-<td class="px-8 py-6 font-manrope font-bold text-tertiary-container">RM-212</td>
-<td class="px-8 py-6">
-<p class="text-sm font-medium">HVAC Filter Replacement</p>
-<p class="text-[10px] text-on-surface-variant/50">Maintenance Request #882</p>
-</td>
-<td class="px-8 py-6 flex items-center space-x-3">
-<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center font-bold text-[10px]">JM</div>
-<span class="text-xs font-medium">James M.</span>
-</td>
-<td class="px-8 py-6">
-<span class="px-2 py-0.5 bg-error-container text-error text-[10px] font-bold uppercase rounded">In Progress</span>
-</td>
-<td class="px-8 py-6 text-right">
-<button class="material-symbols-outlined text-on-surface-variant/40 hover:text-primary transition-colors">more_horiz</button>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-</div>
-</main>
-</body></html>
+{% endif %}
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+function openBookingModal(roomId, roomNumber, roomName, price, maxGuests) {
+    document.getElementById('bookingRoomId').value = roomId;
+    document.getElementById('bookingMaxGuests').max = maxGuests;
+    document.getElementById('bookingRoomInfo').innerHTML =
+        '<p class="font-headline font-bold text-lg text-tertiary-container">' + roomName + '</p>' +
+        '<p class="text-sm text-on-surface-variant">' + roomNumber + ' — $' + price.toFixed(2) + '/night — Max ' + maxGuests + ' guests</p>';
+    document.getElementById('bookingModal').classList.add('active');
+}
+</script>
+{% endblock %}

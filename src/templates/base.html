@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>{% block title %}Group03 Hotel{% endblock %}</title>
+
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#1a1c1c",
+                        "tertiary-container": "#002147",
+                        "surface-container-highest": "#e2e2e2",
+                        "on-tertiary-container": "#708ab5",
+                        "surface-container-low": "#f3f3f3",
+                        "surface-container-high": "#e8e8e8",
+                        "error-container": "#ffdad6",
+                        "outline": "#74777f",
+                        "on-secondary": "#ffffff",
+                        "inverse-surface": "#2f3131",
+                        "inverse-on-surface": "#f1f1f1",
+                        "tertiary-fixed": "#d6e3ff",
+                        "on-primary-container": "#a68502",
+                        "on-primary-fixed-variant": "#574500",
+                        "on-primary-fixed": "#241a00",
+                        "primary-container": "#2b2000",
+                        "secondary": "#465f88",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed": "#001b3d",
+                        "on-tertiary": "#ffffff",
+                        "tertiary": "#000a1e",
+                        "surface-dim": "#dadada",
+                        "on-secondary-container": "#3f5881",
+                        "secondary-container": "#b6d0ff",
+                        "surface-variant": "#e2e2e2",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed-variant": "#2d476f",
+                        "surface": "#f9f9f9",
+                        "on-error": "#ffffff",
+                        "background": "#f9f9f9",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed": "#001b3d",
+                        "surface-container": "#eeeeee",
+                        "outline-variant": "#c4c6cf",
+                        "secondary-fixed": "#d6e3ff",
+                        "on-surface-variant": "#44474e",
+                        "primary-fixed": "#ffe088",
+                        "tertiary-fixed-dim": "#aec7f6",
+                        "primary": "#0f0a00",
+                        "on-tertiary-fixed-variant": "#2d476f",
+                        "inverse-primary": "#e9c349",
+                        "surface-tint": "#735c00",
+                        "primary-fixed-dim": "#e9c349",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#aec7f6",
+                        "surface-bright": "#f9f9f9",
+                        "on-surface": "#1a1c1c"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .editorial-gradient {
+            background: linear-gradient(45deg, #0f0a00 0%, #2b2000 100%);
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #c4c6cf; border-radius: 10px; }
+        body { min-height: max(884px, 100dvh); font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4 { font-family: 'Manrope', sans-serif; }
+
+        /* Toast notification styles */
+        .toast-container { position: fixed; top: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+        .toast { padding: 14px 20px; border-radius: 12px; font-size: 14px; font-weight: 500;
+                 box-shadow: 0 8px 24px rgba(0,0,0,0.12); animation: slideIn 0.3s ease-out;
+                 display: flex; align-items: center; gap: 10px; max-width: 400px; }
+        .toast-success { background: #002147; color: #f1d27b; }
+        .toast-error { background: #ba1a1a; color: #fff; }
+        .toast-warning { background: #574500; color: #ffe088; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; transform: translateY(-10px); } }
+
+        /* Modal overlay */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100;
+                         display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+        .modal-overlay.active { display: flex; }
+        .modal-content { background: #fff; border-radius: 16px; padding: 32px; max-width: 560px;
+                         width: 90%; max-height: 85vh; overflow-y: auto;
+                         box-shadow: 0 20px 60px rgba(0,33,71,0.15); }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-surface font-body text-on-surface">
+    <div class="flex h-screen overflow-hidden">
+
+        {# ===== SIDEBAR NAV ITEMS (shared macro) ===== #}
+        {% if current_user.role in ('admin', 'staff') %}
+            {% set nav_items = [
+                ('dashboard.index', 'dashboard', 'Dashboard'),
+                ('bookings.index', 'calendar_month', 'Bookings'),
+                ('customers.index', 'group', 'Customers'),
+                ('rooms.index', 'bed', 'Rooms'),
+                ('reports.index', 'analytics', 'Reports'),
+            ] %}
+        {% else %}
+            {% set nav_items = [
+                ('rooms.index', 'bed', 'Browse Rooms'),
+            ] %}
+        {% endif %}
+
+        {# ===== MOBILE SIDEBAR OVERLAY ===== #}
+        <div id="mobileSidebarOverlay" class="fixed inset-0 bg-black/60 z-[60] md:hidden hidden" onclick="closeMobileSidebar()"></div>
+        <aside id="mobileSidebar" class="fixed top-0 left-0 h-full w-72 bg-[#002147] shadow-2xl z-[70] md:hidden transform -translate-x-full transition-transform duration-300 ease-in-out">
+            <div class="flex flex-col h-full py-8">
+                <div class="px-8 mb-6 flex justify-between items-center">
+                    <span class="text-[#f1d27b] font-headline font-bold text-lg tracking-tighter">Group03 Hotel</span>
+                    <button onclick="closeMobileSidebar()" class="text-white/60 hover:text-[#f1d27b] transition-colors">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+                <div class="px-6 mb-8 flex flex-col items-start">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div class="w-12 h-12 rounded-full bg-[#f1d27b]/20 flex items-center justify-center text-[#f1d27b] font-bold text-sm border border-[#f1d27b]/30">
+                            {{ current_user.name[:2]|upper if current_user.name else 'AD' }}
+                        </div>
+                        <div>
+                            <h3 class="text-[#f1d27b] font-headline font-bold text-sm tracking-tight">{{ current_user.name or 'Admin' }}</h3>
+                            <p class="text-white/60 text-xs font-headline uppercase tracking-widest">{{ current_user.role|title }} Portal</p>
+                        </div>
+                    </div>
+                </div>
+                <nav class="flex-1 space-y-1">
+                    {% for endpoint, icon, label in nav_items %}
+                    <a class="flex items-center space-x-4 px-6 py-4 transition-colors
+                        {% if current_endpoint == endpoint or current_endpoint.startswith(endpoint.split('.')[0]) %}
+                            bg-white/10 text-[#f1d27b] border-r-2 border-[#f1d27b]
+                        {% else %}
+                            text-white/60 hover:text-white hover:bg-white/5
+                        {% endif %}" href="{{ url_for(endpoint) }}">
+                        <span class="material-symbols-outlined" {% if current_endpoint == endpoint %}style="font-variation-settings: 'FILL' 1;"{% endif %}>{{ icon }}</span>
+                        <span class="font-headline uppercase tracking-widest text-xs font-bold">{{ label }}</span>
+                    </a>
+                    {% endfor %}
+                </nav>
+                <div class="mt-auto p-6 border-t border-white/5">
+                    <a class="flex items-center space-x-4 px-4 py-3 text-white/40 hover:text-[#f1d27b] transition-colors group" href="{{ url_for('auth.logout') }}">
+                        <span class="material-symbols-outlined group-hover:text-[#f1d27b]">logout</span>
+                        <span class="font-headline uppercase tracking-widest text-xs font-bold">Logout</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        {# ===== DESKTOP SIDEBAR ===== #}
+        <aside class="hidden md:flex flex-col h-full w-72 bg-[#002147] border-r border-white/10 shadow-2xl z-50">
+            <div class="flex flex-col h-full py-8">
+                <div class="px-8 mb-6">
+                    <span class="text-[#f1d27b] font-headline font-bold text-lg tracking-tighter">Group03 Hotel</span>
+                </div>
+                <div class="px-6 mb-8 flex flex-col items-start">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div class="w-12 h-12 rounded-full bg-[#f1d27b]/20 flex items-center justify-center text-[#f1d27b] font-bold text-sm border border-[#f1d27b]/30">
+                            {{ current_user.name[:2]|upper if current_user.name else 'AD' }}
+                        </div>
+                        <div>
+                            <h3 class="text-[#f1d27b] font-headline font-bold text-sm tracking-tight">{{ current_user.name or 'Admin' }}</h3>
+                            <p class="text-white/60 text-xs font-headline uppercase tracking-widest">{{ current_user.role|title }} Portal</p>
+                        </div>
+                    </div>
+                    <span class="text-white/40 text-[10px] font-headline uppercase tracking-[0.2em] ml-2">Premium Access</span>
+                </div>
+                <nav class="flex-1 space-y-1">
+                    {% for endpoint, icon, label in nav_items %}
+                    <a class="flex items-center space-x-4 px-6 py-4 transition-colors
+                        {% if current_endpoint == endpoint or current_endpoint.startswith(endpoint.split('.')[0]) %}
+                            bg-white/10 text-[#f1d27b] border-r-2 border-[#f1d27b]
+                        {% else %}
+                            text-white/60 hover:text-white hover:bg-white/5
+                        {% endif %}" href="{{ url_for(endpoint) }}">
+                        <span class="material-symbols-outlined" {% if current_endpoint == endpoint %}style="font-variation-settings: 'FILL' 1;"{% endif %}>{{ icon }}</span>
+                        <span class="font-headline uppercase tracking-widest text-xs font-bold">{{ label }}</span>
+                    </a>
+                    {% endfor %}
+                </nav>
+                <div class="mt-auto p-6 border-t border-white/5">
+                    <a class="flex items-center space-x-4 px-4 py-3 text-white/40 hover:text-[#f1d27b] transition-colors group" href="{{ url_for('auth.logout') }}">
+                        <span class="material-symbols-outlined group-hover:text-[#f1d27b]">logout</span>
+                        <span class="font-headline uppercase tracking-widest text-xs font-bold">Logout</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        {# ===== MAIN CONTENT ===== #}
+        <main class="flex-1 flex flex-col min-w-0 bg-surface overflow-y-auto">
+            {# Top header #}
+            <header class="flex justify-between items-center px-8 py-6 w-full bg-surface/80 backdrop-blur-md sticky top-0 z-40 border-b border-outline-variant/15">
+                <div class="flex items-center gap-4">
+                    <button class="md:hidden text-tertiary-container" onclick="openMobileSidebar()">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
+                    <h1 class="font-headline font-black text-tertiary-container uppercase tracking-widest text-xl">
+                        {% block page_title %}Dashboard{% endblock %}
+                    </h1>
+                </div>
+                <div class="flex items-center gap-6">
+                    {% block header_actions %}{% endblock %}
+                    <div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed font-bold text-xs border border-primary-container/10 cursor-pointer">
+                        {{ current_user.name[:2]|upper if current_user.name else 'AD' }}
+                    </div>
+                </div>
+            </header>
+
+            {# Page content #}
+            <div class="p-8 max-w-7xl mx-auto w-full">
+                {% block content %}{% endblock %}
+            </div>
+
+            {# Footer #}
+            <footer class="mt-auto p-8 border-t border-outline-variant/10 text-center">
+                <p class="text-[10px] text-on-surface-variant font-headline uppercase tracking-[0.3em]">Group03 Hotel Management System © 2026</p>
+            </footer>
+        </main>
+    </div>
+
+    {# ===== TOAST MESSAGES ===== #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="toast-container" id="toast-container">
+        {% for category, message in messages %}
+        <div class="toast toast-{{ category }}" onclick="this.style.animation='fadeOut 0.3s forwards'; setTimeout(()=>this.remove(), 300)">
+            <span class="material-symbols-outlined text-sm">
+                {% if category == 'success' %}check_circle{% elif category == 'error' %}error{% else %}warning{% endif %}
+            </span>
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    <script>
+        // Auto-dismiss toasts after 5 seconds
+        setTimeout(() => {
+            document.querySelectorAll('.toast').forEach(t => {
+                t.style.animation = 'fadeOut 0.3s forwards';
+                setTimeout(() => t.remove(), 300);
+            });
+        }, 5000);
+    </script>
+    {% endif %}
+    {% endwith %}
+
+    {# ===== MOBILE SIDEBAR JS ===== #}
+    <script>
+        function openMobileSidebar() {
+            document.getElementById('mobileSidebar').classList.remove('-translate-x-full');
+            document.getElementById('mobileSidebarOverlay').classList.remove('hidden');
+        }
+        function closeMobileSidebar() {
+            document.getElementById('mobileSidebar').classList.add('-translate-x-full');
+            document.getElementById('mobileSidebarOverlay').classList.add('hidden');
+        }
+    </script>
+
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

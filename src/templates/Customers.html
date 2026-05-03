@@ -1,437 +1,198 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
 
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>The Digital Atelier | Customer Management</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Manrope:wght@200;400;700;800&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-                    "on-primary-fixed-variant": "#574500",
-                    "secondary-fixed-dim": "#aec7f6",
-                    "secondary": "#465f88",
-                    "background": "#f9f9f9",
-                    "surface-dim": "#dadada",
-                    "on-tertiary-fixed": "#001b3d",
-                    "on-error": "#ffffff",
-                    "surface": "#f9f9f9",
-                    "on-primary-fixed": "#241a00",
-                    "tertiary": "#000a1e",
-                    "surface-container": "#eeeeee",
-                    "surface-variant": "#e2e2e2",
-                    "on-surface-variant": "#44474e",
-                    "on-secondary-fixed": "#001b3d",
-                    "on-tertiary-container": "#708ab5",
-                    "tertiary-fixed": "#d6e3ff",
-                    "primary-fixed-dim": "#e9c349",
-                    "inverse-on-surface": "#f1f1f1",
-                    "on-secondary-fixed-variant": "#2d476f",
-                    "surface-container-high": "#e8e8e8",
-                    "outline-variant": "#c4c6cf",
-                    "surface-tint": "#735c00",
-                    "surface-container-highest": "#e2e2e2",
-                    "on-tertiary-fixed-variant": "#2d476f",
-                    "outline": "#74777f",
-                    "on-surface": "#1a1c1c",
-                    "tertiary-container": "#002147",
-                    "tertiary-fixed-dim": "#aec7f6",
-                    "error": "#ba1a1a",
-                    "on-secondary-container": "#3f5881",
-                    "primary-container": "#2b2000",
-                    "inverse-primary": "#e9c349",
-                    "secondary-fixed": "#d6e3ff",
-                    "on-error-container": "#93000a",
-                    "on-tertiary": "#ffffff",
-                    "surface-bright": "#f9f9f9",
-                    "on-primary-container": "#a68502",
-                    "inverse-surface": "#2f3131",
-                    "surface-container-low": "#f3f3f3",
-                    "on-primary": "#ffffff",
-                    "surface-container-lowest": "#ffffff",
-                    "on-secondary": "#ffffff",
-                    "primary-fixed": "#ffe088",
-                    "primary": "#0f0a00",
-                    "on-background": "#1a1c1c",
-                    "secondary-container": "#b6d0ff",
-                    "error-container": "#ffdad6"
-            },
-            "borderRadius": {
-                    "DEFAULT": "0.125rem",
-                    "lg": "0.25rem",
-                    "xl": "0.5rem",
-                    "full": "0.75rem"
-            },
-            "fontFamily": {
-                    "headline": ["Manrope"],
-                    "body": ["Inter"],
-                    "label": ["Inter"]
-            }
-          },
-        },
-      }
-    </script>
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
-        }
-        body { font-family: 'Inter', sans-serif; }
-        h1, h2, h3, .headline { font-family: 'Manrope', sans-serif; }
-    </style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
-  </head>
-<body class="bg-surface text-on-surface antialiased">
-<!-- NavigationDrawer Shell -->
-<aside class="fixed left-0 top-0 h-full flex flex-col z-50 h-screen w-72 border-r border-white/10 bg-[#002147]/70 dark:bg-[#001530]/80 backdrop-blur-xl shadow-[0_20px_40px_rgba(0,33,71,0.04)]">
-<div class="p-8">
-<span class="text-[#f1d27b] font-manrope font-bold text-lg tracking-tighter">The Digital Atelier</span>
-</div>
-<div class="px-8 py-4 mb-6">
-<div class="flex items-center space-x-4">
-<img alt="Manager Portrait" class="w-12 h-12 rounded-full object-cover" data-alt="professional portrait of a high-end concierge manager in a navy suit, clean studio lighting, editorial style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9RwSKSlhF3eeGND200EWjFSfHwbULLz0NL4ZWKtICYeSA4MrhJA2BmQzbx7EcPcyKc8oi4TZtYKTkpSYmtx0Q3Kdgfgdb19UZ5-mKfu9z9FqXAFsFtDzEZtsHAfGRdFbGxnTa9TSRKLCAE_dZER7xwKQz0ZzN1pBmsVDdwyOAgoVCzqweAQP50aePwf-yh3B7-5t1pUSfoxvVClAbN2IUUyR7m18XpsZ-MYxT2450iMYhlWwS8q1ZNl3veQzW7u-aPRHJ8yNF4Q"/>
-<div>
-<p class="font-manrope uppercase tracking-widest text-xs font-bold text-[#f1d27b]">Editorial Concierge</p>
-<p class="text-white/60 text-[10px] tracking-widest uppercase">Admin Portal</p>
-</div>
-</div>
-</div>
-<nav class="flex-1 space-y-1">
-<a class="flex items-center space-x-4 px-6 py-4 text-white/60 hover:text-white transition-colors hover:bg-white/5 hover:text-[#f1d27b] group transition-all duration-300 ease-in-out" href="#">
-<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
-<span class="font-manrope uppercase tracking-widest text-xs font-bold">Dashboard</span>
-</a>
-<a class="flex items-center space-x-4 px-6 py-4 text-white/60 hover:text-white transition-colors hover:bg-white/5 hover:text-[#f1d27b] group transition-all duration-300 ease-in-out" href="#">
-<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
-<span class="font-manrope uppercase tracking-widest text-xs font-bold">Bookings</span>
-</a>
-<a class="flex items-center space-x-4 px-6 py-4 bg-white/10 text-[#f1d27b] border-r-2 border-[#f1d27b] group transition-all duration-300 ease-in-out" href="#">
-<span class="material-symbols-outlined" data-icon="group">group</span>
-<span class="font-manrope uppercase tracking-widest text-xs font-bold">Customers</span>
-</a>
-<a class="flex items-center space-x-4 px-6 py-4 text-white/60 hover:text-white transition-colors hover:bg-white/5 hover:text-[#f1d27b] group transition-all duration-300 ease-in-out" href="#">
-<span class="material-symbols-outlined" data-icon="bed">bed</span>
-<span class="font-manrope uppercase tracking-widest text-xs font-bold">Rooms</span>
-</a>
-<a class="flex items-center space-x-4 px-6 py-4 text-white/60 hover:text-white transition-colors hover:bg-white/5 hover:text-[#f1d27b] group transition-all duration-300 ease-in-out" href="#">
-<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
-<span class="font-manrope uppercase tracking-widest text-xs font-bold">Reports</span>
-</a>
-</nav>
-<div class="mt-auto p-4 border-t border-white/5">
-<a class="flex items-center space-x-4 px-6 py-4 text-white/60 hover:text-white transition-colors group" href="#">
-<span class="material-symbols-outlined" data-icon="logout">logout</span>
-<span class="font-manrope uppercase tracking-widest text-xs font-bold">Logout</span>
-</a>
-</div>
-</aside>
-<!-- Main Content Area -->
-<main class="ml-72 min-h-screen bg-surface">
-<!-- TopAppBar -->
-<header class="flex justify-between items-center w-full px-8 h-20 sticky top-0 z-40 bg-[#f9f9f9]/80 backdrop-blur-md border-b border-black/[0.05]">
-<div class="flex items-center space-x-4">
-<span class="material-symbols-outlined text-tertiary-container cursor-pointer" data-icon="menu_open">menu_open</span>
-<h1 class="font-manrope text-2xl font-light tracking-tight text-tertiary-container">Customer Registry</h1>
-</div>
-<div class="flex items-center space-x-6">
-<div class="relative">
-<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:opacity-70 transition-opacity" data-icon="notifications">notifications</span>
-<span class="absolute top-0 right-0 w-2 h-2 bg-primary-fixed rounded-full"></span>
-</div>
-<div class="flex items-center space-x-3 cursor-pointer group">
-<span class="text-right hidden sm:block">
-<p class="text-xs font-bold font-manrope uppercase tracking-wider text-tertiary-container">A. Sterling</p>
-<p class="text-[10px] text-on-surface-variant uppercase">Portfolio Lead</p>
-</span>
-<div class="w-10 h-10 rounded-full bg-tertiary-container flex items-center justify-center text-primary-fixed font-manrope font-bold text-sm">AS</div>
-</div>
-</div>
-</header>
-<!-- Canvas -->
-<div class="p-10 space-y-10">
-<!-- Quick Actions & Stats -->
-<section class="grid grid-cols-1 md:grid-cols-4 gap-6">
-<div class="bg-surface-container-lowest p-6 rounded-xl border border-black/[0.03] shadow-sm">
-<p class="text-[10px] font-bold font-manrope uppercase tracking-[0.2em] text-on-surface-variant mb-2">Total Patrons</p>
-<h3 class="text-3xl font-manrope font-light text-tertiary-container">1,284</h3>
-<div class="mt-4 flex items-center text-xs text-green-600">
-<span class="material-symbols-outlined text-sm mr-1" data-icon="trending_up">trending_up</span>
-<span>12% Increase</span>
-</div>
-</div>
-<div class="bg-surface-container-lowest p-6 rounded-xl border border-black/[0.03] shadow-sm">
-<p class="text-[10px] font-bold font-manrope uppercase tracking-[0.2em] text-on-surface-variant mb-2">Active Residencies</p>
-<h3 class="text-3xl font-manrope font-light text-tertiary-container">42</h3>
-<div class="mt-4 flex items-center text-xs text-on-surface-variant">
-<span>Current Occupancy</span>
-</div>
-</div>
-<div class="bg-surface-container-lowest p-6 rounded-xl border border-black/[0.03] shadow-sm">
-<p class="text-[10px] font-bold font-manrope uppercase tracking-[0.2em] text-on-surface-variant mb-2">Elite Status</p>
-<h3 class="text-3xl font-manrope font-light text-tertiary-container">156</h3>
-<div class="mt-4 flex items-center text-xs text-on-primary-container">
-<span class="material-symbols-outlined text-sm mr-1" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
-<span>Platinum Tier</span>
-</div>
-</div>
-<div class="flex flex-col justify-center items-end">
-<button class="bg-primary-container text-primary-fixed px-6 py-4 rounded-xl flex items-center space-x-3 hover:bg-primary transition-all duration-300 group shadow-lg shadow-primary-container/20">
-<span class="material-symbols-outlined" data-icon="person_add">person_add</span>
-<span class="font-manrope uppercase tracking-widest text-xs font-bold">New Registry</span>
-</button>
-</div>
+{% block title %}Customers — Group03 Hotel{% endblock %}
+{% block page_title %}Customer Registry{% endblock %}
+
+{% block content %}
+{# ===== STATS & ADD BUTTON ===== #}
+<section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+    <div class="bg-surface-container-lowest p-6 rounded-xl border border-black/[0.03] shadow-sm">
+        <p class="text-[10px] font-bold font-headline uppercase tracking-[0.2em] text-on-surface-variant mb-2">Total Customers</p>
+        <h3 class="text-3xl font-headline font-light text-tertiary-container">{{ stats.total|number }}</h3>
+    </div>
+    <div class="bg-surface-container-lowest p-6 rounded-xl border border-black/[0.03] shadow-sm">
+        <p class="text-[10px] font-bold font-headline uppercase tracking-[0.2em] text-on-surface-variant mb-2">Active</p>
+        <h3 class="text-3xl font-headline font-light text-tertiary-container">{{ stats.active|number }}</h3>
+    </div>
+    <div class="bg-surface-container-lowest p-6 rounded-xl border border-black/[0.03] shadow-sm">
+        <p class="text-[10px] font-bold font-headline uppercase tracking-[0.2em] text-on-surface-variant mb-2">Platinum Tier</p>
+        <h3 class="text-3xl font-headline font-light text-tertiary-container">{{ stats.platinum }}</h3>
+        <div class="mt-2 flex items-center text-xs text-on-primary-container">
+            <span class="material-symbols-outlined text-sm mr-1" style="font-variation-settings: 'FILL' 1;">star</span>
+            <span>Top Members</span>
+        </div>
+    </div>
+    <div class="flex flex-col justify-center items-end gap-2">
+        <button onclick="document.getElementById('addCustomerModal').classList.add('active')" class="bg-primary-container text-primary-fixed px-6 py-4 rounded-xl flex items-center gap-3 hover:bg-primary transition-all shadow-lg shadow-primary-container/20">
+            <span class="material-symbols-outlined">person_add</span>
+            <span class="font-headline uppercase tracking-widest text-xs font-bold">New Customer</span>
+        </button>
+        <a href="{{ url_for('customers.export') }}" class="text-xs font-bold uppercase tracking-widest text-secondary hover:opacity-70 transition-opacity flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">file_download</span> Export CSV
+        </a>
+    </div>
 </section>
-<!-- Table Controls -->
-<section class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-<div class="relative w-full md:w-96">
-<span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant" data-icon="search">search</span>
-<input class="w-full pl-12 pr-4 py-4 bg-surface-container-low border-none rounded-xl text-sm focus:ring-2 focus:ring-primary-fixed text-on-surface" placeholder="Search by name, email or suite..." type="text"/>
-</div>
-<div class="flex items-center space-x-3">
-<button class="px-5 py-3 rounded-xl bg-surface-container-low text-tertiary font-manrope text-xs font-bold uppercase tracking-widest flex items-center space-x-2 border border-transparent hover:border-outline-variant/30 transition-all">
-<span class="material-symbols-outlined text-sm" data-icon="filter_list">filter_list</span>
-<span>Filters</span>
-</button>
-<button class="px-5 py-3 rounded-xl bg-surface-container-low text-tertiary font-manrope text-xs font-bold uppercase tracking-widest flex items-center space-x-2 border border-transparent hover:border-outline-variant/30 transition-all">
-<span class="material-symbols-outlined text-sm" data-icon="file_download">file_download</span>
-<span>Export</span>
-</button>
-</div>
+
+{# ===== SEARCH BAR ===== #}
+<section class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+    <form method="GET" action="{{ url_for('customers.index') }}" class="relative w-full md:w-96">
+        <span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant">search</span>
+        <input name="search" value="{{ search }}" class="w-full pl-12 pr-4 py-4 bg-surface-container-low border-none rounded-xl text-sm focus:ring-2 focus:ring-primary-fixed text-on-surface outline-none" placeholder="Search by name, email or phone..." type="text"/>
+    </form>
 </section>
-<!-- Customer List (Table-Editorial Hybrid) -->
+
+{# ===== CUSTOMER TABLE ===== #}
 <section class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_20px_40px_rgba(0,33,71,0.02)]">
-<div class="overflow-x-auto">
-<table class="w-full text-left border-collapse">
-<thead>
-<tr class="border-b border-black/[0.03]">
-<th class="px-8 py-6 text-[10px] font-bold font-manrope uppercase tracking-[0.2em] text-on-surface-variant">Patron Details</th>
-<th class="px-8 py-6 text-[10px] font-bold font-manrope uppercase tracking-[0.2em] text-on-surface-variant">Engagement</th>
-<th class="px-8 py-6 text-[10px] font-bold font-manrope uppercase tracking-[0.2em] text-on-surface-variant">Tier</th>
-<th class="px-8 py-6 text-[10px] font-bold font-manrope uppercase tracking-[0.2em] text-on-surface-variant">Account Value</th>
-<th class="px-8 py-6 text-[10px] font-bold font-manrope uppercase tracking-[0.2em] text-on-surface-variant">Status</th>
-<th class="px-8 py-6"></th>
-</tr>
-</thead>
-<tbody class="divide-y divide-black/[0.02]">
-<!-- Row 1 -->
-<tr class="hover:bg-surface-container-low/50 transition-colors group">
-<td class="px-8 py-6">
-<div class="flex items-center space-x-4">
-<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-container flex-shrink-0">
-<img alt="Customer Profile" class="w-full h-full object-cover" data-alt="close-up portrait of a middle-aged man with salt and pepper beard, professional attire, soft cinematic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXiydG0fnVFbwGI1BIFba9KzCDKDpOuvOsF7pq_dyU5rKI5CPfpGMQt3ftqrFodp-cyIIqU86fDDB6jrm-hEaUWVx5_rjrHrAEPJ5E_1kzX2J_XFxHLzLFSiYi0kl5M0fXclrhhchRnJXcG-z9eJMbl52wymR51AOr59XaBwCMH4vEk5EfsyZhbRRojnk1VGF_uoijP574eRZHuqsPAVj08K0s1vV8raVb7W2svtHALGiBZVyfuV7tcGlawVtYG3qR6Yxkd240lg"/>
-</div>
-<div>
-<p class="font-manrope font-bold text-tertiary-container">Julian Thorne</p>
-<p class="text-xs text-on-surface-variant">j.thorne@atelier.global</p>
-</div>
-</div>
-</td>
-<td class="px-8 py-6">
-<p class="text-sm font-medium text-on-surface">24 Bookings</p>
-<p class="text-[10px] text-on-surface-variant uppercase tracking-tighter">Last stay: Jan 12, 2024</p>
-</td>
-<td class="px-8 py-6">
-<span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold font-manrope uppercase tracking-wider bg-primary-fixed text-on-primary-fixed">
-                                        Platinum Elite
-                                    </span>
-</td>
-<td class="px-8 py-6">
-<p class="text-sm font-manrope font-bold text-tertiary-container">$42,500.00</p>
-</td>
-<td class="px-8 py-6">
-<div class="flex items-center space-x-2 text-xs text-green-600">
-<span class="w-1.5 h-1.5 rounded-full bg-green-600"></span>
-<span>Active</span>
-</div>
-</td>
-<td class="px-8 py-6 text-right">
-<button class="material-symbols-outlined text-on-surface-variant hover:text-tertiary-container" data-icon="more_vert">more_vert</button>
-</td>
-</tr>
-<!-- Row 2 -->
-<tr class="hover:bg-surface-container-low/50 transition-colors group">
-<td class="px-8 py-6">
-<div class="flex items-center space-x-4">
-<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-container flex-shrink-0">
-<img alt="Customer Profile" class="w-full h-full object-cover" data-alt="high-fashion portrait of a young woman with elegant jewelry, neutral background, editorial lighting style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBF7BCrAN4VACFc8xBg7HpbesrwYrG5eYGM-0rtf1jQwIhL2VfheFq4uyC5S1UGWyF3j7BSO4Z5D2Et4Hn_nqMuqqAGpiOlDusTND66SwLCncWTbQKhHkTI0iqq01Wi04A87uOtNdGRYvqo7oB3iHAOqczJRBTNQSELE75ln7UhyCRcHYovd8p39k2lwSwoYT9NbCZLIBwexhdL-9DxmGZhG15WORbt5P2S8oLw9AHv3wwWrTw3UKdGnMmPdhUdISkJrHtattynDw"/>
-</div>
-<div>
-<p class="font-manrope font-bold text-tertiary-container">Elena Rostova</p>
-<p class="text-xs text-on-surface-variant">elena.r@vogue-estates.com</p>
-</div>
-</div>
-</td>
-<td class="px-8 py-6">
-<p class="text-sm font-medium text-on-surface">12 Bookings</p>
-<p class="text-[10px] text-on-surface-variant uppercase tracking-tighter">Last stay: Dec 20, 2023</p>
-</td>
-<td class="px-8 py-6">
-<span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold font-manrope uppercase tracking-wider bg-secondary-container text-on-secondary-container">
-                                        Gold Member
-                                    </span>
-</td>
-<td class="px-8 py-6">
-<p class="text-sm font-manrope font-bold text-tertiary-container">$18,200.00</p>
-</td>
-<td class="px-8 py-6">
-<div class="flex items-center space-x-2 text-xs text-green-600">
-<span class="w-1.5 h-1.5 rounded-full bg-green-600"></span>
-<span>Active</span>
-</div>
-</td>
-<td class="px-8 py-6 text-right">
-<button class="material-symbols-outlined text-on-surface-variant hover:text-tertiary-container" data-icon="more_vert">more_vert</button>
-</td>
-</tr>
-<!-- Row 3 -->
-<tr class="hover:bg-surface-container-low/50 transition-colors group">
-<td class="px-8 py-6">
-<div class="flex items-center space-x-4">
-<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-container flex-shrink-0">
-<img alt="Customer Profile" class="w-full h-full object-cover" data-alt="architectural portrait of a man in minimalist white studio, sharp shadows, high contrast editorial aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5WA4wkJlaGBP1g-5q5W4XOmiGHQoDxc6JkwRV3IVuCmgJlJBnJoZK2qYEs5Zcn5O7DJ9ZeYAsmeSnns4CbT_F-LvLjjEnA8TMHOY_1UDasdAZQmtFBPBKIL3666CLyoAGovUNDRPrQKIU2DRn-FIUNkg80Xinl3O0jQ-QsbdlHRD1zLyfG7ljbY1VKpN7KVgZLvHwkez4zOxCr8Hs9cuJb1qDrT4Pzlr8twaIkauudB9F0gU25H-N3tGw4t3pExevtMGu0zKgqA"/>
-</div>
-<div>
-<p class="font-manrope font-bold text-tertiary-container">Marcus Chen</p>
-<p class="text-xs text-on-surface-variant">chen.m@silicon-suites.com</p>
-</div>
-</div>
-</td>
-<td class="px-8 py-6">
-<p class="text-sm font-medium text-on-surface">5 Bookings</p>
-<p class="text-[10px] text-on-surface-variant uppercase tracking-tighter">Last stay: Oct 05, 2023</p>
-</td>
-<td class="px-8 py-6">
-<span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold font-manrope uppercase tracking-wider bg-surface-container-high text-on-surface-variant">
-                                        Silver Associate
-                                    </span>
-</td>
-<td class="px-8 py-6">
-<p class="text-sm font-manrope font-bold text-tertiary-container">$9,450.00</p>
-</td>
-<td class="px-8 py-6">
-<div class="flex items-center space-x-2 text-xs text-on-surface-variant">
-<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
-<span>Dormant</span>
-</div>
-</td>
-<td class="px-8 py-6 text-right">
-<button class="material-symbols-outlined text-on-surface-variant hover:text-tertiary-container" data-icon="more_vert">more_vert</button>
-</td>
-</tr>
-<!-- Row 4 -->
-<tr class="hover:bg-surface-container-low/50 transition-colors group">
-<td class="px-8 py-6">
-<div class="flex items-center space-x-4">
-<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-container flex-shrink-0">
-<img alt="Customer Profile" class="w-full h-full object-cover" data-alt="dynamic portrait of a professional woman laughing, warm natural sunlight, outdoor setting in an urban garden" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKAJY4WU3_HpyKgrdH7CUee5dEq5KKSwIQTyWgPFxn5XlaS8Rzopp-uoAhYJyFm0fzq7pj2pscCtLbB3qBdy_rwkO2_SBXYLGHBIbBPeyl-zZbmugSQZLGvddxFq7JPl0eX2MrTaSj4rQGHZLTXOyMmUdLOo2A3K7CoIm2LrWyt5SWwaYPhHwj-weiXo2XrLsO19JxpItWc6QgCca3XF9G2Hrn6mG2dNNlVO8bcOhbDXljONed9lXuzhewB2H_R9mo4zTdHUBwmw"/>
-</div>
-<div>
-<p class="font-manrope font-bold text-tertiary-container">Sarah Jenkins</p>
-<p class="text-xs text-on-surface-variant">s.jenkins@pr-boutique.com</p>
-</div>
-</div>
-</td>
-<td class="px-8 py-6">
-<p class="text-sm font-medium text-on-surface">32 Bookings</p>
-<p class="text-[10px] text-on-surface-variant uppercase tracking-tighter">Last stay: Today</p>
-</td>
-<td class="px-8 py-6">
-<span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold font-manrope uppercase tracking-wider bg-primary-fixed text-on-primary-fixed">
-                                        Platinum Elite
-                                    </span>
-</td>
-<td class="px-8 py-6">
-<p class="text-sm font-manrope font-bold text-tertiary-container">$61,000.00</p>
-</td>
-<td class="px-8 py-6">
-<div class="flex items-center space-x-2 text-xs text-green-600 font-bold">
-<span class="w-1.5 h-1.5 rounded-full bg-green-600 animate-pulse"></span>
-<span>On-Site</span>
-</div>
-</td>
-<td class="px-8 py-6 text-right">
-<button class="material-symbols-outlined text-on-surface-variant hover:text-tertiary-container" data-icon="more_vert">more_vert</button>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<!-- Pagination -->
-<div class="px-8 py-6 bg-surface-container-low/30 flex items-center justify-between">
-<p class="text-xs text-on-surface-variant">Showing 1 to 4 of 1,284 entries</p>
-<div class="flex items-center space-x-2">
-<button class="p-2 rounded-lg hover:bg-surface-container text-on-surface-variant transition-colors">
-<span class="material-symbols-outlined text-lg" data-icon="chevron_left">chevron_left</span>
-</button>
-<button class="w-8 h-8 rounded-lg bg-tertiary-container text-primary-fixed text-xs font-bold font-manrope flex items-center justify-center">1</button>
-<button class="w-8 h-8 rounded-lg hover:bg-surface-container text-on-surface text-xs font-bold font-manrope flex items-center justify-center transition-colors">2</button>
-<button class="w-8 h-8 rounded-lg hover:bg-surface-container text-on-surface text-xs font-bold font-manrope flex items-center justify-center transition-colors">3</button>
-<span class="text-on-surface-variant px-1">...</span>
-<button class="w-8 h-8 rounded-lg hover:bg-surface-container text-on-surface text-xs font-bold font-manrope flex items-center justify-center transition-colors">128</button>
-<button class="p-2 rounded-lg hover:bg-surface-container text-on-surface-variant transition-colors">
-<span class="material-symbols-outlined text-lg" data-icon="chevron_right">chevron_right</span>
-</button>
-</div>
-</div>
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="border-b border-black/[0.03]">
+                    <th class="px-8 py-6 text-[10px] font-bold font-headline uppercase tracking-[0.2em] text-on-surface-variant">Customer</th>
+                    <th class="px-8 py-6 text-[10px] font-bold font-headline uppercase tracking-[0.2em] text-on-surface-variant">Contact</th>
+                    <th class="px-8 py-6 text-[10px] font-bold font-headline uppercase tracking-[0.2em] text-on-surface-variant">Tier</th>
+                    <th class="px-8 py-6 text-[10px] font-bold font-headline uppercase tracking-[0.2em] text-on-surface-variant">Spending</th>
+                    <th class="px-8 py-6 text-[10px] font-bold font-headline uppercase tracking-[0.2em] text-on-surface-variant">Status</th>
+                    <th class="px-8 py-6"></th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-black/[0.02]">
+                {% for customer in customers %}
+                <tr class="hover:bg-surface-container-low/50 transition-colors">
+                    <td class="px-8 py-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-xs font-bold text-tertiary-container flex-shrink-0">
+                                {{ customer.full_name[:2]|upper }}
+                            </div>
+                            <div>
+                                <p class="font-headline font-bold text-tertiary-container">{{ customer.full_name }}</p>
+                                <p class="text-xs text-on-surface-variant">{{ customer.email }}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-8 py-6">
+                        <p class="text-sm text-on-surface">{{ customer.phone or '—' }}</p>
+                        <p class="text-[10px] text-on-surface-variant">{{ customer.nationality or 'Vietnam' }}</p>
+                    </td>
+                    <td class="px-8 py-6">
+                        {% if customer.tier == 'Platinum' %}
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold font-headline uppercase tracking-wider bg-primary-fixed text-on-primary-fixed">Platinum</span>
+                        {% elif customer.tier == 'Gold' %}
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold font-headline uppercase tracking-wider bg-secondary-container text-on-secondary-container">Gold</span>
+                        {% elif customer.tier == 'Silver' %}
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold font-headline uppercase tracking-wider bg-surface-container-high text-on-surface-variant">Silver</span>
+                        {% else %}
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold font-headline uppercase tracking-wider bg-surface-container text-on-surface-variant">Standard</span>
+                        {% endif %}
+                    </td>
+                    <td class="px-8 py-6">
+                        <p class="text-sm font-headline font-bold text-tertiary-container">{{ customer.total_spent|currency }}</p>
+                        <p class="text-[10px] text-on-surface-variant">{{ customer.total_bookings }} booking{{ 's' if customer.total_bookings != 1 }}</p>
+                    </td>
+                    <td class="px-8 py-6">
+                        {% if customer.status == 'active' %}
+                        <div class="flex items-center gap-2 text-xs text-green-600">
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-600"></span>Active
+                        </div>
+                        {% elif customer.status == 'dormant' %}
+                        <div class="flex items-center gap-2 text-xs text-on-surface-variant">
+                            <span class="w-1.5 h-1.5 rounded-full bg-outline"></span>Dormant
+                        </div>
+                        {% else %}
+                        <div class="flex items-center gap-2 text-xs text-error">
+                            <span class="w-1.5 h-1.5 rounded-full bg-error"></span>Blacklisted
+                        </div>
+                        {% endif %}
+                    </td>
+                    <td class="px-8 py-6 text-right">
+                        <form method="POST" action="{{ url_for('customers.delete', customer_id=customer.id) }}" class="inline" onsubmit="return confirm('Delete {{ customer.full_name }}?')">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                            <button type="submit" class="text-on-surface-variant/40 hover:text-error transition-colors" title="Delete">
+                                <span class="material-symbols-outlined text-sm">delete</span>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="px-8 py-16 text-center text-on-surface-variant">
+                        <span class="material-symbols-outlined text-5xl opacity-20 block mb-4">group</span>
+                        <p class="font-headline font-bold text-lg">No customers found</p>
+                        <p class="text-sm mt-1">Add a customer or adjust your search.</p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {# Pagination #}
+    {% if pagination.total_pages > 1 %}
+    <div class="px-8 py-6 bg-surface-container-low/30 flex items-center justify-between">
+        <p class="text-xs text-on-surface-variant">
+            Showing {{ ((pagination.page - 1) * pagination.per_page) + 1 }} to {{ [pagination.page * pagination.per_page, pagination.total]|min }} of {{ pagination.total|number }} entries
+        </p>
+        <div class="flex items-center gap-2">
+            {% if pagination.has_prev %}
+            <a href="{{ url_for('customers.index', page=pagination.prev_num, search=search) }}" class="p-2 rounded-lg hover:bg-surface-container text-on-surface-variant transition-colors">
+                <span class="material-symbols-outlined text-lg">chevron_left</span>
+            </a>
+            {% endif %}
+            {% for p in range(1, pagination.total_pages + 1) %}
+            {% if p == pagination.page %}
+            <span class="w-8 h-8 rounded-lg bg-tertiary-container text-primary-fixed text-xs font-bold font-headline flex items-center justify-center">{{ p }}</span>
+            {% elif p <= 3 or p >= pagination.total_pages - 1 or (p >= pagination.page - 1 and p <= pagination.page + 1) %}
+            <a href="{{ url_for('customers.index', page=p, search=search) }}" class="w-8 h-8 rounded-lg hover:bg-surface-container text-on-surface text-xs font-bold font-headline flex items-center justify-center transition-colors">{{ p }}</a>
+            {% elif p == 4 or p == pagination.total_pages - 2 %}
+            <span class="text-on-surface-variant px-1">...</span>
+            {% endif %}
+            {% endfor %}
+            {% if pagination.has_next %}
+            <a href="{{ url_for('customers.index', page=pagination.next_num, search=search) }}" class="p-2 rounded-lg hover:bg-surface-container text-on-surface-variant transition-colors">
+                <span class="material-symbols-outlined text-lg">chevron_right</span>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
 </section>
-<!-- Loyalty Status Breakdown Bento -->
-<section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-<div class="lg:col-span-2 bg-tertiary-container text-white p-10 rounded-2xl relative overflow-hidden">
-<!-- Decor element -->
-<div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
-<h4 class="text-3xl font-manrope font-light mb-8 max-w-md">Upgrade Eligible Patrons</h4>
-<p class="text-white/60 text-sm mb-12 max-w-sm leading-relaxed">The following members have reached the threshold for Tier advancement. Review their hospitality history to confirm elevation.</p>
-<div class="flex flex-wrap gap-4">
-<div class="flex items-center bg-white/10 px-4 py-3 rounded-xl border border-white/10">
-<img alt="Elena" class="w-8 h-8 rounded-full mr-3 border border-primary-fixed/30" data-alt="soft natural portrait of an elegant woman looking thoughtful, boutique hotel balcony background, sunset light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAARGwbwvdByjGik4i4J9GN50nwyWVpq3unJIDz9OK8XyiXYFwVsIIzw3PM958q0RCnSZKkC3JoQ-Y5V7842G7PimxWgvSu5qFCRAZyks--a1CxjGUw0Wsdff49qgFL9CjuL6qljAgjVGNJRW8ts0dbHm5K7mbAl8D5l3Xlh8n4cYTZQg28Lq5v02jcm6zYblRg5VjUhmZ5y8b1BDjINPqoXy-algyiBCrdQDjmX_93VO245Tpb9q88V3ozYZhtM5ZRc3GkkjNkyg"/>
-<span class="text-xs font-bold font-manrope uppercase tracking-widest mr-4">Elena Rostova</span>
-<span class="text-[10px] text-primary-fixed uppercase font-bold px-2 py-1 bg-primary-fixed/10 rounded">To Platinum</span>
+
+{# ===== ADD CUSTOMER MODAL ===== #}
+<div class="modal-overlay" id="addCustomerModal">
+    <div class="modal-content">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="font-headline font-bold text-xl text-tertiary-container">Add New Customer</h3>
+            <button onclick="document.getElementById('addCustomerModal').classList.remove('active')" class="text-on-surface-variant hover:text-error transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <form method="POST" action="{{ url_for('customers.add') }}" class="space-y-4">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <div>
+                <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant block mb-1">Full Name *</label>
+                <input type="text" name="full_name" required minlength="2" placeholder="e.g. Nguyen Van A" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed outline-none text-sm"/>
+            </div>
+            <div>
+                <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant block mb-1">Email *</label>
+                <input type="email" name="email" required placeholder="you@example.com" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed outline-none text-sm"/>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant block mb-1">Phone</label>
+                    <input type="text" name="phone" placeholder="0901234567" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed outline-none text-sm"/>
+                </div>
+                <div>
+                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant block mb-1">ID Card</label>
+                    <input type="text" name="id_card" placeholder="ID number" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed outline-none text-sm"/>
+                </div>
+            </div>
+            <div>
+                <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant block mb-1">Nationality</label>
+                <input type="text" name="nationality" value="Vietnam" placeholder="Vietnam" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed outline-none text-sm"/>
+            </div>
+            <button type="submit" class="w-full py-4 bg-primary-container text-primary-fixed rounded-xl font-headline font-bold text-sm uppercase tracking-widest hover:bg-primary transition-all shadow-lg">
+                Add Customer
+            </button>
+        </form>
+    </div>
 </div>
-<div class="flex items-center bg-white/10 px-4 py-3 rounded-xl border border-white/10">
-<img alt="Marcus" class="w-8 h-8 rounded-full mr-3 border border-secondary-fixed/30" data-alt="professional headshot of a business man with glasses, soft gray studio background, premium corporate style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZE82pBDHGZsXckHHec1vorF9E6MpSWn_hxWiu0WT340DXOfHFSL3N5HFAyCU0uuPrm_UJVvHTBkiRgQv1PXSZtxjIXCjwgTAlIGqcuq1nPpZiaOI80lTrdfyLbTfQJqoF49VsJotcxc08pEX0EhA78p1PdQoD6ht_PH3zPQRKIH36BCVUbzbEzfWo4N9G2VKm1uvBFYptX_4RvHj7GLZMHIIqfNnXa4Fr9MrwuL3egJZTmH0SyVs9s6UE_IRB6lyd1ZsVv3lT4g"/>
-<span class="text-xs font-bold font-manrope uppercase tracking-widest mr-4">Marcus Chen</span>
-<span class="text-[10px] text-secondary-fixed uppercase font-bold px-2 py-1 bg-secondary-fixed/10 rounded">To Gold</span>
-</div>
-</div>
-</div>
-<div class="bg-surface-container-low p-10 rounded-2xl border border-black/[0.03]">
-<h4 class="text-xl font-manrope font-light mb-6 text-tertiary-container">Patron Demographics</h4>
-<div class="space-y-6">
-<div>
-<div class="flex justify-between text-[10px] font-bold font-manrope uppercase tracking-widest mb-2">
-<span class="text-on-surface-variant">International</span>
-<span class="text-tertiary-container">64%</span>
-</div>
-<div class="h-1 bg-surface-container-high rounded-full overflow-hidden">
-<div class="h-full bg-primary-container w-[64%]"></div>
-</div>
-</div>
-<div>
-<div class="flex justify-between text-[10px] font-bold font-manrope uppercase tracking-widest mb-2">
-<span class="text-on-surface-variant">Domestic</span>
-<span class="text-tertiary-container">36%</span>
-</div>
-<div class="h-1 bg-surface-container-high rounded-full overflow-hidden">
-<div class="h-full bg-secondary-container w-[36%]"></div>
-</div>
-</div>
-<div class="pt-6 mt-6 border-t border-black/5">
-<p class="text-xs text-on-surface-variant italic leading-relaxed">
-                                "The concierge data suggests a growing trend in Extended-Stay residencies from the Singapore district."
-                            </p>
-</div>
-</div>
-</div>
-</section>
-</div>
-</main>
-</body></html>
+{% endblock %}

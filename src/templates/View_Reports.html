@@ -1,396 +1,175 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
 
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>The Digital Atelier | Admin Reports</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          "colors": {
-                  "on-primary-fixed-variant": "#574500",
-                  "secondary-fixed-dim": "#aec7f6",
-                  "secondary": "#465f88",
-                  "background": "#f9f9f9",
-                  "surface-dim": "#dadada",
-                  "on-tertiary-fixed": "#001b3d",
-                  "on-error": "#ffffff",
-                  "surface": "#f9f9f9",
-                  "on-primary-fixed": "#241a00",
-                  "tertiary": "#000a1e",
-                  "surface-container": "#eeeeee",
-                  "surface-variant": "#e2e2e2",
-                  "on-surface-variant": "#44474e",
-                  "on-secondary-fixed": "#001b3d",
-                  "on-tertiary-container": "#708ab5",
-                  "tertiary-fixed": "#d6e3ff",
-                  "primary-fixed-dim": "#e9c349",
-                  "inverse-on-surface": "#f1f1f1",
-                  "on-secondary-fixed-variant": "#2d476f",
-                  "surface-container-high": "#e8e8e8",
-                  "outline-variant": "#c4c6cf",
-                  "surface-tint": "#735c00",
-                  "surface-container-highest": "#e2e2e2",
-                  "on-tertiary-fixed-variant": "#2d476f",
-                  "outline": "#74777f",
-                  "on-surface": "#1a1c1c",
-                  "tertiary-container": "#002147",
-                  "tertiary-fixed-dim": "#aec7f6",
-                  "error": "#ba1a1a",
-                  "on-secondary-container": "#3f5881",
-                  "primary-container": "#2b2000",
-                  "inverse-primary": "#e9c349",
-                  "secondary-fixed": "#d6e3ff",
-                  "on-error-container": "#93000a",
-                  "on-tertiary": "#ffffff",
-                  "surface-bright": "#f9f9f9",
-                  "on-primary-container": "#a68502",
-                  "inverse-surface": "#2f3131",
-                  "surface-container-low": "#f3f3f3",
-                  "on-primary": "#ffffff",
-                  "surface-container-lowest": "#ffffff",
-                  "on-secondary": "#ffffff",
-                  "primary-fixed": "#ffe088",
-                  "primary": "#0f0a00",
-                  "on-background": "#1a1c1c",
-                  "secondary-container": "#b6d0ff",
-                  "error-container": "#ffdad6"
-          },
-          "borderRadius": {
-                  "DEFAULT": "0.125rem",
-                  "lg": "0.25rem",
-                  "xl": "0.5rem",
-                  "full": "0.75rem"
-          },
-          "fontFamily": {
-                  "headline": ["Manrope"],
-                  "body": ["Inter"],
-                  "label": ["Inter"]
-          }
-        },
-      },
-    }
-  </script>
-<style>
-    .material-symbols-outlined {
-      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-    }
-    .glass-nav {
-      backdrop-filter: blur(20px);
-    }
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #f9f9f9;
-      color: #1a1c1c;
-    }
-    h1, h2, h3, h4 {
-      font-family: 'Manrope', sans-serif;
-    }
-    .custom-scrollbar::-webkit-scrollbar {
-      width: 4px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: rgba(241, 210, 123, 0.2);
-      border-radius: 10px;
-    }
-  </style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
-  </head>
-<body class="bg-surface text-on-surface">
-<!-- NavigationDrawer -->
-<aside class="fixed left-0 top-0 h-full flex flex-col z-50 h-screen w-72 border-r border-white/10 bg-[#002147]/70 dark:bg-[#001530]/80 backdrop-blur-xl shadow-[0_20px_40px_rgba(0,33,71,0.04)] transition-all duration-300 ease-in-out">
-<div class="p-8">
-<h1 class="text-[#f1d27b] font-manrope font-bold text-lg tracking-tighter">THE DIGITAL ATELIER</h1>
-</div>
-<div class="flex flex-col items-start px-8 mb-10 text-left">
-<div class="w-12 h-12 rounded-full mb-4 overflow-hidden border-2 border-[#f1d27b]/30">
-<img class="w-full h-full object-cover" data-alt="Professional hotel manager portrait in high-end office, sophisticated and confident expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCafgaxNXfF3o9-qOoQBziZgkIEBdoYV7usCkRObsO68XQowked1ln3Ky82VHBskRfqCIvTBfec6NKXhGxCYAg2XUgJKf3jpPGSI2ZQ9l3M3OGHQkkp722_DkEXAwiSoc7iuG6IFjYGl3qLrFEueBcFfcWhc0K8cWCsz3XwC_24ck8QO9iYzHyfY_8kaOt0gdWOTgoJbzyVMCuKlMDErRKcR45h8cOLVSpttuI9-ZV5qbCyKEAc6MGJpws9602h4sMY8zNjwe5L7Q"/>
-</div>
-<p class="text-white font-manrope font-bold text-sm tracking-widest uppercase">Editorial Concierge</p>
-<p class="text-[#f1d27b] text-xs font-medium opacity-80">Admin Portal</p>
-<span class="mt-1 text-[10px] text-white/40 uppercase tracking-[0.2em]">Premium Access</span>
-</div>
-<nav class="flex-1 space-y-1">
-<a class="flex items-center space-x-4 px-6 py-4 text-white/60 hover:text-white transition-colors hover:bg-white/5 hover:text-[#f1d27b] font-manrope uppercase tracking-widest text-xs font-bold" href="#">
-<span class="material-symbols-outlined">dashboard</span>
-<span>Dashboard</span>
-</a>
-<a class="flex items-center space-x-4 px-6 py-4 text-white/60 hover:text-white transition-colors hover:bg-white/5 hover:text-[#f1d27b] font-manrope uppercase tracking-widest text-xs font-bold" href="#">
-<span class="material-symbols-outlined">calendar_month</span>
-<span>Bookings</span>
-</a>
-<a class="flex items-center space-x-4 px-6 py-4 text-white/60 hover:text-white transition-colors hover:bg-white/5 hover:text-[#f1d27b] font-manrope uppercase tracking-widest text-xs font-bold" href="#">
-<span class="material-symbols-outlined">group</span>
-<span>Customers</span>
-</a>
-<a class="flex items-center space-x-4 px-6 py-4 text-white/60 hover:text-white transition-colors hover:bg-white/5 hover:text-[#f1d27b] font-manrope uppercase tracking-widest text-xs font-bold" href="#">
-<span class="material-symbols-outlined">bed</span>
-<span>Rooms</span>
-</a>
-<a class="flex items-center space-x-4 px-6 py-4 bg-white/10 text-[#f1d27b] border-r-2 border-[#f1d27b] font-manrope uppercase tracking-widest text-xs font-bold" href="#">
-<span class="material-symbols-outlined">analytics</span>
-<span>Reports</span>
-</a>
-<div class="mt-auto pt-10">
-<a class="flex items-center space-x-4 px-6 py-4 text-white/60 hover:text-white transition-colors hover:bg-white/5 hover:text-[#f1d27b] font-manrope uppercase tracking-widest text-xs font-bold" href="#">
-<span class="material-symbols-outlined">logout</span>
-<span>Logout</span>
-</a>
-</div>
-</nav>
-</aside>
-<!-- TopAppBar -->
-<header class="flex justify-between items-center w-full px-8 h-20 sticky top-0 z-40 ml-72 bg-[#f9f9f9]/80 backdrop-blur-md border-b border-black/[0.05] w-[calc(100%-18rem)]">
-<div class="flex items-center space-x-4">
-<button class="material-symbols-outlined text-[#002147] hover:opacity-70 transition-opacity scale-95 active:scale-100 transition-transform">menu_open</button>
-<h2 class="font-manrope text-2xl font-light tracking-tight text-[#002147]">Revenue Insights</h2>
-</div>
-<div class="flex items-center space-x-6">
-<div class="hidden lg:flex items-center bg-surface-container-low px-4 py-2 rounded-full">
-<span class="material-symbols-outlined text-sm text-outline mr-2">search</span>
-<input class="bg-transparent border-none focus:ring-0 text-sm w-48" placeholder="Search analytics..." type="text"/>
-</div>
-<button class="material-symbols-outlined text-[#002147] hover:opacity-70 transition-opacity">notifications</button>
-<div class="w-10 h-10 rounded-full bg-tertiary-container flex items-center justify-center text-primary-fixed overflow-hidden border border-primary-fixed/20 shadow-sm">
-<span class="text-xs font-bold">AU</span>
-</div>
-</div>
-</header>
-<!-- Main Content -->
-<main class="ml-72 p-8 min-h-screen">
-<!-- Hero Analytics Row -->
+{% block title %}Reports — Group03 Hotel{% endblock %}
+{% block page_title %}Revenue Insights{% endblock %}
+
+{% block content %}
+{# ===== DATE FILTER ===== #}
+<form method="GET" action="{{ url_for('reports.index') }}" class="flex items-center gap-4 mb-8">
+    <div class="flex items-center gap-2">
+        <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">From</label>
+        <input type="date" name="start" value="{{ start_date or '' }}" class="px-4 py-2 bg-surface-container-low border-none rounded-xl text-sm focus:ring-2 focus:ring-primary-fixed outline-none"/>
+    </div>
+    <div class="flex items-center gap-2">
+        <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">To</label>
+        <input type="date" name="end" value="{{ end_date or '' }}" class="px-4 py-2 bg-surface-container-low border-none rounded-xl text-sm focus:ring-2 focus:ring-primary-fixed outline-none"/>
+    </div>
+    <button type="submit" class="px-6 py-2 bg-primary-fixed text-on-primary-fixed rounded-xl text-xs font-bold uppercase tracking-widest hover:brightness-110 transition-all">Filter</button>
+    {% if start_date or end_date %}
+    <a href="{{ url_for('reports.index') }}" class="text-xs text-on-surface-variant hover:text-error transition-colors">Clear</a>
+    {% endif %}
+</form>
+
+{# ===== METRIC CARDS ===== #}
 <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
-<!-- Metric Card 1 -->
-<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/15 flex flex-col justify-between group hover:border-[#f1d27b]/40 transition-colors">
-<div class="flex justify-between items-start mb-4">
-<span class="material-symbols-outlined p-2 bg-[#002147]/5 text-tertiary-container rounded-lg">payments</span>
-<span class="text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded">+12.4%</span>
+    <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/15 group hover:border-[#f1d27b]/40 transition-colors">
+        <div class="flex justify-between items-start mb-4">
+            <span class="material-symbols-outlined p-2 bg-[#002147]/5 text-tertiary-container rounded-lg">payments</span>
+        </div>
+        <p class="text-on-surface-variant text-xs uppercase tracking-widest font-semibold mb-1">Total Revenue</p>
+        <p class="text-3xl font-headline font-black text-on-surface tracking-tight">{{ total_revenue|currency }}</p>
+    </div>
+    <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/15 group hover:border-[#f1d27b]/40 transition-colors">
+        <div class="flex justify-between items-start mb-4">
+            <span class="material-symbols-outlined p-2 bg-[#002147]/5 text-tertiary-container rounded-lg">bed</span>
+            <span class="text-xs font-bold text-on-secondary-container bg-secondary-container/30 px-2 py-1 rounded">Target 90%</span>
+        </div>
+        <p class="text-on-surface-variant text-xs uppercase tracking-widest font-semibold mb-1">Occupancy Rate</p>
+        <p class="text-3xl font-headline font-black text-on-surface tracking-tight">{{ occupancy_rate }}%</p>
+    </div>
+    <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/15 group hover:border-[#f1d27b]/40 transition-colors">
+        <div class="flex justify-between items-start mb-4">
+            <span class="material-symbols-outlined p-2 bg-[#002147]/5 text-tertiary-container rounded-lg">trending_up</span>
+        </div>
+        <p class="text-on-surface-variant text-xs uppercase tracking-widest font-semibold mb-1">Avg. Daily Rate</p>
+        <p class="text-3xl font-headline font-black text-on-surface tracking-tight">{{ adr|currency }}</p>
+    </div>
+    <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/15 group hover:border-[#f1d27b]/40 transition-colors">
+        <div class="flex justify-between items-start mb-4">
+            <span class="material-symbols-outlined p-2 bg-[#002147]/5 text-tertiary-container rounded-lg">star</span>
+        </div>
+        <p class="text-on-surface-variant text-xs uppercase tracking-widest font-semibold mb-1">RevPAR</p>
+        <p class="text-3xl font-headline font-black text-on-surface tracking-tight">{{ revpar|currency }}</p>
+    </div>
 </div>
-<div>
-<p class="text-on-surface-variant text-xs uppercase tracking-widest font-semibold mb-1">Total Revenue</p>
-<p class="text-3xl font-manrope font-black text-on-surface tracking-tight">$428,500</p>
-</div>
-</div>
-<!-- Metric Card 2 -->
-<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/15 flex flex-col justify-between group hover:border-[#f1d27b]/40 transition-colors">
-<div class="flex justify-between items-start mb-4">
-<span class="material-symbols-outlined p-2 bg-[#002147]/5 text-tertiary-container rounded-lg">bed</span>
-<span class="text-xs font-bold text-on-secondary-container bg-secondary-container/30 px-2 py-1 rounded">Target 90%</span>
-</div>
-<div>
-<p class="text-on-surface-variant text-xs uppercase tracking-widest font-semibold mb-1">Occupancy Rate</p>
-<p class="text-3xl font-manrope font-black text-on-surface tracking-tight">84.2%</p>
-</div>
-</div>
-<!-- Metric Card 3 -->
-<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/15 flex flex-col justify-between group hover:border-[#f1d27b]/40 transition-colors">
-<div class="flex justify-between items-start mb-4">
-<span class="material-symbols-outlined p-2 bg-[#002147]/5 text-tertiary-container rounded-lg">trending_up</span>
-<span class="text-xs font-bold text-on-primary-container bg-primary-fixed/20 px-2 py-1 rounded">Luxury Tier</span>
-</div>
-<div>
-<p class="text-on-surface-variant text-xs uppercase tracking-widest font-semibold mb-1">Avg. Daily Rate</p>
-<p class="text-3xl font-manrope font-black text-on-surface tracking-tight">$824</p>
-</div>
-</div>
-<!-- Metric Card 4 -->
-<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/15 flex flex-col justify-between group hover:border-[#f1d27b]/40 transition-colors">
-<div class="flex justify-between items-start mb-4">
-<span class="material-symbols-outlined p-2 bg-[#002147]/5 text-tertiary-container rounded-lg">star</span>
-<span class="text-xs font-bold text-on-surface-variant bg-surface-container px-2 py-1 rounded">98th Percentile</span>
-</div>
-<div>
-<p class="text-on-surface-variant text-xs uppercase tracking-widest font-semibold mb-1">RevPAR</p>
-<p class="text-3xl font-manrope font-black text-on-surface tracking-tight">$693</p>
-</div>
-</div>
-</div>
-<!-- Main Grid: Charts and Tables -->
+
+{# ===== CHARTS & BREAKDOWN ===== #}
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
-<!-- Revenue Trend Chart Placeholder -->
-<div class="lg:col-span-2 bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/15">
-<div class="flex justify-between items-end mb-8">
-<div>
-<h3 class="text-xl font-manrope font-bold mb-1">Revenue Trajectory</h3>
-<p class="text-on-surface-variant text-sm">Quarterly performance against fiscal projections</p>
+    {# Revenue by Room Type #}
+    <div class="lg:col-span-2 bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/15">
+        <h3 class="text-xl font-headline font-bold mb-6">Revenue by Room Type</h3>
+        {% if revenue_by_type %}
+        <div class="space-y-6">
+            {% for rt in revenue_by_type %}
+            <div>
+                <div class="flex justify-between text-sm mb-2">
+                    <span class="font-headline font-bold">{{ rt.room_type }}</span>
+                    <span class="text-on-surface-variant">{{ rt.revenue|currency }} <span class="text-xs">({{ rt.percentage }}%)</span></span>
+                </div>
+                <div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+                    <div class="h-full rounded-full transition-all duration-700
+                        {% if loop.index == 1 %}bg-[#f1d27b]{% elif loop.index == 2 %}bg-secondary-fixed-dim{% elif loop.index == 3 %}bg-tertiary-container{% else %}bg-outline-variant{% endif %}"
+                        style="width: {{ rt.percentage }}%">
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-12 text-on-surface-variant">
+            <p class="text-sm">No revenue data available for the selected period.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    {# Portfolio Mix Summary #}
+    <div class="bg-tertiary-container p-8 rounded-xl text-white flex flex-col justify-between">
+        <div>
+            <h3 class="text-xl font-headline font-bold mb-2">Portfolio Mix</h3>
+            <p class="text-white/60 text-sm mb-6">Revenue distribution</p>
+            {% if revenue_by_type %}
+            <div class="space-y-4">
+                {% for rt in revenue_by_type %}
+                <div>
+                    <div class="flex justify-between text-xs mb-2">
+                        <span class="uppercase tracking-widest font-semibold">{{ rt.room_type }}</span>
+                        <span class="text-[#f1d27b]">{{ rt.percentage }}%</span>
+                    </div>
+                    <div class="w-full bg-white/10 h-1 rounded-full overflow-hidden">
+                        <div class="h-full
+                            {% if loop.index == 1 %}bg-[#f1d27b]{% elif loop.index == 2 %}bg-secondary-fixed-dim{% else %}bg-primary-fixed-dim opacity-50{% endif %}"
+                            style="width: {{ rt.percentage }}%">
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-white/40 text-sm italic">No data available.</p>
+            {% endif %}
+        </div>
+    </div>
 </div>
-<div class="flex space-x-2">
-<button class="px-3 py-1 text-xs font-bold bg-primary-fixed text-on-primary-fixed rounded">Yearly</button>
-<button class="px-3 py-1 text-xs font-bold text-on-surface-variant hover:bg-surface-container rounded transition-colors">Monthly</button>
-</div>
-</div>
-<div class="h-64 flex items-end justify-between space-x-2 relative group">
-<!-- Mock Chart Bars -->
-<div class="w-full flex items-end justify-between space-x-4 h-full border-b border-outline-variant/20 pb-2">
-<div class="flex-1 bg-tertiary-container/10 h-[40%] rounded-t-lg relative group transition-all hover:bg-tertiary-container/20">
-<div class="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-on-surface text-white text-[10px] px-2 py-1 rounded">$12k</div>
-</div>
-<div class="flex-1 bg-tertiary-container/15 h-[65%] rounded-t-lg relative group transition-all hover:bg-tertiary-container/20"></div>
-<div class="flex-1 bg-tertiary-container/20 h-[55%] rounded-t-lg relative group transition-all hover:bg-tertiary-container/20"></div>
-<div class="flex-1 bg-tertiary-container/30 h-[80%] rounded-t-lg relative group transition-all hover:bg-tertiary-container/20"></div>
-<div class="flex-1 bg-[#f1d27b] h-[95%] rounded-t-lg relative group transition-all hover:brightness-110 shadow-[0_0_20px_rgba(241,210,123,0.3)]">
-<div class="absolute -top-8 left-1/2 -translate-x-1/2 opacity-100 bg-on-surface text-white text-[10px] px-2 py-1 rounded">Current</div>
-</div>
-<div class="flex-1 bg-tertiary-container/10 h-[60%] rounded-t-lg relative group transition-all hover:bg-tertiary-container/20"></div>
-</div>
-<!-- Y-Axis Labels -->
-<div class="absolute left-0 top-0 h-full flex flex-col justify-between text-[10px] text-outline pointer-events-none -ml-6">
-<span>100%</span>
-<span>75%</span>
-<span>50%</span>
-<span>25%</span>
-<span>0</span>
-</div>
-</div>
-<div class="flex justify-between mt-4 text-[10px] uppercase tracking-widest font-bold text-on-surface-variant">
-<span>JAN - FEB</span>
-<span>MAR - APR</span>
-<span>MAY - JUN</span>
-<span>JUL - AUG</span>
-<span>SEP - OCT</span>
-<span>NOV - DEC</span>
-</div>
-</div>
-<!-- Occupancy Breakdown (Donut Style Visual) -->
-<div class="bg-tertiary-container p-8 rounded-xl text-white flex flex-col justify-between">
-<div>
-<h3 class="text-xl font-manrope font-bold mb-2">Portfolio Mix</h3>
-<p class="text-white/60 text-sm mb-8">Revenue distribution by category</p>
-<div class="space-y-6">
-<div>
-<div class="flex justify-between text-xs mb-2">
-<span class="uppercase tracking-widest font-semibold">Suites</span>
-<span class="text-[#f1d27b]">62%</span>
-</div>
-<div class="w-full bg-white/10 h-1 rounded-full overflow-hidden">
-<div class="bg-[#f1d27b] h-full w-[62%]"></div>
-</div>
-</div>
-<div>
-<div class="flex justify-between text-xs mb-2">
-<span class="uppercase tracking-widest font-semibold">Deluxe</span>
-<span class="text-[#f1d27b]">24%</span>
-</div>
-<div class="w-full bg-white/10 h-1 rounded-full overflow-hidden">
-<div class="bg-secondary-fixed-dim h-full w-[24%]"></div>
-</div>
-</div>
-<div>
-<div class="flex justify-between text-xs mb-2">
-<span class="uppercase tracking-widest font-semibold">Experiences</span>
-<span class="text-[#f1d27b]">14%</span>
-</div>
-<div class="w-full bg-white/10 h-1 rounded-full overflow-hidden">
-<div class="bg-primary-fixed-dim h-full w-[14%] opacity-50"></div>
-</div>
-</div>
-</div>
-</div>
-<div class="mt-8 pt-8 border-t border-white/10">
-<button class="w-full py-4 bg-[#f1d27b] text-[#002147] font-manrope font-bold text-xs uppercase tracking-widest rounded-lg hover:brightness-110 transition-all">
-            Download Detailed Report
-          </button>
-</div>
-</div>
-</div>
-<!-- Secondary Row: Featured Listings & Activity -->
+
+{# ===== TOP ROOMS & RECENT PAYMENTS ===== #}
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-<!-- High Performing Rooms -->
-<div class="bg-surface-container-low p-8 rounded-xl">
-<h3 class="text-lg font-manrope font-bold mb-6">Top Yield Listings</h3>
-<div class="space-y-4">
-<!-- Room Item 1 -->
-<div class="flex items-center space-x-4 bg-surface-container-lowest p-4 rounded-xl group hover:shadow-lg transition-all border border-transparent hover:border-[#f1d27b]/20">
-<div class="w-16 h-16 rounded-lg overflow-hidden shrink-0">
-<img class="w-full h-full object-cover" data-alt="Ultra-luxury modern hotel suite with panoramic ocean view and minimalist furniture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcX16jgu0tL90IPjESqp20SI3M26eKkkkJSqJobLHuAwBVT22wlozuz458mQIPL4AFM7x3jFXv65V7ix_j2qDj7NcYA-1GF2i1-z7nMGQykdQpKDuFQIUVY1p6JvHNEKgD-6mzhj6LHHdd6wAKUYAek4STVBiRmbhl7OV-RuoTJ4jf3Im5GEYQv6Sbqq4onUvhbPsx-LWjVaKNoRVHpJZWTZRuAFoigqZk833tPjvX9BUn8eq41ZX5Q7Nlwwoc_oLu7wBPXsTfuQ"/>
+    {# Top Rooms #}
+    <div class="bg-surface-container-low p-8 rounded-xl">
+        <h3 class="text-lg font-headline font-bold mb-6">Top Yield Rooms</h3>
+        <div class="space-y-4">
+            {% for room in top_rooms %}
+            <div class="flex items-center gap-4 bg-surface-container-lowest p-4 rounded-xl border border-transparent hover:border-[#f1d27b]/20 transition-all">
+                <div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-xs font-bold text-tertiary-container flex-shrink-0">
+                    {{ loop.index }}
+                </div>
+                <div class="flex-1">
+                    <h4 class="font-headline font-bold text-sm">{{ room.room_name }}</h4>
+                    <p class="text-[10px] text-on-surface-variant uppercase tracking-wider">{{ room.room_number }} • {{ room.room_type }}</p>
+                </div>
+                <div class="text-right">
+                    <p class="font-headline font-bold text-sm text-tertiary-container">{{ room.total_revenue|currency }}</p>
+                    <p class="text-[10px] text-on-surface-variant">{{ room.booking_count }} booking{{ 's' if room.booking_count != 1 }}</p>
+                </div>
+            </div>
+            {% else %}
+            <p class="text-sm text-on-surface-variant text-center py-8">No room revenue data yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    {# Recent Payments #}
+    <div class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/15 overflow-hidden">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-lg font-headline font-bold">Recent Billing</h3>
+        </div>
+        <div class="relative">
+            <div class="absolute left-4 top-0 bottom-0 w-[1px] bg-outline-variant/20"></div>
+            <div class="space-y-6">
+                {% for payment in recent_payments %}
+                <div class="flex items-start gap-4 relative">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 z-10 border-4 border-surface-container-lowest
+                        {% if payment.status == 'completed' %}bg-primary-fixed{% elif payment.status == 'refunded' %}bg-outline-variant/30{% else %}bg-tertiary-container{% endif %}">
+                        <span class="material-symbols-outlined text-xs
+                            {% if payment.status == 'completed' %}text-on-primary-fixed{% elif payment.status == 'refunded' %}text-on-surface-variant{% else %}text-white{% endif %}"
+                            style="font-variation-settings: 'FILL' 1;">
+                            {% if payment.status == 'completed' %}check_circle{% elif payment.status == 'refunded' %}update{% else %}receipt_long{% endif %}
+                        </span>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-start">
+                            <p class="text-sm font-semibold">
+                                {% if payment.status == 'completed' %}Payment Received{% elif payment.status == 'refunded' %}Refund Processed{% else %}Payment Pending{% endif %}
+                            </p>
+                            <span class="text-[10px] text-on-surface-variant">{{ payment.payment_date }}</span>
+                        </div>
+                        <p class="text-xs text-on-surface-variant">{{ payment.booking_code }} — {{ payment.customer_name }} — {{ payment.amount|currency }}</p>
+                    </div>
+                </div>
+                {% else %}
+                <p class="text-sm text-on-surface-variant text-center py-8 relative z-10">No payment activity yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 </div>
-<div class="flex-1">
-<h4 class="font-manrope font-bold text-sm">The Presidential Atelier</h4>
-<p class="text-[10px] text-on-surface-variant uppercase tracking-wider">Level 42 • North Wing</p>
-</div>
-<div class="text-right">
-<p class="font-manrope font-bold text-sm text-tertiary-container">$2,450</p>
-<p class="text-[10px] text-green-600 font-bold">98% OCC</p>
-</div>
-</div>
-<!-- Room Item 2 -->
-<div class="flex items-center space-x-4 bg-surface-container-lowest p-4 rounded-xl group hover:shadow-lg transition-all border border-transparent hover:border-[#f1d27b]/20">
-<div class="w-16 h-16 rounded-lg overflow-hidden shrink-0">
-<img class="w-full h-full object-cover" data-alt="Elegant master bedroom in soft beige and cream tones with high-end linens and ambient lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA77u0TREXbR6KIEZElCypsGQ3hoqmE13b5wr6_M6wLdOs83LM6cwhiNU8AXLaEeUzcUuLThfu8XDIBuSiT77ltvoNQiF_uy7NAFtQF9fm-t6UaoYTx9dZNbq3zBy6Z7uTJYnWbpI3550YIwZZMUs-A5TecQxWueDf-Rsyaa0Ok7askrSHArLKYKKXmdXAMpZoTai68koAwSjSdQHp0_k5Gb1aOnGud35_MjFOYcoUypni8HXSbEx4csB2tTsnzEWHg7A-i3ds5Aw"/>
-</div>
-<div class="flex-1">
-<h4 class="font-manrope font-bold text-sm">Serenity Garden Loft</h4>
-<p class="text-[10px] text-on-surface-variant uppercase tracking-wider">Level 02 • Garden Courtyard</p>
-</div>
-<div class="text-right">
-<p class="font-manrope font-bold text-sm text-tertiary-container">$1,200</p>
-<p class="text-[10px] text-green-600 font-bold">92% OCC</p>
-</div>
-</div>
-</div>
-</div>
-<!-- Recent Transactions / Logs -->
-<div class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/15 overflow-hidden">
-<div class="flex justify-between items-center mb-6">
-<h3 class="text-lg font-manrope font-bold">Recent Billing</h3>
-<a class="text-[10px] uppercase font-bold text-on-tertiary-container hover:underline" href="#">View All</a>
-</div>
-<div class="relative">
-<div class="absolute left-4 top-0 bottom-0 w-[1px] bg-outline-variant/20"></div>
-<div class="space-y-8 relative">
-<div class="flex items-start space-x-6">
-<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center shrink-0 z-10 border-4 border-surface-container-lowest">
-<span class="material-symbols-outlined text-xs text-on-primary-fixed" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-</div>
-<div class="flex-1">
-<div class="flex justify-between items-start">
-<p class="text-sm font-semibold">Payment Received</p>
-<span class="text-[10px] text-on-surface-variant">2m ago</span>
-</div>
-<p class="text-xs text-on-surface-variant">Booking #AT-2940 for $4,500.00</p>
-</div>
-</div>
-<div class="flex items-start space-x-6">
-<div class="w-8 h-8 rounded-full bg-tertiary-container flex items-center justify-center shrink-0 z-10 border-4 border-surface-container-lowest">
-<span class="material-symbols-outlined text-xs text-white" style="font-variation-settings: 'FILL' 1;">receipt_long</span>
-</div>
-<div class="flex-1">
-<div class="flex justify-between items-start">
-<p class="text-sm font-semibold">Invoice Generated</p>
-<span class="text-[10px] text-on-surface-variant">1h ago</span>
-</div>
-<p class="text-xs text-on-surface-variant">Corporate Event: 'The Summer Gala'</p>
-</div>
-</div>
-<div class="flex items-start space-x-6">
-<div class="w-8 h-8 rounded-full bg-outline-variant/30 flex items-center justify-center shrink-0 z-10 border-4 border-surface-container-lowest">
-<span class="material-symbols-outlined text-xs text-on-surface-variant">update</span>
-</div>
-<div class="flex-1">
-<div class="flex justify-between items-start">
-<p class="text-sm font-semibold">Refund Processed</p>
-<span class="text-[10px] text-on-surface-variant">4h ago</span>
-</div>
-<p class="text-xs text-on-surface-variant">Cancellation for Room #402 ($120.00)</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</main>
-<!-- Floating Action Suppression Rule Check: None needed on Reports screen as per instructions -->
-</body></html>
+{% endblock %}

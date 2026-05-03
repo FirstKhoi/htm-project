@@ -1,367 +1,194 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
 
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "on-primary-fixed-variant": "#574500",
-                        "secondary-fixed-dim": "#aec7f6",
-                        "secondary": "#465f88",
-                        "background": "#f9f9f9",
-                        "surface-dim": "#dadada",
-                        "on-tertiary-fixed": "#001b3d",
-                        "on-error": "#ffffff",
-                        "surface": "#f9f9f9",
-                        "on-primary-fixed": "#241a00",
-                        "tertiary": "#000a1e",
-                        "surface-container": "#eeeeee",
-                        "surface-variant": "#e2e2e2",
-                        "on-surface-variant": "#44474e",
-                        "on-secondary-fixed": "#001b3d",
-                        "on-tertiary-container": "#708ab5",
-                        "tertiary-fixed": "#d6e3ff",
-                        "primary-fixed-dim": "#e9c349",
-                        "inverse-on-surface": "#f1f1f1",
-                        "on-secondary-fixed-variant": "#2d476f",
-                        "surface-container-high": "#e8e8e8",
-                        "outline-variant": "#c4c6cf",
-                        "surface-tint": "#735c00",
-                        "surface-container-highest": "#e2e2e2",
-                        "on-tertiary-fixed-variant": "#2d476f",
-                        "outline": "#74777f",
-                        "on-surface": "#1a1c1c",
-                        "tertiary-container": "#002147",
-                        "tertiary-fixed-dim": "#aec7f6",
-                        "error": "#ba1a1a",
-                        "on-secondary-container": "#3f5881",
-                        "primary-container": "#2b2000",
-                        "inverse-primary": "#e9c349",
-                        "secondary-fixed": "#d6e3ff",
-                        "on-error-container": "#93000a",
-                        "on-tertiary": "#ffffff",
-                        "surface-bright": "#f9f9f9",
-                        "on-primary-container": "#a68502",
-                        "inverse-surface": "#2f3131",
-                        "surface-container-low": "#f3f3f3",
-                        "on-primary": "#ffffff",
-                        "surface-container-lowest": "#ffffff",
-                        "on-secondary": "#ffffff",
-                        "primary-fixed": "#ffe088",
-                        "primary": "#0f0a00",
-                        "on-background": "#1a1c1c",
-                        "secondary-container": "#b6d0ff",
-                        "error-container": "#ffdad6"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.125rem",
-                        "lg": "0.25rem",
-                        "xl": "0.5rem",
-                        "full": "0.75rem"
-                    },
-                    "fontFamily": {
-                        "headline": ["Manrope"],
-                        "body": ["Inter"],
-                        "label": ["Inter"]
-                    }
-                },
-            },
-        }
-    </script>
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .editorial-gradient {
-            background: linear-gradient(45deg, #0f0a00 0%, #2b2000 100%);
-        }
-    </style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
-  </head>
-<body class="bg-background font-body text-on-surface">
-<aside class="fixed left-0 top-0 h-full flex flex-col z-50 h-screen w-72 border-r border-white/10 bg-[#002147]/70 backdrop-blur-xl shadow-[0_20px_40px_rgba(0,33,71,0.04)]">
-<div class="p-8">
-<span class="text-[#f1d27b] font-manrope font-bold text-lg tracking-tighter">The Digital Atelier</span>
-</div>
-<div class="px-6 mb-8 flex flex-col items-start">
-<div class="flex items-center space-x-4 mb-4">
-<img alt="Manager Portrait" class="w-12 h-12 rounded-full object-cover border border-[#f1d27b]/30" data-alt="professional headshot of a luxury hotel manager in a sharp suit with a confident, welcoming expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbhdFh82Vd5QOzDhxB6dCoVXjBNYGa1tyLqNvZMKKQ1L0UP7wS28Zh-vMwtwg3bawKbS0GRR8lrImlTO_clmnBtFlBq-Z14Fx1VXlpK8KCgbAZwApUk3dzbocRaaH6rFv3TPXtZfeI-Bzl9Fk4fOPyq8B_HMxfFZmoZMbn5sKdJC3cEiP9XLYOz8SzuL79Kc_gFbnEaGFYSTQwnWqu0QM1f0l8p3zDHYlv1zFbsTUW69zACrdkHRePdiuu3J1Dk1YXVEg0D4pDeg"/>
-<div>
-<h3 class="text-[#f1d27b] font-manrope font-bold text-sm tracking-tight">Editorial Concierge</h3>
-<p class="text-white/60 text-xs font-manrope uppercase tracking-widest">Admin Portal</p>
-</div>
-</div>
-<span class="text-white/40 text-[10px] font-manrope uppercase tracking-[0.2em]">Premium Access</span>
-</div>
-<nav class="flex-1 space-y-1">
-<a class="flex items-center space-x-4 px-6 py-4 text-white/60 hover:text-white transition-colors hover:bg-white/5 group" href="#">
-<span class="material-symbols-outlined group-hover:text-[#f1d27b]">dashboard</span>
-<span class="font-manrope uppercase tracking-widest text-xs font-bold">Dashboard</span>
-</a>
-<a class="flex items-center space-x-4 px-6 py-4 bg-white/10 text-[#f1d27b] border-r-2 border-[#f1d27b]" href="#">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
-<span class="font-manrope uppercase tracking-widest text-xs font-bold">Bookings</span>
-</a>
-<a class="flex items-center space-x-4 px-6 py-4 text-white/60 hover:text-white transition-colors hover:bg-white/5 group" href="#">
-<span class="material-symbols-outlined group-hover:text-[#f1d27b]">group</span>
-<span class="font-manrope uppercase tracking-widest text-xs font-bold">Customers</span>
-</a>
-<a class="flex items-center space-x-4 px-6 py-4 text-white/60 hover:text-white transition-colors hover:bg-white/5 group" href="#">
-<span class="material-symbols-outlined group-hover:text-[#f1d27b]">bed</span>
-<span class="font-manrope uppercase tracking-widest text-xs font-bold">Rooms</span>
-</a>
-<a class="flex items-center space-x-4 px-6 py-4 text-white/60 hover:text-white transition-colors hover:bg-white/5 group" href="#">
-<span class="material-symbols-outlined group-hover:text-[#f1d27b]">analytics</span>
-<span class="font-manrope uppercase tracking-widest text-xs font-bold">Reports</span>
-</a>
-</nav>
-<div class="mt-auto p-6">
-<a class="flex items-center space-x-4 px-4 py-3 text-white/40 hover:text-white transition-colors" href="#">
-<span class="material-symbols-outlined">logout</span>
-<span class="font-manrope uppercase tracking-widest text-xs font-bold">Logout</span>
-</a>
-</div>
-</aside>
-<header class="flex justify-between items-center w-full px-8 h-20 sticky top-0 z-40 ml-72 bg-[#f9f9f9]/80 backdrop-blur-md border-b border-black/[0.05]">
-<div class="flex items-center space-x-4">
-<span class="material-symbols-outlined text-[#002147] cursor-pointer">menu_open</span>
-<h1 class="font-manrope text-2xl font-light tracking-tight text-[#002147]">Bookings Management</h1>
-</div>
-<div class="flex items-center space-x-6">
-<div class="relative">
-<span class="material-symbols-outlined text-[#1a1c1c]/50">notifications</span>
-<span class="absolute top-0 right-0 w-2 h-2 bg-primary-fixed rounded-full border-2 border-surface"></span>
-</div>
-<img alt="Admin User" class="w-10 h-10 rounded-full object-cover scale-95 active:scale-100 transition-transform" data-alt="elegant woman manager in corporate attire looking professional and approachable in a bright office environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8mgqBAve8z8bUbYveSa5WHdZ2UQYjL7_DHXjiY_CjYWG_C1L6wVrl6ivk26nHwEK25BuDupoBK0D_KkN9r4HlyCQGXq75pWdqrmeNArjc5e8_m5CpnImg2sMi9hnhKx7wxUkao-ABpfFTEXYFuvBtaNwyVMBg6M_KU5zwBmLXoh3u5TpPOZgHXIEzo2Y6i4OtGkdTY2e4Ejciw0KQL6IazyMkJtI3G9GLLuMno8NcwTNoGzoN0R5ME1uHfWyZPBTX0YMPjRczTA"/>
-</div>
-</header>
-<main class="ml-72 p-10 min-h-screen">
-<div class="mb-12 flex justify-between items-end">
-<div class="max-w-2xl">
-<h2 class="font-headline text-5xl font-extrabold text-on-surface tracking-tighter mb-4 leading-none">Reservations</h2>
-<p class="text-on-surface-variant font-body text-lg leading-relaxed">
-                    Curate and manage the arrival of your distinguished guests. Oversee pending requests and orchestrate check-in flows.
-                </p>
-</div>
-<div class="flex space-x-4">
-<button class="px-8 py-3 bg-primary-fixed text-on-primary-fixed font-headline font-bold rounded-xl editorial-gradient text-white flex items-center space-x-2 shadow-xl">
-<span class="material-symbols-outlined text-[18px]">add</span>
-<span>New Booking</span>
+{% block title %}Bookings — Group03 Hotel{% endblock %}
+{% block page_title %}Bookings Management{% endblock %}
+
+{% block header_actions %}
+<button onclick="document.getElementById('newBookingModal').classList.add('active')" class="px-6 py-2 editorial-gradient text-white rounded-xl font-headline text-xs font-bold uppercase tracking-widest shadow-lg flex items-center gap-2">
+    <span class="material-symbols-outlined text-sm">add</span>
+    <span>New Booking</span>
 </button>
-</div>
-</div>
+{% endblock %}
+
+{% block content %}
+{# ===== STATS ROW ===== #}
 <div class="grid grid-cols-12 gap-8 mb-12">
-<div class="col-span-12 lg:col-span-4 bg-surface-container-low p-8 rounded-xl">
-<p class="text-on-surface-variant text-xs font-headline font-bold uppercase tracking-widest mb-2">Incoming Requests</p>
-<p class="font-headline text-4xl font-light text-on-surface">14</p>
-<div class="mt-4 flex items-center text-[#a68502]">
-<span class="material-symbols-outlined text-sm mr-1">trending_up</span>
-<span class="text-xs font-bold">+12% from last week</span>
+    <div class="col-span-12 lg:col-span-4 bg-surface-container-low p-8 rounded-xl">
+        <p class="text-on-surface-variant text-xs font-headline font-bold uppercase tracking-widest mb-2">Total Bookings</p>
+        <p class="font-headline text-4xl font-light text-on-surface">{{ bookings|length }}</p>
+    </div>
+    <div class="col-span-12 lg:col-span-4 bg-tertiary-container p-8 rounded-xl text-white">
+        <p class="text-white/60 text-xs font-headline font-bold uppercase tracking-widest mb-2">Pending Approval</p>
+        <p class="font-headline text-4xl font-light">{{ bookings|selectattr('status', 'equalto', 'pending')|list|length }}</p>
+    </div>
+    <div class="col-span-12 lg:col-span-4 bg-surface-container-low p-8 rounded-xl">
+        <p class="text-on-surface-variant text-xs font-headline font-bold uppercase tracking-widest mb-2">Checked In</p>
+        <p class="font-headline text-4xl font-light text-on-surface">{{ bookings|selectattr('status', 'equalto', 'checked_in')|list|length }}</p>
+    </div>
 </div>
+
+{# ===== SEARCH & FILTER ===== #}
+<div class="flex items-center justify-between px-4 mb-6">
+    <h3 class="font-headline text-xl font-bold tracking-tight">Booking Activity</h3>
+    <form method="GET" action="{{ url_for('bookings.index') }}" class="flex items-center gap-3">
+        <div class="flex items-center bg-white px-4 py-2 rounded-full shadow-sm border border-black/[0.03]">
+            <span class="material-symbols-outlined text-[18px] text-outline">search</span>
+            <input name="search" value="{{ search }}" class="bg-transparent border-none focus:ring-0 text-sm font-body w-40" placeholder="Search guests..." type="text"/>
+        </div>
+        <select name="status" onchange="this.form.submit()" class="px-4 py-2 bg-white rounded-full shadow-sm border border-black/[0.03] text-sm font-body">
+            <option value="">All Status</option>
+            {% for st in ['pending', 'confirmed', 'checked_in', 'checked_out', 'cancelled'] %}
+            <option value="{{ st }}" {% if current_status == st %}selected{% endif %}>{{ st|replace('_', ' ')|title }}</option>
+            {% endfor %}
+        </select>
+    </form>
 </div>
-<div class="col-span-12 lg:col-span-4 bg-tertiary-container p-8 rounded-xl text-white">
-<p class="text-white/60 text-xs font-headline font-bold uppercase tracking-widest mb-2">Occupancy Rate</p>
-<p class="font-headline text-4xl font-light">92%</p>
-<div class="mt-4 flex items-center text-[#f1d27b]">
-<span class="material-symbols-outlined text-sm mr-1">star</span>
-<span class="text-xs font-bold">Peak Season Active</span>
-</div>
-</div>
-<div class="col-span-12 lg:col-span-4 bg-surface-container-low p-8 rounded-xl">
-<p class="text-on-surface-variant text-xs font-headline font-bold uppercase tracking-widest mb-2">Today's Revenue</p>
-<p class="font-headline text-4xl font-light text-on-surface">$12,450</p>
-<div class="mt-4 flex items-center text-[#a68502]">
-<span class="material-symbols-outlined text-sm mr-1">payments</span>
-<span class="text-xs font-bold">Premium Suites Lead</span>
-</div>
-</div>
-</div>
-<div class="space-y-6">
-<div class="flex items-center justify-between px-4">
-<h3 class="font-headline text-xl font-bold tracking-tight">Recent Booking Activity</h3>
-<div class="flex items-center space-x-2 bg-white px-4 py-2 rounded-full shadow-sm border border-black/[0.03]">
-<span class="material-symbols-outlined text-[18px] text-outline">search</span>
-<input class="bg-transparent border-none focus:ring-0 text-sm font-body" placeholder="Search guests..." type="text"/>
-</div>
-</div>
+
+{# ===== BOOKING LIST ===== #}
 <div class="space-y-4">
-<div class="bg-surface-container-lowest p-8 rounded-xl transition-all hover:shadow-[0_20px_40px_rgba(0,33,71,0.04)] border border-transparent hover:border-outline-variant/15 group">
-<div class="flex items-center justify-between">
-<div class="flex items-center space-x-6">
-<div class="w-16 h-16 rounded-xl overflow-hidden">
-<img alt="Julianne Moore" class="w-full h-full object-cover" data-alt="portrait of a sophisticated middle-aged woman with red hair and professional attire" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPiQJRa3YQtnDZ3NLqG-ppDnShAUy7JLa9oJ0bfv_cjF9U3iSu0QYhZdsHsDLPrK9rpi0izdPSAfPJ1JN7qHmP77vATHrfo54tFlyPjINprix_Yi1TFOXxjlPtI29qmVrHhveKm-t2YbULy4I4p7xbnRrUuWSBFkoLtFC8MR6pxTKkJJ9nh961g07xtXCUzvuvNqyJL5bypDIvGJusAs2TsUcvax1SUji8uFt55vBaGs5_2SA4Yma8kvhRgvXMi_KVO5pnFQ9Mcg"/>
-</div>
-<div>
-<h4 class="font-headline text-lg font-extrabold text-on-surface leading-none mb-1">Julianne Moore</h4>
-<p class="text-on-surface-variant text-sm font-medium">Royal Penthouse • 4 Guests</p>
-</div>
-</div>
-<div class="flex flex-col items-center">
-<p class="text-xs font-headline font-bold uppercase tracking-widest text-on-surface-variant mb-1">Stay Duration</p>
-<p class="text-sm font-body font-semibold">Oct 12 — Oct 18, 2024</p>
-</div>
-<div>
-<span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-headline font-bold uppercase tracking-widest bg-secondary-container text-on-secondary-container">
-                                Pending Approval
-                            </span>
-</div>
-<div class="flex items-center space-x-3">
-<button class="px-6 py-2 editorial-gradient text-white font-headline text-xs font-bold rounded-lg hover:opacity-90 transition-opacity">
-                                Approve
-                            </button>
-<button class="px-6 py-2 border border-outline-variant text-on-surface font-headline text-xs font-bold rounded-lg hover:bg-surface-container transition-colors">
-                                Decline
-                            </button>
-</div>
-</div>
-</div>
-<div class="bg-surface-container-lowest p-8 rounded-xl transition-all hover:shadow-[0_20px_40px_rgba(0,33,71,0.04)] border border-transparent hover:border-outline-variant/15">
-<div class="flex items-center justify-between">
-<div class="flex items-center space-x-6">
-<div class="w-16 h-16 rounded-xl overflow-hidden">
-<img alt="Alexander Voss" class="w-full h-full object-cover" data-alt="modern businessman with glasses and tailored suit in a luxury setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2KtN7WvEYumzLh1-Z-wZyoSSFUv4d5qVMp0WSuS1p2V8BwAgc_2DS25i23nQ3yIzBAKEeRPJbap5OEa9Ljy5QJb2P8T-FCEKJye1WtV5S_PRoMM94ms_Yr3sOb_u7CkSO2QB_TJK0upyNWDN4qVNhYSrlM9lkROZKxpzRK-JPVwuNDMk3yyVjfje92w8PRNIs4yIuukNtc64Z0Yg-NPETEpy1VgZsCWBmBqAxWs7yTSaPlKdDJBtNGXZ7xt9YejcmQiVy33q49A"/>
-</div>
-<div>
-<h4 class="font-headline text-lg font-extrabold text-on-surface leading-none mb-1">Alexander Voss</h4>
-<p class="text-on-surface-variant text-sm font-medium">Executive Wing • 1 Guest</p>
-</div>
-</div>
-<div class="flex flex-col items-center">
-<p class="text-xs font-headline font-bold uppercase tracking-widest text-on-surface-variant mb-1">Stay Duration</p>
-<p class="text-sm font-body font-semibold">Oct 10 — Oct 14, 2024</p>
-</div>
-<div>
-<span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-headline font-bold uppercase tracking-widest bg-surface-container-high text-on-surface">
-                                Confirmed
-                            </span>
-</div>
-<div class="flex items-center space-x-3">
-<button class="px-6 py-2 bg-tertiary-container text-white font-headline text-xs font-bold rounded-lg hover:opacity-90 transition-opacity flex items-center space-x-2">
-<span class="material-symbols-outlined text-[16px]">login</span>
-<span>Check-in</span>
-</button>
-</div>
-</div>
-</div>
-<div class="bg-surface-container-lowest p-8 rounded-xl transition-all hover:shadow-[0_20px_40px_rgba(0,33,71,0.04)] border border-transparent hover:border-outline-variant/15">
-<div class="flex items-center justify-between">
-<div class="flex items-center space-x-6">
-<div class="w-16 h-16 rounded-xl overflow-hidden">
-<img alt="Elena Richards" class="w-full h-full object-cover" data-alt="portrait of a elegant woman with a warm smile, wearing luxury silk clothing" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-O1YMVFYwoVDfc1wteC7-j2gaTRm8Z0GryhuXA8cGpq7jJc0DEslkxTbfjh50GqXUETNQEsKJo5_S9DpOyIOjg-6ZguWLm_jGhWbfZer73mlVG65BTFwfSn2-Hek-L3gUrB4J0gPZMm1Rv1-2zy2ctFFDGfRtL5NMEghLucVN6i9IBtIem4uAZS4YcPfF2067JWvoTnJRjwMyUuqMXdCLZd-EcuIOJzElcpWD7qoBRVM3GRIIVntxM_jVLc0vFqt4usX2FEFh4g"/>
-</div>
-<div>
-<h4 class="font-headline text-lg font-extrabold text-on-surface leading-none mb-1">Elena Richards</h4>
-<p class="text-on-surface-variant text-sm font-medium">Skyloft Suite • 2 Guests</p>
-</div>
-</div>
-<div class="flex flex-col items-center">
-<p class="text-xs font-headline font-bold uppercase tracking-widest text-on-surface-variant mb-1">Stay Duration</p>
-<p class="text-sm font-body font-semibold">Oct 08 — Oct 12, 2024</p>
-</div>
-<div>
-<span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-headline font-bold uppercase tracking-widest bg-primary-fixed-dim/20 text-on-primary-container">
-                                In-House
-                            </span>
-</div>
-<div class="flex items-center space-x-3">
-<button class="px-6 py-2 border border-tertiary-container text-tertiary-container font-headline text-xs font-bold rounded-lg hover:bg-tertiary-container/5 transition-colors flex items-center space-x-2">
-<span class="material-symbols-outlined text-[16px]">logout</span>
-<span>Check-out</span>
-</button>
-</div>
-</div>
-</div>
-<div class="bg-surface-container-lowest p-8 rounded-xl opacity-60 grayscale-[0.5] border border-transparent">
-<div class="flex items-center justify-between">
-<div class="flex items-center space-x-6">
-<div class="w-16 h-16 rounded-xl overflow-hidden bg-surface-container flex items-center justify-center">
-<span class="material-symbols-outlined text-outline">person_off</span>
-</div>
-<div>
-<h4 class="font-headline text-lg font-extrabold text-on-surface leading-none mb-1">Marcus Thorne</h4>
-<p class="text-on-surface-variant text-sm font-medium">Standard King • 2 Guests</p>
-</div>
-</div>
-<div class="flex flex-col items-center">
-<p class="text-xs font-headline font-bold uppercase tracking-widest text-on-surface-variant mb-1">Stay Duration</p>
-<p class="text-sm font-body font-semibold">Oct 15 — Oct 19, 2024</p>
-</div>
-<div>
-<span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-headline font-bold uppercase tracking-widest bg-error-container text-on-error-container">
-                                Cancelled
-                            </span>
-</div>
-<div class="flex items-center space-x-3">
-<button class="px-4 py-2 text-on-surface-variant font-headline text-xs font-bold rounded-lg hover:underline transition-colors">
-                                View History
-                            </button>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="mt-16 grid grid-cols-12 gap-8">
-<div class="col-span-12 lg:col-span-8">
-<div class="bg-surface-container-low rounded-xl p-8 h-full relative overflow-hidden">
-<div class="relative z-10">
-<h3 class="font-headline text-3xl font-extrabold tracking-tight mb-2">Evening Arrival Log</h3>
-<p class="text-on-surface-variant mb-8 font-body">Projected check-ins for the next 6 hours.</p>
-<div class="space-y-6">
-<div class="flex items-center">
-<div class="w-12 text-xs font-headline font-bold text-on-surface-variant uppercase">18:00</div>
-<div class="flex-1 ml-4 h-px bg-outline-variant/30"></div>
-<div class="ml-4 px-4 py-2 bg-white rounded-lg shadow-sm border border-black/[0.02] flex items-center space-x-3 min-w-[200px]">
-<div class="w-2 h-2 rounded-full bg-[#f1d27b]"></div>
-<span class="text-sm font-headline font-bold">V. Kensington</span>
-</div>
-</div>
-<div class="flex items-center">
-<div class="w-12 text-xs font-headline font-bold text-on-surface-variant uppercase">19:30</div>
-<div class="flex-1 ml-4 h-px bg-outline-variant/30"></div>
-<div class="ml-4 px-4 py-2 bg-white rounded-lg shadow-sm border border-black/[0.02] flex items-center space-x-3 min-w-[200px]">
-<div class="w-2 h-2 rounded-full bg-[#f1d27b]"></div>
-<span class="text-sm font-headline font-bold">L. Sterling</span>
-</div>
-</div>
-<div class="flex items-center">
-<div class="w-12 text-xs font-headline font-bold text-on-surface-variant uppercase">21:00</div>
-<div class="flex-1 ml-4 h-px bg-outline-variant/30"></div>
-<div class="ml-4 px-4 py-2 bg-white rounded-lg shadow-sm border border-black/[0.02] flex items-center space-x-3 min-w-[200px]">
-<div class="w-2 h-2 rounded-full bg-[#f1d27b]"></div>
-<span class="text-sm font-headline font-bold">D. Montague</span>
-</div>
-</div>
-</div>
-</div>
-<div class="absolute -right-20 -bottom-20 w-80 h-80 bg-tertiary-container/5 rounded-full blur-3xl"></div>
-</div>
-</div>
-<div class="col-span-12 lg:col-span-4">
-<div class="bg-primary-fixed editorial-gradient p-8 rounded-xl h-full flex flex-col justify-between text-white">
-<div>
-<span class="material-symbols-outlined text-4xl mb-4" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
-<h3 class="font-headline text-2xl font-bold mb-4">Atelier Insight</h3>
-<p class="font-body text-white/80 leading-relaxed">
-                            Weekend demand for the "Royal Penthouse" is up by 40%. Consider optimizing the seasonal rates for the upcoming gala weekend.
-                        </p>
-</div>
-<button class="mt-8 py-3 bg-white/10 hover:bg-white/20 transition-colors text-white font-headline text-sm font-bold uppercase tracking-widest rounded-lg border border-white/20">
-                        View Analytics
+    {% for booking in bookings %}
+    <div class="bg-surface-container-lowest p-6 rounded-xl transition-all hover:shadow-[0_20px_40px_rgba(0,33,71,0.04)] border border-transparent hover:border-outline-variant/15">
+        <div class="flex items-center justify-between flex-wrap gap-4">
+            {# Guest Info #}
+            <div class="flex items-center gap-4 min-w-[200px]">
+                <div class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-sm font-bold text-tertiary-container">
+                    {{ booking.customer_name[:2]|upper }}
+                </div>
+                <div>
+                    <h4 class="font-headline text-lg font-extrabold text-on-surface leading-none mb-1">{{ booking.customer_name }}</h4>
+                    <p class="text-on-surface-variant text-sm font-medium">{{ booking.room_number }} — {{ booking.room_name }} • {{ booking.num_guests }} Guest{{ 's' if booking.num_guests != 1 }}</p>
+                </div>
+            </div>
+
+            {# Dates #}
+            <div class="flex flex-col items-center">
+                <p class="text-xs font-headline font-bold uppercase tracking-widest text-on-surface-variant mb-1">Stay</p>
+                <p class="text-sm font-body font-semibold">{{ booking.check_in_date }} → {{ booking.check_out_date }}</p>
+            </div>
+
+            {# Amount #}
+            <div class="text-right">
+                <p class="font-headline font-bold text-tertiary-container">{{ booking.total_amount|currency }}</p>
+                <p class="text-[10px] text-on-surface-variant">{{ booking.booking_code }}</p>
+            </div>
+
+            {# Status Badge #}
+            <div>
+                {% if booking.status == 'pending' %}
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-headline font-bold uppercase tracking-widest bg-secondary-container text-on-secondary-container">Pending</span>
+                {% elif booking.status == 'confirmed' %}
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-headline font-bold uppercase tracking-widest bg-surface-container-high text-on-surface">Confirmed</span>
+                {% elif booking.status == 'checked_in' %}
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-headline font-bold uppercase tracking-widest bg-primary-fixed-dim/20 text-on-primary-container">In-House</span>
+                {% elif booking.status == 'checked_out' %}
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-headline font-bold uppercase tracking-widest bg-green-100 text-green-800">Completed</span>
+                {% elif booking.status == 'cancelled' %}
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-headline font-bold uppercase tracking-widest bg-error-container text-on-error-container">Cancelled</span>
+                {% endif %}
+            </div>
+
+            {# Action Buttons #}
+            <div class="flex items-center gap-2">
+                {% if booking.status == 'pending' %}
+                <form method="POST" action="{{ url_for('bookings.approve', booking_id=booking.id) }}" class="inline">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <button class="px-5 py-2 editorial-gradient text-white font-headline text-xs font-bold rounded-lg hover:opacity-90 transition-opacity">Approve</button>
+                </form>
+                <form method="POST" action="{{ url_for('bookings.cancel', booking_id=booking.id) }}" class="inline" onsubmit="return confirm('Cancel this booking?')">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <button class="px-5 py-2 border border-outline-variant text-on-surface font-headline text-xs font-bold rounded-lg hover:bg-surface-container transition-colors">Decline</button>
+                </form>
+                {% elif booking.status == 'confirmed' %}
+                <form method="POST" action="{{ url_for('bookings.checkin', booking_id=booking.id) }}" class="inline">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <button class="px-5 py-2 bg-tertiary-container text-white font-headline text-xs font-bold rounded-lg hover:opacity-90 transition-opacity flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[16px]">login</span> Check-in
                     </button>
+                </form>
+                {% elif booking.status == 'checked_in' %}
+                <form method="POST" action="{{ url_for('bookings.checkout', booking_id=booking.id) }}" class="inline">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <select name="payment_method" class="text-xs border border-outline-variant rounded-lg px-2 py-2 mr-1">
+                        <option value="cash">Cash</option>
+                        <option value="card">Card</option>
+                        <option value="transfer">Transfer</option>
+                    </select>
+                    <button class="px-5 py-2 border border-tertiary-container text-tertiary-container font-headline text-xs font-bold rounded-lg hover:bg-tertiary-container/5 transition-colors flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[16px]">logout</span> Check-out
+                    </button>
+                </form>
+                {% endif %}
+                {% if booking.status not in ('checked_out', 'cancelled') and booking.status != 'pending' %}
+                <form method="POST" action="{{ url_for('bookings.cancel', booking_id=booking.id) }}" class="inline" onsubmit="return confirm('Cancel booking {{ booking.booking_code }}?')">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <button class="text-error/60 hover:text-error transition-colors" title="Cancel">
+                        <span class="material-symbols-outlined text-sm">cancel</span>
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="text-center py-16 text-on-surface-variant">
+        <span class="material-symbols-outlined text-5xl opacity-20 block mb-4">calendar_month</span>
+        <p class="font-headline font-bold text-lg">No bookings found</p>
+        <p class="text-sm mt-1">Create a new booking to get started.</p>
+    </div>
+    {% endfor %}
 </div>
+
+{# ===== NEW BOOKING MODAL ===== #}
+<div class="modal-overlay" id="newBookingModal">
+    <div class="modal-content">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="font-headline font-bold text-xl text-tertiary-container">Create New Booking</h3>
+            <button onclick="document.getElementById('newBookingModal').classList.remove('active')" class="text-on-surface-variant hover:text-error transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <form method="POST" action="{{ url_for('bookings.add') }}" class="space-y-4">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <div>
+                <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant block mb-1">Customer *</label>
+                <select name="customer_id" required class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed outline-none text-sm">
+                    <option value="">Select a customer...</option>
+                    {% for c in customers %}
+                    <option value="{{ c.id }}">{{ c.full_name }} ({{ c.email }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant block mb-1">Room *</label>
+                <select name="room_id" required class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed outline-none text-sm">
+                    <option value="">Select a room...</option>
+                    {% for r in rooms %}
+                    <option value="{{ r.id }}">{{ r.room_number }} — {{ r.room_name }} ({{ r.room_type }}, {{ r.price_per_night|currency }}/night) {% if r.status != 'available' %}[{{ r.status }}]{% endif %}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant block mb-1">Check-in *</label>
+                    <input type="date" name="check_in_date" required class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed outline-none text-sm"/>
+                </div>
+                <div>
+                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant block mb-1">Check-out *</label>
+                    <input type="date" name="check_out_date" required class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed outline-none text-sm"/>
+                </div>
+            </div>
+            <div>
+                <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant block mb-1">Number of Guests</label>
+                <input type="number" name="num_guests" value="1" min="1" max="10" class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed outline-none text-sm"/>
+            </div>
+            <div>
+                <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant block mb-1">Notes</label>
+                <textarea name="notes" rows="2" placeholder="Special requests..." class="w-full px-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary-fixed outline-none text-sm"></textarea>
+            </div>
+            <button type="submit" class="w-full py-4 editorial-gradient text-white rounded-xl font-headline font-bold text-sm uppercase tracking-widest shadow-lg">
+                Create Booking
+            </button>
+        </form>
+    </div>
 </div>
-</div>
-</main>
-</body></html>
+{% endblock %}
