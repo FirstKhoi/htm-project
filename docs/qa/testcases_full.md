@@ -1,6 +1,5 @@
-# 🏨 HMS Test Cases — Copy vào Excel
+# 🏨 HMS Test Cases
 
-> Mỗi bảng là 1 sheet Excel. Copy cả header + rows rồi paste vào Excel → nó sẽ tự tách cột.
 
 ---
 
